@@ -5,8 +5,11 @@ Two jobs:
    logs/run-<ts>/report.json. Integration builds the report dict to conform to
    these models; every field below the metric identity is Optional so skipped
    stages never break serialization or rendering.
-2. `render_report(path)` -> path of a single self-contained, JS-FREE HTML file
-   (pure HTML/CSS, <details>/<summary> drill-down) written next to the input.
+2. `render_report(path)` -> path of a single self-contained HTML file (inline
+   CSS/JS only, no external assets — works over file://) written next to the
+   input, plus one per-company report-<TICKER>.html. Layered readability: plain
+   for a lay reader (how-to primer, tooltips, plain-English worksheet), precise
+   for an expert (full figures, formulas, backtests) — explain, never simplify.
    CLI: `uv run python -m pipeline.report logs/run-.../report.json`
 
 This is the per-run evidence viewer, NOT the judged architecture write-up.
@@ -147,7 +150,17 @@ class MetricReport(_Model):
     validation: list[ValidationCheck] = Field(default_factory=list)
     fallback_used: FallbackUsed | None = None
     derivation: list[DerivationStep] | None = None
+    worksheet: list["WorksheetLine"] | None = None
     final_value: float | None = None
+
+
+class WorksheetLine(_Model):
+    """One line of the hero ledger (accountant's running total, plain English).
+    provenance renders as a [D]/[M]/[L] prefix: data / math / model judgment."""
+    provenance: str = "math"        # data | math | llm
+    label: str                      # e.g. "× seasonal growth (+2.70%)"
+    amount: float | None = None     # running total in canonical units
+    is_final: bool = False
 
 
 class RunReport(_Model):
@@ -157,6 +170,13 @@ class RunReport(_Model):
 
 
 # ================================================================ rendering
+#
+# Design: a crafted analyst research document, not a dashboard. Serif display
+# headings over a system sans text face, one navy accent, tabular numerals
+# everywhere a figure appears, hairline rules, generous whitespace. The ledger
+# worksheet is the visual centerpiece of every metric. Inline JS (no external
+# assets — must work over file://): sticky TOC with scrollspy, expand/collapse
+# all, quick filter. Everything degrades gracefully with JS off.
 
 def _e(s: object) -> str:
     return html.escape(str(s), quote=True)
@@ -173,46 +193,147 @@ def _num(v: float | None, signed: bool = False) -> str:
 
 
 def _dt(d: datetime | None) -> str:
-    return d.strftime("%Y-%m-%d %H:%M:%S UTC") if d else "—"
+    return d.strftime("%Y-%m-%d %H:%M UTC") if d else "—"
 
 
-def _status(m: MetricReport) -> tuple[str, str]:
-    """(css class, text) for the metric status chip."""
-    if m.fallback_used is not None:
-        return "fail", f"fallback: {m.fallback_used.source_used}"
-    if any(not v.passed for v in m.validation):
-        return "warn", "warnings"
-    if m.final_value is None:
-        return "fail", "no value"
-    if not m.validation:
-        return "warn", "unvalidated"
-    return "pass", "all gates pass"
-
-
-def _chip(cls: str, text: str) -> str:
-    return f'<span class="chip {cls}">{_e(text)}</span>'
-
-
-_VIBE_CLS = {
-    "cold": "fail", "cooling": "warn", "neutral": "neutral",
-    "warming": "pass", "hot": "pass",
-    "sandbagger": "pass", "accurate": "neutral", "promotional": "warn",
-    "downside": "warn", "balanced": "neutral", "upside": "pass",
+_STATUS_HELP = {
+    "ok": "the final number passed every sanity check",
+    "warnings": "at least one sanity check flagged this number — review before trusting",
+    "fallback": "the preferred forecasting path failed, so a simpler safe value was used",
+    "unvalidated": "no sanity checks were recorded for this number",
+    "no value": "the pipeline produced no number for this metric",
 }
 
 
-def _grounded_html(name: str, g) -> str:
-    if g is None:
-        return f'<div class="vibe"><span class="vibe-name">{_e(name)}</span> <span class="muted">—</span></div>'
-    cites = "".join(f'<li class="cite">{_e(c)}</li>' for c in (g.citations or []))
-    cites_html = f'<ul class="cites">{cites}</ul>' if cites else '<div class="muted small">no citations — treated as neutral</div>'
-    cls = _VIBE_CLS.get(str(g.label), "neutral")
+def _status_word(m: MetricReport) -> str:
+    if m.fallback_used is not None:
+        return "fallback"
+    if m.final_value is None:
+        return "no value"
+    if any(not v.passed for v in m.validation):
+        return "warnings"
+    if not m.validation:
+        return "unvalidated"
+    return "ok"
+
+
+_PREFIX = {"data": "D", "math": "M", "llm": "L"}
+
+
+def _prefix(prov: str) -> str:
+    return _PREFIX.get(prov, "M")
+
+
+def _metric_id(m: MetricReport) -> str:
+    slug = "".join(ch if ch.isalnum() else "-" for ch in f"{m.ticker}-{m.label}".lower())
+    return "m-" + "-".join(p for p in slug.split("-") if p)
+
+
+def _metric_help(label: str) -> str:
+    """Plain-words tooltip for a contest metric label (labels themselves must
+    stay verbatim). Keyword-matched so unknown labels still get something."""
+    low = label.lower()
+    if "comparable sales" in low:
+        return "Sales growth in stores open for at least a year — strips out growth from newly opened stores"
+    if "eps" in low or "per share" in low:
+        base = "Profit per share of stock"
+        if "adjusted" in low:
+            return base + ", excluding one-off items the company deems non-recurring"
+        if "pre-exceptional" in low:
+            return base + ", before exceptional (one-off) items — UK reporting convention"
+        if "gaap" in low:
+            return base + ", by standard accounting rules (no adjustments)"
+        return base
+    if "gross margin" in low:
+        return "Profit left after production costs, as a percentage of revenue" + \
+            (", excluding one-off items" if "adjusted" in low else "")
+    if "net fees" in low:
+        return "Fee income from placing candidates — the staffing industry's core revenue measure"
+    if "operating profit" in low:
+        pre = "Profit from core operations"
+        if "pre-exceptional" in low:
+            return pre + ", before exceptional (one-off) items"
+        return pre + (" for this business segment" if "&" in label else "")
+    if "sales" in low or "revenue" in low:
+        return "Total money taken in for the period"
+    return "Reported financial figure for the period"
+
+
+def _company_id(ticker: str) -> str:
+    return f"co-{ticker.lower()}"
+
+
+# ---------------------------------------------------------------- worksheet (hero)
+
+def _worksheet_html(lines: list[WorksheetLine] | None) -> str:
+    if not lines:
+        return '<p class="muted">No worksheet recorded for this metric.</p>'
+    rows = []
+    for ln in lines:
+        final = ' <span class="ws-flag">← FINAL</span>' if ln.is_final else ""
+        cls = " ws-final" if ln.is_final else ""
+        rows.append(
+            f'<div class="ws-row{cls}"><span class="ws-p">[{_prefix(ln.provenance)}]</span>'
+            f'<span class="ws-label">{_e(ln.label)}</span>'
+            f'<span class="ws-amt">{_num(ln.amount)}{final}</span></div>'
+        )
     return (
-        f'<div class="vibe"><span class="vibe-name">{_e(name)}</span> '
-        f'{_chip(cls, str(g.label))}'
-        f'<div class="expl">{_e(g.explanation)}</div>{cites_html}</div>'
+        '<div class="ws"><div class="ws-legend">D data · M math · L model judgment</div>'
+        f'{"".join(rows)}</div>'
     )
 
+
+def _consensus_check_html(m: MetricReport) -> str:
+    """Always-visible one-liner: our final vs Wall Street, or why not."""
+    kspan = ('<span class="cons-k" title="how our number compares with the average of Wall '
+             'Street analysts&#39; published estimates">Consensus check</span>')
+    c = m.consensus
+    if c is None or c.value is None:
+        note = (c.source if (c is not None and c.source) else "no comparable consensus series")
+        return (f'<p class="cons">{kspan} '
+                f'<span class="muted">not available — {_e(note)}</span></p>')
+    src = f' <span class="src">[{_e(c.source)}]</span>' if c.source else ""
+    if m.final_value is None:
+        return (f'<p class="cons">{kspan} '
+                f'street {_num(c.value)}{src} · <span class="muted">no final value</span></p>')
+    if m.unit == "%":
+        diff = m.final_value - c.value
+        rel = f"{diff:+.2f} pts vs street"
+    else:
+        rel = (f"{(m.final_value - c.value) / abs(c.value) * 100:+.2f}% vs street"
+               if c.value else "—")
+    return (f'<p class="cons">{kspan} '
+            f'ours <b>{_num(m.final_value)}</b> · street <b>{_num(c.value)}</b> · '
+            f'<b class="accent">{_e(rel)}</b>{src}</p>')
+
+
+# ---------------------------------------------------------------- formulas details
+
+def _derivation_html(steps: list[DerivationStep] | None) -> str:
+    if not steps:
+        return ""
+    lines = []
+    for s in steps:
+        refs_bits = list(s.refs)
+        if s.note:
+            refs_bits.append(s.note)
+        refs = (f'<div class="d-refs">↳ {_e("; ".join(refs_bits))}</div>' if refs_bits else "")
+        lines.append(
+            f'<div class="d-step"><div class="d-head">'
+            f'<span class="ws-p">[{_prefix(s.provenance)}]</span>'
+            f'<span class="d-name">{_e(s.name)}</span>'
+            f'<code class="d-formula">{_e(s.formula)}</code></div>'
+            f'<code class="d-sub">{_e(s.substituted)}</code>{refs}</div>'
+        )
+    return (
+        '<details class="stage"><summary>Show full formulas &amp; sources</summary>'
+        '<div class="stage-body"><p class="muted small">D data · M math · L model judgment — '
+        'every model-judgment term is bounded by a computed cap.</p>'
+        f'{"".join(lines)}</div></details>'
+    )
+
+
+# ---------------------------------------------------------------- stage bodies
 
 def _anchor_html(a: Anchor | None) -> str:
     if a is None:
@@ -230,16 +351,21 @@ def _baseline_html(cands: list[BaselineCandidate], chosen: str | None) -> str:
         return '<p class="muted">No baseline candidates recorded.</p>'
     rows = []
     for c in cands:
-        cls = ' class="chosen"' if (chosen is not None and c.method == chosen) else ""
         star = " ★" if (chosen is not None and c.method == chosen) else ""
+        cls = ' class="chosen"' if star else ""
         rows.append(
-            f"<tr{cls}><td>{_e(c.method)}{star}</td><td>{_num(c.value)}</td>"
-            f"<td>{_num(c.backtest_mae)}</td><td>{_num(c.backtest_bias, signed=True)}</td>"
-            f"<td>{c.backtest_n if c.backtest_n is not None else '—'}</td></tr>"
+            f"<tr{cls}><td>{_e(c.method)}{star}</td><td class='num'>{_num(c.value)}</td>"
+            f"<td class='num'>{_num(c.backtest_mae)}</td>"
+            f"<td class='num'>{_num(c.backtest_bias, signed=True)}</td>"
+            f"<td class='num'>{c.backtest_n if c.backtest_n is not None else '—'}</td></tr>"
         )
     return (
-        '<div class="scroll"><table><thead><tr><th>method</th><th>value</th>'
-        "<th>backtest MAE</th><th>bias</th><th>n</th></tr></thead>"
+        '<div class="scroll"><table><thead><tr><th>method</th><th class="num">value</th>'
+        '<th class="num"><abbr title="average historical miss: Mean Absolute Error when the '
+        'method is replayed on past quarters">backtest MAE</abbr></th>'
+        '<th class="num"><abbr title="average signed miss — positive means the method '
+        'historically overshoots">bias</abbr></th>'
+        '<th class="num"><abbr title="number of past periods evaluated">n</abbr></th></tr></thead>'
         f'<tbody>{"".join(rows)}</tbody></table></div>'
     )
 
@@ -249,7 +375,7 @@ def _guidance_html(g: GuidanceBlock | None) -> str:
         return '<p class="muted">No guidance recorded.</p>'
     parts = [
         f"<p>low <b>{_num(g.low)}</b> · mid <b>{_num(g.mid)}</b> · high <b>{_num(g.high)}</b>"
-        f' · beat factor <b>{_num(g.beat_factor)}</b></p>'
+        f" · beat factor <b>{_num(g.beat_factor)}</b></p>"
     ]
     if g.quote:
         parts.append(f"<blockquote>{_e(g.quote)}</blockquote>")
@@ -258,18 +384,25 @@ def _guidance_html(g: GuidanceBlock | None) -> str:
     return "".join(parts)
 
 
+def _grounded_html(name: str, g) -> str:
+    if g is None:
+        return f"<p><b>{_e(name)}:</b> <span class='muted'>—</span></p>"
+    cites = (f' <span class="src">[{_e("; ".join(g.citations))}]</span>' if g.citations
+             else ' <span class="muted small">(no citations — treated as neutral)</span>')
+    return f"<p><b>{_e(name)}:</b> {_e(g.label)} — {_e(g.explanation)}{cites}</p>"
+
+
 def _estimate_html(est: Estimate | None) -> str:
     if est is None:
         return '<p class="muted">No blind estimate (estimator skipped or failed).</p>'
-    conf_cls = {"low": "warn", "medium": "neutral", "high": "pass"}.get(est.confidence, "neutral")
     return "".join([
-        f'<p>method <code>{_e(est.method)}</code> · growth p10 <b>{_num(est.growth_p10, signed=True)}</b>'
-        f' / p50 <b>{_num(est.growth_p50, signed=True)}</b> / p90 <b>{_num(est.growth_p90, signed=True)}</b>'
-        f" · confidence {_chip(conf_cls, est.confidence)}</p>",
+        f"<p>method <code>{_e(est.method)}</code> · growth p10 <b>{_num(est.growth_p10, signed=True)}</b>"
+        f" / p50 <b>{_num(est.growth_p50, signed=True)}</b> / p90 <b>{_num(est.growth_p90, signed=True)}</b>"
+        f" · confidence <b>{_e(est.confidence)}</b></p>",
         _grounded_html("momentum", est.momentum),
         _grounded_html("guidance_style", est.guidance_style),
         _grounded_html("surprise_skew", est.surprise_skew),
-        f'<p class="rationale"><b>Rationale:</b> {_e(est.rationale)}</p>',
+        f"<p><b>Rationale:</b> {_e(est.rationale)}</p>",
     ])
 
 
@@ -280,20 +413,22 @@ def _nudges_html(n: NudgeAudit | None) -> str:
     if n.components:
         rows = "".join(
             f"<tr><td>{_e(c.name)}</td><td>{_e(c.label) if c.label else '—'}</td>"
-            f"<td>{_num(c.raw, signed=True)}</td><td>{_num(c.applied, signed=True)}</td>"
+            f"<td class='num'>{_num(c.raw, signed=True)}</td>"
+            f"<td class='num'>{_num(c.applied, signed=True)}</td>"
             f"<td>{'capped' if c.capped else '—'}</td><td>{_e(c.note) if c.note else '—'}</td></tr>"
             for c in n.components
         )
         parts.append(
-            '<div class="scroll"><table><thead><tr><th>component</th><th>label</th><th>raw</th>'
-            f'<th>applied</th><th>cap</th><th>note</th></tr></thead><tbody>{rows}</tbody></table></div>'
+            '<div class="scroll"><table><thead><tr><th>component</th><th>label</th>'
+            '<th class="num">raw</th><th class="num">applied</th><th>cap</th><th>note</th>'
+            f'</tr></thead><tbody>{rows}</tbody></table></div>'
         )
     else:
         parts.append('<p class="muted">No nudge components.</p>')
     if n.cap is not None:
         parts.append(f"<p>cap (k×backtest-MAE): <b>{_num(n.cap)}</b></p>")
     if n.caps_applied:
-        parts.append("<p>caps applied: " + " ".join(_chip("warn", c) for c in n.caps_applied) + "</p>")
+        parts.append("<p>caps applied: " + ", ".join(_e(c) for c in n.caps_applied) + "</p>")
     if n.pre_reconcile_value is not None:
         parts.append(f"<p>value entering reconcile: <b>{_num(n.pre_reconcile_value)}</b></p>")
     return "".join(parts)
@@ -307,10 +442,9 @@ def _reconcile_html(c: ConsensusBlock | None, r: Reconciliation | None) -> str:
     else:
         parts.append('<p class="muted">No consensus fetched.</p>')
     if r is not None:
-        vcls = {"hold": "pass", "partial": "warn", "defer_to_consensus": "fail"}.get(r.verdict, "neutral")
         parts.append(
-            f"<p>verdict {_chip(vcls, r.verdict)} · weight on our estimate "
-            f"<b>{_num(r.weight_ours)}</b></p><p class='rationale'><b>Rationale:</b> {_e(r.rationale)}</p>"
+            f"<p>verdict <b>{_e(r.verdict)}</b> · weight on our estimate "
+            f"<b>{_num(r.weight_ours)}</b></p><p><b>Rationale:</b> {_e(r.rationale)}</p>"
         )
     else:
         parts.append('<p class="muted">No reconciliation (pure-blind mode or skipped).</p>')
@@ -322,10 +456,10 @@ def _validation_html(checks: list[ValidationCheck]) -> str:
         return '<p class="muted">No validation checks recorded.</p>'
     items = []
     for v in checks:
-        cls = "pass" if v.passed else "fail"
         mark = "✓" if v.passed else "✗"
+        cls = "ok" if v.passed else "bad"
         detail = f' <span class="muted small">{_e(v.detail)}</span>' if v.detail else ""
-        items.append(f'<li>{_chip(cls, f"{mark} {v.check}")}{detail}</li>')
+        items.append(f'<li><span class="{cls}">{mark}</span> {_e(v.check)}{detail}</li>')
     return f'<ul class="checks">{"".join(items)}</ul>'
 
 
@@ -339,105 +473,189 @@ def _fallback_html(f: FallbackUsed | None) -> str:
     )
 
 
-_PROV_LABEL = {"data": "data", "math": "math", "llm": "llm"}
+def _stage(title: str, body: str, help_html: str | None = None) -> str:
+    """help_html is trusted internal copy (may contain <abbr>) — not escaped."""
+    help_p = f'<p class="stage-help">{help_html}</p>' if help_html else ""
+    return (f'<details class="stage"><summary>{_e(title)}</summary>'
+            f'<div class="stage-body">{help_p}{body}</div></details>')
 
 
-def _derivation_html(steps: list[DerivationStep] | None) -> str:
-    if not steps:
+_ABBR_MAE = ('<abbr title="Mean Absolute Error — the average size of the method&#39;s '
+             'historical misses">MAE</abbr>')
+_ABBR_CONSENSUS = ('<abbr title="the average of Wall Street analysts&#39; published '
+                   'estimates">consensus</abbr>')
+
+_STAGE_HELP = {
+    1: "The exact figure the company reported for the same period last year — the factual "
+       "starting point every forecast below is computed from.",
+    2: "Simple statistical forecasts built only from the company&#39;s own reported history — "
+       "no AI involved. Each method is <abbr title=\"replayed on past quarters using only the "
+       "data available at the time, then compared with what was actually reported\">backtested"
+       f"</abbr>; the one with the smallest average historical miss ({_ABBR_MAE}) is chosen (★).",
+    3: "Guidance is the company&#39;s own published forecast for this period. The beat factor "
+       "measures how much this company historically lands above or below its own guidance.",
+    4: "The AI model&#39;s judgment, formed <b>without</b> seeing Wall Street&#39;s numbers. "
+       "p10 / p50 / p90 are its pessimistic / central / optimistic calls for how the actual "
+       "result deviates from the baseline; the labels are its reads on business momentum and "
+       "management style. Any label without cited evidence counts for nothing.",
+    5: "How the model&#39;s judgment became a small, bounded adjustment: wide uncertainty "
+       "shrinks its own influence, and the total move is capped at 0.75× the chosen "
+       f"method&#39;s average historical miss ({_ABBR_MAE}).",
+    6: f"{_ABBR_CONSENSUS.capitalize()} is revealed to the model only at this stage; it must "
+       "defend any gap with the evidence it already cited, or defer to the street.",
+    7: "Automatic sanity checks on the final number: unit traps, plausibility against the "
+       "company&#39;s own history, and distance from guidance.",
+}
+
+
+def _metric_section(m: MetricReport) -> str:
+    word = _status_word(m)
+    final = (f"{_num(m.final_value)} <span class='m-unit'>{_e(m.unit)}</span>"
+             if m.final_value is not None else "—")
+    stages = [
+        _stage("1 · Anchor", _anchor_html(m.anchor), _STAGE_HELP[1]),
+        _stage("2 · Baselines (backtested)",
+               _baseline_html(m.baseline_candidates, m.baseline_chosen), _STAGE_HELP[2]),
+        _stage("3 · Guidance & beat factor", _guidance_html(m.guidance), _STAGE_HELP[3]),
+        _stage("4 · Blind estimate", _estimate_html(m.estimate), _STAGE_HELP[4]),
+        _stage("5 · Nudge audit", _nudges_html(m.nudges), _STAGE_HELP[5]),
+        _stage("6 · Consensus & reconciliation",
+               _reconcile_html(m.consensus, m.reconciliation), _STAGE_HELP[6]),
+        _stage("7 · Validation gates", _validation_html(m.validation), _STAGE_HELP[7]),
+    ]
+    status = (f'<span class="m-status{" m-status-bad" if word in ("fallback", "no value") else ""}"'
+              f' title="{_e(_STATUS_HELP.get(word, ""))}">{_e(word)}</span>')
+    return f"""
+<section class="metric" id="{_metric_id(m)}" data-filter="{_e(f'{m.company} {m.ticker} {m.label}'.lower())}">
+<div class="m-head">
+  <div class="m-id"><h3 title="{_e(_metric_help(m.label))}">{_e(m.label)}</h3>
+    <div class="m-sub">{_e(m.period)} · {status}</div></div>
+  <div class="m-final">{final}</div>
+</div>
+{_fallback_html(m.fallback_used)}
+{_worksheet_html(m.worksheet)}
+{_consensus_check_html(m)}
+{_derivation_html(m.derivation)}
+{"".join(stages)}
+</section>"""
+
+
+def _group_by_company(metrics: list[MetricReport]) -> list[tuple[str, str, list[MetricReport]]]:
+    """[(company, ticker, metrics)] preserving first-seen order."""
+    order: list[str] = []
+    groups: dict[str, list[MetricReport]] = {}
+    for m in metrics:
+        if m.company not in groups:
+            order.append(m.company)
+            groups[m.company] = []
+        groups[m.company].append(m)
+    return [(co, groups[co][0].ticker, groups[co]) for co in order]
+
+
+def _company_sections(metrics: list[MetricReport]) -> str:
+    out = []
+    for company, ticker, ms in _group_by_company(metrics):
+        out.append(
+            f'<section class="company" id="{_company_id(ticker)}">'
+            f'<h2 class="co-name">{_e(company)} <span class="co-tick">{_e(ticker)}'
+            f' · {_e(ms[0].period)}</span></h2>'
+            + "".join(_metric_section(m) for m in ms)
+            + "</section>")
+    return "".join(out)
+
+
+def _toc_html(metrics: list[MetricReport]) -> str:
+    groups = _group_by_company(metrics)
+    if not groups:
         return ""
-    lines = []
-    for s in steps:
-        prov = s.provenance if s.provenance in _PROV_LABEL else "math"
-        refs_bits = list(s.refs)
-        if s.note:
-            refs_bits.append(s.note)
-        refs = (f'<div class="d-refs">↳ {_e("; ".join(refs_bits))}</div>'
-                if refs_bits else "")
-        lines.append(
-            f'<div class="d-step"><div class="d-head">'
-            f'<span class="prov prov-{prov}">{_e(_PROV_LABEL[prov])}</span>'
-            f'<span class="d-name">{_e(s.name)}</span>'
-            f'<code class="d-formula">{_e(s.formula)}</code></div>'
-            f'<code class="d-sub">{_e(s.substituted)}</code>{refs}</div>'
+    items = []
+    for company, ticker, ms in groups:
+        links = "".join(
+            f'<a class="toc-m" href="#{_metric_id(m)}">{_e(m.label)}'
+            f'<span class="toc-v">{_num(m.final_value)}</span></a>'
+            for m in ms)
+        items.append(
+            f'<div class="toc-co"><a class="toc-c" href="#{_company_id(ticker)}">{_e(company)}</a>'
+            f'{links}</div>')
+    return f"""
+<nav id="toc">
+<div class="toc-title">Contents</div>
+<div class="jsonly toolbar">
+  <input id="filter" type="search" placeholder="filter metrics…" autocomplete="off">
+  <div class="tb-btns"><button id="expand">expand all</button><button id="collapse">collapse all</button></div>
+</div>
+{"".join(items)}
+</nav>"""
+
+
+def _howto_html() -> str:
+    """Collapsible primer written for a lay reader; experts skip it. Trusted
+    internal copy — may contain markup."""
+    defs = [
+        ("baseline", "a simple statistical starting forecast computed purely from the "
+         "company's own reported history — for example, last year's quarter grown at the "
+         "recent growth rate, or the midpoint of the company's own guidance. No AI involved."),
+        ("backtest", "a rehearsal on the past: each baseline method is replayed on earlier "
+         "quarters using only the data that was available at the time, and its forecasts are "
+         "compared with what the company actually reported. The average miss (MAE) decides "
+         "which method to trust — and limits how much the AI may change its answer."),
+        ("judgment", "the AI model's adjustment, produced without seeing Wall Street's "
+         "numbers. Every claim must cite a source document, and the total adjustment is "
+         "capped at 0.75× the chosen method's average historical miss."),
+        ("guidance", "the company's own published forecast for the period."),
+        ("consensus & blend", "consensus is the average of Wall Street analysts' estimates; "
+         "a blend is a weighted average of our value and consensus, used when the model "
+         "judges the street partly right."),
+        ("fallback", "if a preferred step fails, the pipeline falls back to the next safest "
+         "value — baseline, guidance, consensus, or last year's actual — rather than ever "
+         "leaving a blank."),
+        ("[D] / [M] / [L]", "every worksheet line is tagged by where its number comes from: "
+         "D extracted data, M deterministic math, L model judgment."),
+        ("statuses", " · ".join(f"<b>{k}</b>: {v}" for k, v in _STATUS_HELP.items())),
+    ]
+    dl = "".join(f"<dt>{k}</dt><dd>{v}</dd>" for k, v in defs)
+    return f"""
+<details class="howto"><summary>How to read this report</summary>
+<div class="howto-body">
+<p>Each forecast below is built in visible layers: start from what the company actually
+reported last year (<i>data</i>), grow it with a simple statistical method chosen by its
+historical accuracy (<i>math</i>), let an AI model adjust it within strict, evidence-cited
+limits (<i>model judgment</i>), then sanity-check the result against Wall Street's average
+estimate. The worksheet under each metric shows this as a running ledger; every claim
+links back to its source. Nothing is rounded away for simplicity — the layers are
+explained instead.</p>
+<dl>{dl}</dl>
+</div></details>"""
+
+
+def _summary_html(metrics: list[MetricReport]) -> str:
+    if not metrics:
+        return '<p class="muted">No metrics in report.</p>'
+    rows = []
+    for m in metrics:
+        val = f"{_num(m.final_value)} {_e(m.unit)}" if m.final_value is not None else "—"
+        word = _status_word(m)
+        rows.append(
+            f'<tr><td>{_e(m.company)}</td><td><a href="#{_metric_id(m)}">{_e(m.label)}</a></td>'
+            f'<td class="num">{val}</td>'
+            f'<td title="{_e(_STATUS_HELP.get(word, ""))}">{_e(word)}</td></tr>'
         )
+    legend = " · ".join(f"<b>{_e(k)}</b> {_e(v)}" for k, v in _STATUS_HELP.items()
+                        if k != "no value")
     return (
-        '<div class="deriv"><h4>Derivation</h4>'
-        '<p class="d-legend"><span class="prov prov-data">data</span> extracted/fetched value · '
-        '<span class="prov prov-math">math</span> deterministic computation · '
-        '<span class="prov prov-llm">llm</span> model judgment — '
-        'every LLM term is bounded by a computed cap</p>'
-        f'{"".join(lines)}</div>'
+        '<table class="sum"><thead><tr><th>company</th><th>metric</th>'
+        f'<th class="num">final</th><th>status</th></tr></thead><tbody>{"".join(rows)}</tbody></table>'
+        f'<p class="sum-legend">{legend}</p>'
     )
 
 
-def _metric_id(m: MetricReport) -> str:
-    slug = "".join(ch if ch.isalnum() else "-" for ch in f"{m.ticker}-{m.label}".lower())
-    return "m-" + "-".join(p for p in slug.split("-") if p)
-
-
-def _stage(title: str, body: str) -> str:
-    return f'<div class="stage"><h4>{_e(title)}</h4>{body}</div>'
-
-
-def _metric_details(m: MetricReport) -> str:
-    scls, stext = _status(m)
-    final = f"{_num(m.final_value)} {_e(m.unit)}" if m.final_value is not None else "—"
-    stages = [
-        _stage("1 · Anchor", _anchor_html(m.anchor)),
-        _stage("2 · Baselines (backtested)", _baseline_html(m.baseline_candidates, m.baseline_chosen)),
-        _stage("3 · Guidance & beat factor", _guidance_html(m.guidance)),
-        _stage("4 · Blind estimate", _estimate_html(m.estimate)),
-        _stage("5 · Nudge audit", _nudges_html(m.nudges)),
-        _stage("6 · Consensus & reconciliation", _reconcile_html(m.consensus, m.reconciliation)),
-        _stage("7 · Validation gates", _validation_html(m.validation)),
-    ]
-    final_eq = ""
-    if m.derivation:
-        last = m.derivation[-1]
-        final_eq = f'<div class="final-eq"><code>{_e(last.substituted)}</code></div>'
-    return f"""
-<details id="{_metric_id(m)}">
-<summary><span class="sum-co">{_e(m.company)}</span> <span class="sum-label">{_e(m.label)}</span>
-<span class="sum-period">{_e(m.period)}</span> {_chip(scls, stext)}
-<span class="sum-final">{final}</span></summary>
-<div class="detail-body">
-{_fallback_html(m.fallback_used)}
-{"".join(stages)}
-{_derivation_html(m.derivation)}
-<div class="final-box">FINAL VALUE<div class="final-num">{final}</div>{final_eq}</div>
-</div>
-</details>"""
-
-
-def _summary_grid(metrics: list[MetricReport]) -> str:
-    by_company: dict[str, list[MetricReport]] = {}
-    for m in metrics:
-        by_company.setdefault(m.company, []).append(m)
-    rows = []
-    for company, ms in by_company.items():
-        cards = []
-        for m in ms:
-            scls, stext = _status(m)
-            final = f"{_num(m.final_value)} <span class='unit'>{_e(m.unit)}</span>" if m.final_value is not None else "—"
-            cards.append(
-                f'<a class="card" href="#{_metric_id(m)}"><div class="card-label">{_e(m.label)}</div>'
-                f'<div class="card-value">{final}</div>{_chip(scls, stext)}</a>'
-            )
-        rows.append(
-            f'<div class="co-row"><div class="co-name">{_e(company)}'
-            f'<span class="muted small"> · {_e(ms[0].period)}</span></div>'
-            f'<div class="cards">{"".join(cards)}</div></div>'
-        )
-    return "".join(rows) or '<p class="muted">No metrics in report.</p>'
-
-
-def _header_html(meta: RunMeta) -> str:
-    badges = []
+def _header_html(meta: RunMeta, subtitle: str | None = None) -> str:
+    mode_bits = []
     if meta.enable_reconcile is not None:
-        badges.append(_chip("pass" if meta.enable_reconcile else "warn",
-                            "reconcile ON" if meta.enable_reconcile else "PURE BLIND"))
+        mode_bits.append("reconcile ON" if meta.enable_reconcile else "PURE BLIND")
     if meta.llm_provider:
-        badges.append(_chip("neutral", meta.llm_provider))
+        mode_bits.append(meta.llm_provider)
+    mode = " · ".join(mode_bits)
     kv = [
         ("run", meta.run_id or "—"),
         ("started", _dt(meta.started)),
@@ -461,102 +679,208 @@ def _header_html(meta: RunMeta) -> str:
         ]
     kv_html = "".join(f'<div class="kv"><span class="k">{_e(k)}</span><span class="v">{_e(v)}</span></div>'
                       for k, v in kv)
-    return (
-        f'<header><h1>Forecast run report</h1><div class="badges">{"".join(badges)}</div>'
-        f'<div class="meta-grid">{kv_html}</div></header>'
-    )
+    sub = f'<p class="subtitle">{_e(subtitle)}</p>' if subtitle else ""
+    mode_html = f'<p class="mode">{_e(mode)}</p>' if mode else ""
+    return (f"<header><h1>Forecast run report</h1>{sub}{mode_html}"
+            f"<div class='meta-grid'>{kv_html}</div></header>")
 
 
 _CSS = """
-:root { --ink:#1a1e26; --muted:#68707e; --line:#dde1e8; --bg:#f7f8fa; --panel:#ffffff;
-        --pass-bg:#e2f3e6; --pass-ink:#1b6b34; --warn-bg:#fdf0d7; --warn-ink:#8a5b00;
-        --fail-bg:#fbe3e0; --fail-ink:#a13126; --neutral-bg:#e8ebf1; --neutral-ink:#3d4657; }
-* { box-sizing: border-box; }
-body { margin:0; padding:2rem clamp(1rem,4vw,3rem); background:var(--bg); color:var(--ink);
-       font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
-h1 { font-size:1.5rem; margin:0 0 .5rem; }
-h2 { font-size:1.1rem; margin:2rem 0 .75rem; border-bottom:1px solid var(--line); padding-bottom:.35rem; }
-h4 { margin:0 0 .4rem; font-size:.82rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
-code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.85em;
-       background:var(--neutral-bg); padding:.1em .35em; border-radius:4px; }
-.muted { color:var(--muted); } .small { font-size:.85em; }
-.chip { display:inline-block; padding:.1em .6em; border-radius:999px; font-size:.78rem; font-weight:600;
-        background:var(--neutral-bg); color:var(--neutral-ink); vertical-align:middle; }
-.chip.pass { background:var(--pass-bg); color:var(--pass-ink); }
-.chip.warn { background:var(--warn-bg); color:var(--warn-ink); }
-.chip.fail { background:var(--fail-bg); color:var(--fail-ink); }
-header { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:1.25rem 1.5rem; }
-.badges { margin:.25rem 0 .75rem; display:flex; gap:.4rem; flex-wrap:wrap; }
-.meta-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:.35rem 1.5rem; }
-.kv { display:flex; justify-content:space-between; gap:1rem; border-bottom:1px dotted var(--line); padding:.15rem 0; }
-.kv .k { color:var(--muted); } .kv .v { font-weight:600; text-align:right; }
-.co-row { margin:.9rem 0; }
-.co-name { font-weight:700; margin-bottom:.4rem; }
-.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:.6rem; }
-.card { display:block; background:var(--panel); border:1px solid var(--line); border-radius:10px;
-        padding:.7rem .9rem; text-decoration:none; color:inherit; }
-.card:hover { border-color:#a9b2c1; }
-.card-label { font-size:.82rem; color:var(--muted); min-height:2.2em; }
-.card-value { font-size:1.25rem; font-weight:700; margin:.15rem 0 .35rem; }
-.card-value .unit { font-size:.7em; color:var(--muted); font-weight:600; }
-details { background:var(--panel); border:1px solid var(--line); border-radius:10px; margin:.6rem 0; }
-summary { cursor:pointer; padding:.7rem 1rem; display:flex; gap:.7rem; align-items:center; flex-wrap:wrap; }
-summary::marker { color:var(--muted); }
-.sum-co { font-weight:700; } .sum-label { color:var(--muted); }
-.sum-period { font-size:.8rem; color:var(--muted); }
-.sum-final { margin-left:auto; font-weight:700; }
-.detail-body { padding:0 1.25rem 1.25rem; border-top:1px solid var(--line); }
-.stage { margin:1rem 0; padding:.75rem .9rem; background:var(--bg); border:1px solid var(--line); border-radius:8px; }
-.stage p { margin:.3rem 0; }
-blockquote { margin:.4rem 0; padding:.4rem .8rem; border-left:3px solid #a9b2c1;
-             background:var(--neutral-bg); font-style:italic; border-radius:0 6px 6px 0; }
-.src { font-size:.85em; color:var(--muted); }
+:root { --ink:#191a1c; --muted:#71747a; --line:#e4e4e6; --hair:#eeeeef;
+        --accent:#1a4d8f; --paper:#fdfdfc; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { margin:0; background:var(--paper); color:var(--ink);
+       font:15px/1.6 -apple-system,"Segoe UI",system-ui,Roboto,Helvetica,Arial,sans-serif;
+       font-variant-numeric:tabular-nums; }
+.layout { display:grid; grid-template-columns:15rem minmax(0,46rem); gap:3rem;
+          max-width:66rem; margin:0 auto; padding:2.75rem clamp(1rem,4vw,3rem) 5rem; }
+main { min-width:0; }
+h1, h2, h3, .m-final { font-family:Georgia,"Times New Roman",serif; }
+h1 { font-size:1.7rem; margin:0 0 .35rem; font-weight:700; letter-spacing:-.01em; }
+.subtitle { margin:.1rem 0 .4rem; color:var(--muted); font-size:1rem; }
+h2.sec { font-size:.8rem; margin:2.6rem 0 .8rem; text-transform:uppercase; letter-spacing:.12em;
+     color:var(--muted); font-weight:600; font-family:inherit; }
+.co-name { font-size:1.35rem; margin:0 0 .2rem; font-weight:700; }
+.co-tick { font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:.8rem;
+           color:var(--muted); font-weight:400; letter-spacing:.04em; margin-left:.4rem; }
+h3 { font-size:1.12rem; margin:0; font-weight:700; }
+a { color:var(--accent); text-decoration:none; } a:hover { text-decoration:underline; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.85em; }
+.muted { color:var(--muted); } .small { font-size:.85em; } .accent { color:var(--accent); }
+.mode { color:var(--muted); margin:.1rem 0 1rem; font-size:.88rem; letter-spacing:.03em; }
+header { border-bottom:2px solid var(--ink); padding-bottom:1.2rem; }
+.meta-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:.15rem 2rem; }
+.kv { display:flex; justify-content:space-between; gap:1rem; padding:.1rem 0; font-size:.88rem; }
+.kv .k { color:var(--muted); } .kv .v { text-align:right; }
+/* ---- TOC ---- */
+#toc { position:sticky; top:1.5rem; align-self:start; font-size:.85rem;
+       max-height:calc(100vh - 3rem); overflow-y:auto; padding-right:.5rem; }
+.toc-title { font-family:Georgia,serif; font-weight:700; font-size:.95rem; margin-bottom:.6rem; }
+.toc-co { margin:.7rem 0; }
+.toc-c { display:block; font-weight:700; color:var(--ink); padding:.15rem 0; }
+.toc-m { display:flex; justify-content:space-between; gap:.6rem; color:var(--muted);
+         padding:.14rem 0 .14rem .8rem; border-left:1px solid var(--hair); }
+.toc-m:hover { color:var(--accent); text-decoration:none; }
+.toc-m.active { color:var(--accent); border-left:2px solid var(--accent); padding-left:calc(.8rem - 1px); }
+.toc-v { font-family:ui-monospace,Menlo,monospace; font-size:.9em; }
+.toolbar { margin:.4rem 0 .9rem; }
+#filter { width:100%; padding:.35rem .55rem; border:1px solid var(--line); border-radius:5px;
+          font:inherit; background:#fff; }
+#filter:focus { outline:none; border-color:var(--accent); }
+.tb-btns { display:flex; gap:.5rem; margin-top:.45rem; }
+.tb-btns button { flex:1; font:inherit; font-size:.78rem; padding:.25rem 0; background:#fff;
+                  border:1px solid var(--line); border-radius:5px; color:var(--muted); cursor:pointer; }
+.tb-btns button:hover { color:var(--accent); border-color:var(--accent); }
+.jsonly { display:none; } .js .jsonly { display:block; }
+/* ---- summary ---- */
+table.sum { border-collapse:collapse; width:100%; font-size:.92rem; }
+table.sum th, table.sum td { text-align:left; padding:.34rem .6rem .34rem 0; border-bottom:1px solid var(--hair); }
+table.sum th { font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:600; }
+td.num, th.num { text-align:right; font-family:ui-monospace,Menlo,monospace; font-size:.92em; }
+/* ---- metric ---- */
+.company { margin-top:3rem; border-top:2px solid var(--ink); padding-top:1.2rem; }
+.metric { border-top:1px solid var(--line); margin-top:1.6rem; padding-top:1.3rem; }
+.metric:first-of-type { border-top:none; margin-top:.6rem; }
+.m-head { display:flex; justify-content:space-between; align-items:flex-start; gap:1.5rem;
+          flex-wrap:wrap; margin-bottom:.9rem; }
+.m-sub { color:var(--muted); font-size:.83rem; margin-top:.2rem; }
+.m-status { text-transform:uppercase; letter-spacing:.07em; font-size:.75rem; }
+.m-status-bad { color:var(--accent); font-weight:700; }
+.m-final { font-size:2.1rem; font-weight:700; white-space:nowrap; line-height:1.1; }
+.m-unit { font-size:.5em; color:var(--muted); font-weight:400;
+          font-family:-apple-system,"Segoe UI",system-ui,sans-serif; }
+/* ---- worksheet ---- */
+.ws { margin:.5rem 0 .6rem; padding:.75rem 1rem .6rem; background:#fff;
+      border:1px solid var(--line); border-radius:4px;
+      box-shadow:0 1px 0 rgba(0,0,0,.02); }
+.ws-legend { font-size:.7rem; color:var(--muted); letter-spacing:.06em; margin-bottom:.55rem;
+             font-family:ui-monospace,Menlo,monospace; }
+.ws-row { display:grid; grid-template-columns:2.4rem 1fr minmax(9.5rem,auto); gap:.7rem;
+          padding:.26rem 0; align-items:baseline; }
+.ws-row + .ws-row { border-top:1px solid var(--hair); }
+.ws-p { font-family:ui-monospace,Menlo,monospace; color:var(--muted); font-size:.82em; }
+.ws-amt { text-align:right; font-family:ui-monospace,Menlo,monospace; font-size:.98em;
+          font-weight:600; white-space:nowrap; }
+.ws-final { border-top:1px solid var(--ink) !important; }
+.ws-final .ws-label, .ws-final .ws-amt { font-weight:700; }
+.ws-flag { color:var(--accent); font-size:.75em; font-weight:700; margin-left:.45rem;
+           font-family:-apple-system,"Segoe UI",system-ui,sans-serif; letter-spacing:.03em; }
+.cons { margin:.2rem 0 1rem; font-size:.9rem; }
+.cons-k { font-size:.7rem; text-transform:uppercase; letter-spacing:.09em; color:var(--muted);
+          font-weight:700; margin-right:.5rem; }
+/* ---- stages ---- */
+details.stage { border-top:1px solid var(--hair); }
+details.stage summary { cursor:pointer; padding:.42rem 0; color:var(--muted); font-size:.86rem;
+                        list-style-position:inside; }
+details.stage summary:hover { color:var(--accent); }
+details.stage[open] summary { color:var(--ink); font-weight:600; }
+.stage-body { padding:.25rem 0 1rem 1.1rem; }
+.stage-body p { margin:.3rem 0; }
+blockquote { margin:.4rem 0; padding:.25rem .85rem; border-left:2px solid var(--line);
+             color:var(--muted); font-style:italic; }
+.src { font-size:.83em; color:var(--muted); }
 .scroll { overflow-x:auto; }
-table { border-collapse:collapse; width:100%; font-size:.9rem; background:var(--panel); }
-th, td { text-align:left; padding:.35rem .7rem; border-bottom:1px solid var(--line); white-space:nowrap; }
-th { font-size:.75rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
-tr.chosen td { background:var(--pass-bg); font-weight:600; }
-.vibe { margin:.5rem 0; padding:.45rem .6rem; border:1px dashed var(--line); border-radius:6px; background:var(--panel); }
-.vibe-name { font-weight:600; margin-right:.4rem; }
-.expl { margin-top:.25rem; }
-.cites { margin:.25rem 0 0; padding-left:1.2rem; }
-.cite { font-size:.85em; color:var(--muted); }
+table { border-collapse:collapse; font-size:.88rem; }
+th, td { text-align:left; padding:.28rem .7rem .28rem 0; border-bottom:1px solid var(--hair); white-space:nowrap; }
+th { font-size:.7rem; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); font-weight:600; }
+tr.chosen td { font-weight:700; }
 .checks { list-style:none; margin:0; padding:0; } .checks li { margin:.3rem 0; }
-.rationale { margin-top:.5rem; }
-.fallback { margin:1rem 0; padding:.7rem .9rem; background:var(--fail-bg); color:var(--fail-ink);
-            border:1px solid #e5b3ac; border-radius:8px; }
+.checks .ok { color:var(--ink); } .checks .bad { color:var(--accent); font-weight:700; }
+.fallback { margin:.5rem 0 .9rem; padding:.55rem .85rem; border:1px solid var(--accent);
+            border-radius:4px; font-size:.9rem; }
 .fallback ul { margin:.3rem 0 0; }
-.final-box { margin-top:1rem; padding:.8rem 1rem; border:2px solid var(--ink); border-radius:10px;
-             font-size:.75rem; letter-spacing:.08em; font-weight:700; }
-.final-num { font-size:1.8rem; letter-spacing:0; margin-top:.1rem; }
-.final-eq { margin-top:.4rem; letter-spacing:0; font-weight:400; }
-.final-eq code { background:transparent; padding:0; font-size:.95rem; }
-.deriv { margin:1rem 0; padding:.75rem .9rem; background:var(--bg);
-         border:1px solid var(--line); border-left:4px solid var(--ink); border-radius:8px; }
-.d-legend { margin:.2rem 0 .7rem; font-size:.82rem; color:var(--muted); }
 .d-step { margin:.55rem 0; }
 .d-head { display:flex; gap:.55rem; align-items:baseline; flex-wrap:wrap; }
-.d-name { font-size:.75rem; text-transform:uppercase; letter-spacing:.06em;
-          color:var(--muted); min-width:7.5em; }
-.d-formula { background:transparent; padding:0; color:var(--muted); }
-.d-sub { display:block; margin:.1rem 0 0 calc(7.5em + 2.4rem + .55rem);
-         background:transparent; padding:0; font-size:.95em; font-weight:600; }
-.d-refs { margin-left:calc(7.5em + 2.4rem + .55rem); font-size:.8em; color:var(--muted); }
-.prov { display:inline-block; min-width:2.4rem; text-align:center; padding:.05em .45em;
-        border-radius:5px; font-size:.68rem; font-weight:700; text-transform:uppercase;
-        letter-spacing:.05em; }
-.prov-data { background:var(--neutral-bg); color:var(--neutral-ink); }
-.prov-math { background:#dbe7fb; color:#1d4f9c; }
-.prov-llm  { background:#ecdff7; color:#6b2fa3; }
-@media (max-width:640px){ .d-sub,.d-refs{ margin-left:0; } }
-footer { margin-top:2rem; color:var(--muted); font-size:.8rem; }
-@media print { body { background:#fff; } details { break-inside:avoid; } .card:hover { border-color:var(--line); } }
+.d-name { font-size:.73rem; text-transform:uppercase; letter-spacing:.07em;
+          color:var(--muted); min-width:9em; }
+.d-formula { color:var(--muted); }
+.d-sub { display:block; margin:.1rem 0 0 3rem; font-weight:600; }
+.d-refs { margin-left:3rem; font-size:.8em; color:var(--muted); }
+footer { margin-top:3.5rem; color:var(--muted); font-size:.8rem; border-top:1px solid var(--line);
+         padding-top:.8rem; }
+abbr[title] { text-decoration:underline dotted; text-underline-offset:2px; cursor:help; }
+.stage-help { color:var(--muted); font-size:.85rem; margin:.1rem 0 .6rem; max-width:44rem; }
+.sum-legend { color:var(--muted); font-size:.78rem; margin:.5rem 0 0; }
+.sum-legend b { font-weight:600; color:var(--ink); }
+.howto { margin:1.4rem 0 .2rem; border:1px solid var(--line); border-radius:4px;
+         background:#fff; }
+.howto summary { cursor:pointer; padding:.55rem .9rem; font-weight:600; font-size:.9rem; }
+.howto summary:hover { color:var(--accent); }
+.howto-body { padding:0 1rem 1rem; font-size:.9rem; max-width:46rem; }
+.howto-body dl { margin:.6rem 0 0; }
+.howto-body dt { font-weight:700; margin-top:.55rem; }
+.howto-body dd { margin:0.1rem 0 0 0; color:var(--muted); }
+[title] { cursor:help; }
+@media (max-width:900px){ .layout { grid-template-columns:1fr; gap:0; } #toc { position:static;
+  max-height:none; border-bottom:1px solid var(--line); padding-bottom:1rem; } }
+@media (max-width:640px){ .d-sub,.d-refs{ margin-left:0; } .m-final{ font-size:1.6rem; } }
+@media print { #toc { display:none; } .layout { display:block; } .metric { break-inside:avoid; } }
+"""
+
+_JS = """
+(function () {
+  document.documentElement.classList.add('js');
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  // expand / collapse all
+  var setAll = function (open) {
+    $$('details').forEach(function (d) { d.open = open; });
+  };
+  var be = $('#expand'), bc = $('#collapse');
+  if (be) be.addEventListener('click', function () { setAll(true); });
+  if (bc) bc.addEventListener('click', function () { setAll(false); });
+
+  // quick filter over metric sections
+  var filter = $('#filter');
+  if (filter) filter.addEventListener('input', function () {
+    var q = filter.value.trim().toLowerCase();
+    $$('.metric').forEach(function (sec) {
+      sec.style.display = (!q || (sec.getAttribute('data-filter') || '').indexOf(q) !== -1) ? '' : 'none';
+    });
+    $$('.company').forEach(function (co) {
+      var any = $$('.metric', co).some(function (m) { return m.style.display !== 'none'; });
+      co.style.display = any ? '' : 'none';
+    });
+  });
+
+  // scrollspy: highlight the TOC link of the metric in view
+  var links = {};
+  $$('.toc-m').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
+  if ('IntersectionObserver' in window) {
+    var active = null;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          if (active) active.classList.remove('active');
+          active = links[en.target.id];
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-10% 0px -70% 0px' });
+    $$('.metric').forEach(function (sec) { io.observe(sec); });
+  }
+
+  // open the parent details chain when a hash link targets something inside one
+  var openHash = function () {
+    var el = location.hash && document.getElementById(location.hash.slice(1));
+    var p = el;
+    while (p) { if (p.tagName === 'DETAILS') p.open = true; p = p.parentElement; }
+  };
+  window.addEventListener('hashchange', openHash);
+  openHash();
+})();
 """
 
 
-def render_html(report: RunReport, source_name: str = "report.json") -> str:
-    """RunReport -> full self-contained HTML document string (no scripts)."""
+def render_html(report: RunReport, source_name: str = "report.json",
+                subtitle: str | None = None) -> str:
+    """RunReport -> full self-contained HTML document string. Inline CSS + JS
+    only (works over file://); degrades gracefully with JS disabled."""
     title = f"Run report — {report.meta.run_id}" if report.meta.run_id else "Run report"
+    if subtitle:
+        title = f"{subtitle} — {title}"
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -566,22 +890,34 @@ def render_html(report: RunReport, source_name: str = "report.json") -> str:
 <style>{_CSS}</style>
 </head>
 <body>
-{_header_html(report.meta)}
-<h2>Summary — final forecasts</h2>
-{_summary_grid(report.metrics)}
-<h2>Per-metric audit trail</h2>
-{"".join(_metric_details(m) for m in report.metrics)}
-<footer>Rendered from {_e(source_name)} · pure HTML/CSS, no scripts · Agents vs Wall Street</footer>
+<div class="layout">
+{_toc_html(report.metrics)}
+<main>
+{_header_html(report.meta, subtitle)}
+{_howto_html()}
+<h2 class="sec">Final forecasts</h2>
+{_summary_html(report.metrics)}
+{_company_sections(report.metrics)}
+<footer>Rendered from {_e(source_name)} · self-contained (inline CSS/JS, no external assets) · Agents vs Wall Street</footer>
+</main>
+</div>
+<script>{_JS}</script>
 </body>
 </html>"""
 
 
 def render_report(report_path: Path | str) -> Path:
-    """Read report.json, write report.html next to it. Returns the html path."""
+    """Read report.json, write report.html next to it, plus one per-company
+    report-<TICKER>.html for focused browsing. Returns the main html path."""
     report_path = Path(report_path)
     report = RunReport.model_validate_json(report_path.read_text())
     html_path = report_path.with_suffix(".html")
     html_path.write_text(render_html(report, source_name=report_path.name))
+    for company, ticker, ms in _group_by_company(report.metrics):
+        sub = RunReport(meta=report.meta, metrics=ms)
+        co_path = report_path.with_name(f"{report_path.stem}-{ticker}.html")
+        co_path.write_text(render_html(sub, source_name=report_path.name,
+                                       subtitle=f"{company} ({ticker})"))
     return html_path
 
 

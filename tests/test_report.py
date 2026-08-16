@@ -77,9 +77,13 @@ def test_render_contains_expected_content(rendered: str):
     assert "a1b2c3d4e5f6" in rendered
 
 
-def test_render_is_js_free(rendered: str):
-    assert "<script" not in rendered.lower()
-    assert "onclick" not in rendered.lower()
+def test_render_is_self_contained(rendered: str):
+    """Inline JS is allowed; external assets are not (must work over file://)."""
+    low = rendered.lower()
+    assert "<link" not in low and "@import" not in low
+    assert 'src="http' not in low and "src='http" not in low
+    assert "fetch(" not in low and "xmlhttprequest" not in low
+    assert "onclick" not in low  # listeners are attached in the inline script
 
 
 def test_render_escapes_html(tmp_path: Path):
@@ -104,7 +108,8 @@ def test_minimal_report_renders(tmp_path: Path):
     text = out.read_text()
     assert "Diluted EPS (GAAP)" in text
     assert "—" in text                      # missing fields degrade to em-dash
-    assert "<script" not in text.lower()
+    # per-company file written alongside the main report
+    assert (tmp_path / "report-DE.html").exists()
 
 
 def test_empty_report_renders(tmp_path: Path):
@@ -123,14 +128,47 @@ def test_derivation_renders():
     net = next(m for m in rr.metrics if m.label == "Net sales")
     assert net.derivation and net.derivation[0].provenance == "data"
     html = render_html(rr)
-    assert "Derivation" in html
+    # worksheet ledger is the hero: plain-English lines, running totals, prefixes
+    assert "anchor — FY2025Q2 actual" in html
+    assert "× seasonal growth (+2.70%)" in html
+    assert "+ judgment (raw +631, capped at +545)" in html
+    assert "blend: 60% ours / 40% consensus" in html
+    assert "← FINAL" in html
+    assert "[D]" in html and "[M]" in html and "[L]" in html
+    assert "D data · M math · L model judgment" in html
+    # fallback metric's ledger renders too
+    assert "fallback → guidance midpoint (estimator failed: timeout)" in html
+    # symbolic detail is demoted into a collapsed details block but still present
+    assert "Show full formulas" in html
     assert "B = anchor × (1 + mean(recent YoY))" in html
-    assert "prov-llm" in html and "prov-data" in html and "prov-math" in html
-    assert "every LLM term is bounded by a computed cap" in html
-    # final box carries the compact substituted equation of the last step
     assert "F = 0.60(LLM)·47,048" in html
+    # always-visible consensus check line, including the not-available case
+    assert "Consensus check" in html
+    assert "not available" in html
 
-    # a metric with no derivation renders fine
+    # a metric with no derivation/worksheet renders fine
     bare = MetricReport(company="X", ticker="X", label="Y", unit="USDm", period="FY1")
     html2 = render_html(RunReport(meta=RunMeta(), metrics=[bare]))
-    assert "Derivation" not in html2
+    assert "Show full formulas" not in html2
+    assert "No worksheet recorded" in html2
+
+
+def test_page_is_self_explanatory():
+    """Layered readability: lay-reader primer + tooltips coexist with expert detail."""
+    fixture = Path(__file__).parent / "fixtures" / "sample_report.json"
+    rr = RunReport.model_validate_json(fixture.read_text())
+    html = render_html(rr)
+    # how-to primer with plain definitions
+    assert "How to read this report" in html
+    assert "<dt>baseline</dt>" in html and "<dt>backtest</dt>" in html
+    assert "a rehearsal on the past" in html
+    # status words carry tooltips + a legend under the summary table
+    assert 'title="the final number passed every sanity check"' in html
+    assert "sum-legend" in html
+    # per-stage plain-English helpers and jargon paraphrases
+    assert "stage-help" in html
+    assert "average historical miss" in html          # MAE paraphrase
+    assert "Wall Street analysts" in html             # consensus paraphrase
+    # metric labels get plain-words tooltips without altering the verbatim label
+    assert "Sales growth in stores open for at least a year" in html
+    assert "Comparable sales, total company" in html

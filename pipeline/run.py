@@ -121,6 +121,82 @@ _BASELINE_FORMULA = {
 }
 
 
+def _worksheet_label_for_baseline(method: str, iu: dict, spec: MetricSpec) -> str:
+    """Plain-English ledger label for the chosen baseline method."""
+    if method == "seasonal_yoy" and "growth_applied" in iu:
+        return f"× seasonal growth ({iu['growth_applied'] * 100:+.2f}%)"
+    if method == "seasonal_yoy":
+        return f"seasonal level + trend ({iu.get('trend_points', 0):+.2f} pts)"
+    if method == "growth_drift" and "growth_applied" in iu:
+        return f"× growth trend ({iu['growth_applied'] * 100:+.2f}%)"
+    if method == "guidance_mid":
+        return "guidance midpoint"
+    if method == "guidance_x_beat":
+        if "avg_beat_pct" in iu:
+            return f"guidance × beat history ({iu['avg_beat_pct']:+.2f}%)"
+        return f"guidance + beat history ({iu.get('avg_beat_points', 0):+.2f} pts)"
+    return method
+
+
+def _worksheet_lines(spec: MetricSpec, blob: dict) -> list[report_mod.WorksheetLine] | None:
+    """The hero ledger: one plain-English line per pipeline layer, each carrying
+    the running total. Symbols stay out of this view (they live in the
+    formulas-and-sources details)."""
+    W = report_mod.WorksheetLine
+    lines: list[report_mod.WorksheetLine] = []
+
+    anchor = blob.get("anchor") or {}
+    if anchor.get("value") is not None:
+        lines.append(W(provenance="data",
+                       label=f"anchor — {anchor.get('period')} actual",
+                       amount=anchor["value"]))
+
+    chosen = next((c for c in blob.get("baselines", [])
+                   if c["method"] == blob.get("baseline_chosen")), None)
+    if chosen is not None:
+        lines.append(W(provenance="math",
+                       label=_worksheet_label_for_baseline(
+                           chosen["method"], chosen.get("inputs_used") or {}, spec),
+                       amount=chosen.get("value")))
+
+    nudges = blob.get("nudges")
+    if nudges is not None:
+        adj = nudges.get("adjustment") or 0.0
+        raw = nudges.get("raw_adjustment") or 0.0
+        reason = nudges.get("cap_reason")
+        if reason == "no_backtest_mae_nudge_disabled":
+            note = "disabled — no backtest error scale"
+        elif reason == "capped_at_k_x_mae":
+            note = f"raw {raw:+,.0f}, capped at {adj:+,.0f}" if spec.kind != "ratio_pct" \
+                else f"raw {raw:+.2f}, capped at {adj:+.2f}"
+        else:
+            note = (f"{adj:+,.0f}, within cap" if spec.kind != "ratio_pct"
+                    else f"{adj:+.2f} pts, within cap")
+        lines.append(W(provenance="llm", label=f"+ judgment ({note})",
+                       amount=nudges.get("pre_reconcile")))
+
+    final_source = blob.get("final_source")
+    blend = blob.get("blend")
+    if final_source == "reconciled" and blend is not None:
+        w = blend.get("weight_ours", 1.0)
+        lines.append(W(provenance="math",
+                       label=f"blend: {w:.0%} ours / {1 - w:.0%} consensus "
+                             f"({report_mod._num(blend.get('consensus'))})",
+                       amount=blend.get("final")))
+    elif final_source not in (None, "estimator_nudged", "reconciled"):
+        human = {"guidance_mid": "guidance midpoint", "consensus": "consensus",
+                 "anchor_last_year": "last year's actual"}.get(
+            str(final_source), str(final_source).replace("baseline:", "baseline "))
+        why = blob.get("estimate_error") or "cascade selected this rung"
+        lines.append(W(provenance="math",
+                       label=f"fallback → {human} ({why[:80]})",
+                       amount=blob.get("final")))
+
+    if lines:
+        lines[-1].is_final = True
+    return lines or None
+
+
 def _derivation_steps(spec: MetricSpec, blob: dict) -> list[report_mod.DerivationStep] | None:
     """Deterministic derivation-equation assembly from the audits the graph
     already produced. Provenance: data = extracted/fetched, math = deterministic
@@ -278,6 +354,7 @@ def _metric_report(spec: MetricSpec, blob: dict) -> report_mod.MetricReport:
         validation=validation,
         fallback_used=fallback,
         derivation=_derivation_steps(spec, blob),
+        worksheet=_worksheet_lines(spec, blob),
         final_value=blob.get("final"),
     )
 

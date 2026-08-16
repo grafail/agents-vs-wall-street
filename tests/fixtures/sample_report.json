@@ -219,6 +219,29 @@
      ],
      "note": "reconciler verdict: partial (LLM)"
     }
+   ],
+   "worksheet": [
+    {
+     "provenance": "data",
+     "label": "anchor \u2014 FY2025Q2 actual",
+     "amount": 45283.0
+    },
+    {
+     "provenance": "math",
+     "label": "\u00d7 seasonal growth (+2.70%)",
+     "amount": 46503.0
+    },
+    {
+     "provenance": "llm",
+     "label": "+ judgment (raw +631, capped at +545)",
+     "amount": 47047.9
+    },
+    {
+     "provenance": "math",
+     "label": "blend: 60% ours / 40% consensus (46,510)",
+     "amount": 46832.7,
+     "is_final": true
+    }
    ]
   },
   {
@@ -425,9 +448,8 @@
     "pre_reconcile_value": 1.8
    },
    "consensus": {
-    "value": 1.2,
-    "source": "visible-alpha snapshot via ddgs",
-    "fetched_at": "2026-08-16T09:13:11+00:00"
+    "value": null,
+    "source": "no comparable consensus series"
    },
    "reconciliation": {
     "verdict": "partial",
@@ -613,7 +635,20 @@
      "high operating leverage makes drop-through baseline unreliable (backtest MAE 18.5%)"
     ]
    },
-   "final_value": 35.0
+   "final_value": 35.0,
+   "worksheet": [
+    {
+     "provenance": "data",
+     "label": "anchor \u2014 prior period actual",
+     "amount": 45.6
+    },
+    {
+     "provenance": "math",
+     "label": "fallback \u2192 guidance midpoint (estimator failed: timeout)",
+     "amount": 35.0,
+     "is_final": true
+    }
+   ]
   }
  ]
 }

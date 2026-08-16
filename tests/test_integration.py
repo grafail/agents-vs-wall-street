@@ -125,7 +125,9 @@ def test_full_graph_run(wired, tmp_path):
     reports = [run_mod._metric_report(s, state["metrics"][s.label]) for s in HD_SPECS]
     rr = report_mod.RunReport(meta=report_mod.RunMeta(run_id="t"), metrics=reports)
     html = report_mod.render_html(rr)
-    assert "Net sales" in html and "<script" not in html
+    assert "Net sales" in html
+    # self-contained: inline JS allowed, external assets are not
+    assert 'src="http' not in html and "@import" not in html and "<link" not in html
 
     # derivation equations: present, provenance-tagged, reconciled path ends in a blend
     net = next(r for r in reports if r.label == "Net sales")
@@ -136,7 +138,17 @@ def test_full_graph_run(wired, tmp_path):
     assert any(s.provenance == "llm" for s in net.derivation)
     assert net.derivation[-1].name == "reconcile blend"
     assert "(LLM)" in net.derivation[-1].substituted
-    assert "Derivation" in html and "prov-llm" in html
+    assert "Show full formulas" in html
+
+    # worksheet ledger: hero lines with running totals + always-visible consensus check
+    assert net.worksheet is not None
+    assert net.worksheet[0].label.startswith("anchor —")
+    assert net.worksheet[-1].is_final
+    assert any(w.provenance == "llm" and w.label.startswith("+ judgment") for w in net.worksheet)
+    assert any(w.label.startswith("blend:") for w in net.worksheet)
+    assert "← FINAL" in html and "Consensus check" in html
+    # ratio_pct metric has the not-available consensus line
+    assert "not available" in html
 
 
 def test_estimator_failure_falls_back(wired, tmp_path, monkeypatch):
@@ -159,6 +171,12 @@ def test_estimator_failure_falls_back(wired, tmp_path, monkeypatch):
         assert mr.derivation[-1].name == "fallback"
         assert "baseline" in mr.derivation[-1].formula
         assert mr.derivation[-1].provenance == "math"
+        # ledger renders for the fallback case too
+        assert mr.worksheet is not None and mr.worksheet[-1].is_final
+        assert any(w.label.startswith("fallback →") for w in mr.worksheet)
+        html = report_mod.render_html(report_mod.RunReport(
+            meta=report_mod.RunMeta(), metrics=[mr]))
+        assert "fallback →" in html and "← FINAL" in html
 
 
 def test_reconcile_disabled_skips_consensus(wired, tmp_path, monkeypatch):
