@@ -1,0 +1,13 @@
+[project]
+name = "agents-vs-wall-street"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "ddgs>=9.15.0",
+    "langchain-openai>=1.5.1",
+    "langgraph>=1.2.11",
+    "openai>=3.1.0",
+    "openpyxl>=3.1.5",
+    "trafilatura>=2.2.0",
+    "yfinance>=1.6.0",
+]
