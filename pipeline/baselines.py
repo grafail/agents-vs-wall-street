@@ -312,20 +312,74 @@ def _safe_period_key(period: str) -> tuple[int, int]:
         return (9999, 9)
 
 
+_H_PERIOD_RE = re.compile(r"^FY(\d{4})H([12])$")
+
+
+def interim_map(facts: list[Fact]) -> dict[str, float]:
+    """{'FY2026H1': value} for half-year ACTUALS, restatement-preferred
+    (newest published source wins per period)."""
+    best: dict[str, Fact] = {}
+    for f in facts:
+        if f.fact_type != "actual" or not _H_PERIOD_RE.match(f.period.strip()):
+            continue
+        cur = best.get(f.period)
+        if cur is None or _published_key(f) >= _published_key(cur):
+            best[f.period] = f
+    return {p: f.value for p, f in best.items()}
+
+
+def h1_ratio(series: Series, spec: MetricSpec, guidance: list[Fact] | None = None,
+             interims: dict[str, float] | None = None) -> dict | None:
+    """Annual metrics with half-year reporting (Hays): FY ≈ H1 actual / mean
+    historical H1-to-FY ratio. Temporally valid — the target year's H1 is
+    published months before the FY figure; ratios use strictly prior years.
+    Skipped for ratio_pct kinds (a ratio-of-a-ratio is not meaningful)."""
+    if spec.period_type != "fiscal_year" or spec.kind == "ratio_pct" or not interims:
+        return None
+    target_year = period_key(spec.period)[0]
+    h1_target = interims.get(f"FY{target_year}H1")
+    if h1_target is None:
+        return None
+    ratios: list[tuple[int, float]] = []
+    for p, fy_val in series.points:
+        y, q = period_key(p)
+        if q != 0 or y >= target_year or fy_val == 0:
+            continue
+        h1 = interims.get(f"FY{y}H1")
+        if h1 is not None:
+            ratios.append((y, h1 / fy_val))
+    if not ratios:
+        return None
+    used = ratios[-2:]  # most recent (up to) 2 year ratios
+    r = statistics.mean([x for _, x in used])
+    if r == 0:
+        return None
+    return {"method": "h1_ratio", "value": h1_target / r,
+            "inputs_used": {"h1_actual": f"FY{target_year}H1={h1_target}",
+                            "ratios": [f"FY{y}: {x:.3f}" for y, x in used],
+                            "mean_ratio": round(r, 4)}}
+
+
 METHODS: dict[str, Callable] = {
     "seasonal_yoy": seasonal_yoy,
     "growth_drift": growth_drift,
     "guidance_mid": guidance_mid,
     "guidance_x_beat": guidance_x_beat,
+    "h1_ratio": h1_ratio,
 }
 
 
 def run_all(series: Series, spec: MetricSpec, guidance: list[Fact] | None = None,
-            beat: dict | None = None) -> list[dict]:
+            beat: dict | None = None, interims: dict[str, float] | None = None) -> list[dict]:
     """Run every baseline method; return the applicable candidates (audit dicts)."""
     out = []
     for name, fn in METHODS.items():
-        cand = fn(series, spec, guidance, beat) if name == "guidance_x_beat" else fn(series, spec, guidance)
+        if name == "guidance_x_beat":
+            cand = fn(series, spec, guidance, beat)
+        elif name == "h1_ratio":
+            cand = fn(series, spec, guidance, interims)
+        else:
+            cand = fn(series, spec, guidance)
         if cand is not None:
             out.append(cand)
     return out

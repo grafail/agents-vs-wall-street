@@ -18,7 +18,8 @@ from pipeline.types import Fact, MetricSpec
 
 
 def walk_forward(series: Series, spec: MetricSpec, method: str | Callable, n: int = 6,
-                 guidance: list[Fact] | None = None, beat: dict | None = None) -> dict | None:
+                 guidance: list[Fact] | None = None, beat: dict | None = None,
+                 interims: dict[str, float] | None = None) -> dict | None:
     """Walk-forward evaluation of one baseline method over the last `n` periods.
 
     For each evaluated period: truncate the series strictly before it, predict
@@ -44,6 +45,8 @@ def walk_forward(series: Series, spec: MetricSpec, method: str | Callable, n: in
         spec_p = spec.model_copy(update={"period": period})
         if name == "guidance_x_beat":
             cand = fn(truncated, spec_p, guidance, beat)
+        elif name == "h1_ratio":
+            cand = fn(truncated, spec_p, guidance, interims)
         else:
             cand = fn(truncated, spec_p, guidance)
         if cand is None:
@@ -110,7 +113,8 @@ def beat_factor(guidance_history: list[Fact], actuals: list[Fact]) -> dict | Non
 
 
 def best_method(series: Series, spec: MetricSpec, guidance: list[Fact] | None = None,
-                beat: dict | None = None, n: int = 6) -> list[dict]:
+                beat: dict | None = None, n: int = 6,
+                interims: dict[str, float] | None = None) -> list[dict]:
     """Walk-forward every applicable method and rank by MAE (ascending).
 
     Returns the ranked list of walk_forward result dicts; [0] is the winner
@@ -118,7 +122,8 @@ def best_method(series: Series, spec: MetricSpec, guidance: list[Fact] | None = 
     """
     results = []
     for name in METHODS:
-        r = walk_forward(series, spec, name, n=n, guidance=guidance, beat=beat)
+        r = walk_forward(series, spec, name, n=n, guidance=guidance, beat=beat,
+                         interims=interims)
         if r is not None:
             results.append(r)
     results.sort(key=lambda r: r["mae"])

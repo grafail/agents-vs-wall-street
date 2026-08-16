@@ -14,7 +14,7 @@ from langgraph.graph import END, START, StateGraph
 
 from pipeline import llm, tools
 from pipeline.backtest import beat_factor, best_method
-from pipeline.baselines import Series, run_all, trend_sheet, yoy_sigma
+from pipeline.baselines import Series, interim_map, run_all, trend_sheet, yoy_sigma
 from pipeline.baselines import prior_year_period
 from pipeline.config import settings
 from pipeline.extract import ExtractedFact, extract_company, load_facts
@@ -246,8 +246,10 @@ def _estimate_one(spec: MetricSpec, facts: list, digest: list,
         gfacts = _guidance_facts(facts, spec.label)
         series = Series(sfacts)
         beat = beat_factor(gfacts, sfacts)
-        candidates = run_all(series, spec, gfacts, beat)
-        ranked = best_method(series, spec, gfacts, beat)
+        all_metric_facts = [f for f in facts if f.metric_label == spec.label]
+        interims = interim_map(all_metric_facts)
+        candidates = run_all(series, spec, gfacts, beat, interims=interims)
+        ranked = best_method(series, spec, gfacts, beat, interims=interims)
         bt_by_method = {r["method"]: r for r in ranked}
         cands_bt = sorted(
             [{"method": c["method"], "value": c["value"], "inputs_used": c["inputs_used"],

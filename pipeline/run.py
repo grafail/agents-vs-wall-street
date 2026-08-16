@@ -60,10 +60,20 @@ def cmd_prepare(tickers: list[str], refresh: bool) -> int:
             return 1
 
     def _warm_one(t: str) -> None:
+        # Same digest-level cache the forecast graph reads: warming here means
+        # the forecast's research node is a cache hit. --refresh forces a fresh
+        # scout run (use right before the final run for up-to-date news).
+        from pipeline.cache import read_through
         from pipeline.graph import _research_digest
         try:
-            bullets = _research_digest(t, log)
-            print(f"[prepare] {t}: research digest warmed ({len(bullets)} bullets)")
+            bullets, was_hit = read_through(
+                "research_digest",
+                {"ticker": t, "model": settings().model_small},
+                lambda: _research_digest(t, log),
+                refresh=refresh,
+            )
+            print(f"[prepare] {t}: research digest warmed "
+                  f"({len(bullets)} bullets, {'cache' if was_hit else 'fresh'})")
         except Exception as e:  # noqa: BLE001 — optional enrichment
             print(f"[prepare] {t}: research warm failed ({type(e).__name__}) — tolerated")
             log.event("prepare_research_failed", ticker=t, error=str(e))
