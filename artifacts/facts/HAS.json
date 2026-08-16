@@ -3,7 +3,7 @@
  "company": "Hays plc",
  "corpus_dir": "hays",
  "target_period": "FY2026",
- "generated_at": "2026-08-16T16:30:28.417286+00:00",
+ "generated_at": "2026-08-16T16:47:45.582983+00:00",
  "metrics": [
   "Net fees",
   "Pre-exceptional basic EPS",
@@ -20,7 +20,7 @@
    "source": {
     "doc_id": "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
     "published": "2026-02-27",
-    "fetched_at": "2026-08-16T16:29:50.346343Z",
+    "fetched_at": "2026-08-16T16:47:03.139940Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -37,7 +37,7 @@
    "source": {
     "doc_id": "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
     "published": "2026-02-27",
-    "fetched_at": "2026-08-16T16:29:50.346497Z",
+    "fetched_at": "2026-08-16T16:47:03.140120Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -54,7 +54,7 @@
    "source": {
     "doc_id": "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md",
     "published": "2025-08-21",
-    "fetched_at": "2026-08-16T16:29:50.346648Z",
+    "fetched_at": "2026-08-16T16:47:03.140260Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -71,7 +71,7 @@
    "source": {
     "doc_id": "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md",
     "published": "2025-08-21",
-    "fetched_at": "2026-08-16T16:29:50.346802Z",
+    "fetched_at": "2026-08-16T16:47:03.140362Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -84,11 +84,11 @@
    "value": 583.3,
    "raw_text": "583.3",
    "raw_unit": "GBP_millions",
-   "quote": "| Six months ended 31 December (In \u00a3s million)         | 2024   | 2023   | Actual growth   | LFL growth   |\n|-------------------------------------------------|--------|--------|-----------------|--------------|\n| Net fees (1)         | 496.0  | 583.3  | (15)%         | (13)%        |",
+   "quote": "| Net fees (1)         | 496.0  | 583.3  | (15)%         | (13)%        |",
    "source": {
     "doc_id": "hays/filings/2025-02-20__has-ln-20250220-q2-8k__119730.md",
     "published": "2025-02-20",
-    "fetched_at": "2026-08-16T16:29:50.347411Z",
+    "fetched_at": "2026-08-16T16:47:03.140949Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -101,11 +101,11 @@
    "value": 0.46,
    "raw_text": "0.46p",
    "raw_unit": "GBP_pence_per_share",
-   "quote": "| Basic earnings per share (before exceptional items) (3) | 0.46p  | 0.81p  | (44)%         | (43)%         |",
+   "quote": "Basic earnings per share (before exceptional items) (3) | 0.46p | 0.81p | (44)% | (43)%",
    "source": {
     "doc_id": "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
     "published": "2026-02-27",
-    "fetched_at": "2026-08-16T16:30:05.408625Z",
+    "fetched_at": "2026-08-16T16:47:19.002373Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -120,11 +120,11 @@
    "value": 0.81,
    "raw_text": "0.81p",
    "raw_unit": "GBP_pence_per_share",
-   "quote": "| Basic earnings per share (before exceptional items) (3) | 0.46p  | 0.81p  | (44)%         | (43)%         |",
+   "quote": "Basic earnings per share (before exceptional items) (3) | 0.46p | 0.81p | (44)% | (43)%",
    "source": {
     "doc_id": "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
     "published": "2026-02-27",
-    "fetched_at": "2026-08-16T16:30:05.408797Z",
+    "fetched_at": "2026-08-16T16:47:19.002549Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -139,11 +139,11 @@
    "value": 1.31,
    "raw_text": "1.31p",
    "raw_unit": "GBP_pence_per_share",
-   "quote": "| Basic earnings per share before exceptional items        | 0.46p         | 0.81p         | 1.31p         |",
+   "quote": "Basic earnings per share before exceptional items        | 0.46p         | 0.81p         | 1.31p",
    "source": {
     "doc_id": "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
     "published": "2026-02-27",
-    "fetched_at": "2026-08-16T16:30:05.409078Z",
+    "fetched_at": "2026-08-16T16:47:19.003001Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -158,11 +158,11 @@
    "value": 4.03,
    "raw_text": "4.03p",
    "raw_unit": "GBP_pence_per_share",
-   "quote": "| Basic earnings per share (before exceptional items) (2) | 1.31p   | 4.03p   | (67)%         |         |",
+   "quote": "| Basic earnings per share (before exceptional items) (2) | 1.31p   | 4.03p   | (67)%         |",
    "source": {
     "doc_id": "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md",
     "published": "2025-08-21",
-    "fetched_at": "2026-08-16T16:30:05.409285Z",
+    "fetched_at": "2026-08-16T16:47:19.003342Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -175,11 +175,11 @@
    "value": 2.37,
    "raw_text": "2.37p",
    "raw_unit": "GBP_pence_per_share",
-   "quote": "Basic earnings per share (before exceptional items) (2) | 0.81p | 2.37p",
+   "quote": "Basic earnings per share (before exceptional items) (2) | 0.81p   | 2.37p",
    "source": {
     "doc_id": "hays/filings/2025-02-20__has-ln-20250220-q2-8k__119730.md",
     "published": "2025-02-20",
-    "fetched_at": "2026-08-16T16:30:05.410377Z",
+    "fetched_at": "2026-08-16T16:47:19.005047Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -196,7 +196,7 @@
    "source": {
     "doc_id": "hays/filings/2024-08-22__has-ln-20240822-h2-8k__119721.md",
     "published": "2024-08-22",
-    "fetched_at": "2026-08-16T16:30:05.410903Z",
+    "fetched_at": "2026-08-16T16:47:19.005694Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -215,12 +215,31 @@
    "source": {
     "doc_id": "hays/filings/2024-02-22__has-ln-20240222-h1-8k__119744.md",
     "published": "2024-02-22",
-    "fetched_at": "2026-08-16T16:30:05.411430Z",
+    "fetched_at": "2026-08-16T16:47:19.006338Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
    "flags": []
+  },
+  {
+   "metric_label": "Pre-exceptional basic EPS",
+   "period": "FY2022",
+   "value": 9.22,
+   "raw_text": "9.22p",
+   "raw_unit": "GBP_pence_per_share",
+   "quote": "| Basic earnings per share         | 8.59p   | 9.22p   | (7)%         |         |",
+   "source": {
+    "doc_id": "hays/filings/2023-08-24__has-ln-20230824-h2-8k__119735.md",
+    "published": "2023-08-24",
+    "fetched_at": "2026-08-16T16:47:19.006860Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "actual",
+   "flags": [
+    "magnitude_outlier"
+   ]
   },
   {
    "metric_label": "Pre-exceptional basic EPS",
@@ -232,7 +251,7 @@
    "source": {
     "doc_id": "hays/filings/2022-08-25__has-ln-20220825-h2-8k__119750.md",
     "published": "2022-08-25",
-    "fetched_at": "2026-08-16T16:30:05.411898Z",
+    "fetched_at": "2026-08-16T16:47:19.007392Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -245,104 +264,13 @@
    "metric_label": "Pre-exceptional operating profit",
    "period": "FY2026",
    "value": 46.0,
-   "raw_text": "46.0m",
+   "raw_text": "46.0",
    "raw_unit": "GBP_millions",
-   "quote": "we currently expect FY26 pre -exceptional operating profit will be at the top of the \u00a337.0 -46.0m consensus range",
+   "quote": "FY26 pre -exceptional operating profit will be at the top of the \u00a337.0 -46.0m consensus range",
    "source": {
     "doc_id": "hays/filings/2026-07-10__has-ln-20260710-q4-8k__1572805.md",
     "published": "2026-07-10",
-    "fetched_at": "2026-08-16T16:30:28.412181Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "guidance_high",
-   "flags": []
-  },
-  {
-   "metric_label": "Pre-exceptional operating profit",
-   "period": "FY2026",
-   "value": 37.0,
-   "raw_text": "\u00a337 .0",
-   "raw_unit": "GBP_millions",
-   "quote": "company complied consensus for FY26 pre -exceptional operating profit is \u00a34 3.5 m, with a \u00a337 .0-46 .0m range",
-   "source": {
-    "doc_id": "hays/filings/2026-07-10__has-ln-20260710-q4-8k__1572805.md",
-    "published": "2026-07-10",
-    "fetched_at": "2026-08-16T16:30:28.412383Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "consensus_low",
-   "flags": [
-    "quote_not_in_excerpt"
-   ]
-  },
-  {
-   "metric_label": "Pre-exceptional operating profit",
-   "period": "FY2026",
-   "value": 46.0,
-   "raw_text": "46 .0m",
-   "raw_unit": "GBP_millions",
-   "quote": "company complied consensus for FY26 pre -exceptional operating profit is \u00a34 3.5 m, with a \u00a337 .0-46 .0m range",
-   "source": {
-    "doc_id": "hays/filings/2026-07-10__has-ln-20260710-q4-8k__1572805.md",
-    "published": "2026-07-10",
-    "fetched_at": "2026-08-16T16:30:28.412533Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "consensus_high",
-   "flags": [
-    "quote_not_in_excerpt"
-   ]
-  },
-  {
-   "metric_label": "Pre-exceptional operating profit",
-   "period": "FY2026",
-   "value": 43.5,
-   "raw_text": "\u00a34 3.5 m",
-   "raw_unit": "GBP_millions",
-   "quote": "company complied consensus for FY26 pre -exceptional operating profit is \u00a34 3.5 m",
-   "source": {
-    "doc_id": "hays/filings/2026-07-10__has-ln-20260710-q4-8k__1572805.md",
-    "published": "2026-07-10",
-    "fetched_at": "2026-08-16T16:30:28.412681Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "consensus_mid",
-   "flags": [
-    "quote_not_in_excerpt"
-   ]
-  },
-  {
-   "metric_label": "Pre-exceptional operating profit",
-   "period": "FY2026",
-   "value": 45.2,
-   "raw_text": "\u00a345. 2m",
-   "raw_unit": "GBP_millions",
-   "quote": "company complied consensus for FY26 pre -exceptional operating profit is \u00a345. 2m",
-   "source": {
-    "doc_id": "hays/filings/2026-04-16__has-ln-20260416-q3-8k-2__955907.md",
-    "published": "2026-04-16",
-    "fetched_at": "2026-08-16T16:30:28.414280Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "consensus_mid",
-   "flags": []
-  },
-  {
-   "metric_label": "Pre-exceptional operating profit",
-   "period": "FY2026",
-   "value": 45.2,
-   "raw_text": "\u00a345. 2m",
-   "raw_unit": "GBP_millions",
-   "quote": "FY2 6 pre-exceptional  operating profit is expected to be in line with market consensus expectations of \u00a345. 2m",
-   "source": {
-    "doc_id": "hays/filings/2026-04-16__has-ln-20260416-q3-8k-2__955907.md",
-    "published": "2026-04-16",
-    "fetched_at": "2026-08-16T16:30:28.414375Z",
+    "fetched_at": "2026-08-16T16:47:45.577356Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -351,15 +279,102 @@
   },
   {
    "metric_label": "Pre-exceptional operating profit",
+   "period": "FY2026",
+   "value": 43.5,
+   "raw_text": "4 3.5",
+   "raw_unit": "GBP_millions",
+   "quote": "company complied consensus for FY26 pre -exceptional operating profit is \u00a34 3.5 m",
+   "source": {
+    "doc_id": "hays/filings/2026-07-10__has-ln-20260710-q4-8k__1572805.md",
+    "published": "2026-07-10",
+    "fetched_at": "2026-08-16T16:47:45.577681Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "consensus_mid",
+   "flags": [
+    "quote_not_in_excerpt"
+   ]
+  },
+  {
+   "metric_label": "Pre-exceptional operating profit",
+   "period": "FY2026",
+   "value": 37.0,
+   "raw_text": "37 .0",
+   "raw_unit": "GBP_millions",
+   "quote": "with a \u00a337 .0-46 .0m range",
+   "source": {
+    "doc_id": "hays/filings/2026-07-10__has-ln-20260710-q4-8k__1572805.md",
+    "published": "2026-07-10",
+    "fetched_at": "2026-08-16T16:47:45.577908Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "consensus_low",
+   "flags": []
+  },
+  {
+   "metric_label": "Pre-exceptional operating profit",
+   "period": "FY2026",
+   "value": 46.0,
+   "raw_text": "46 .0",
+   "raw_unit": "GBP_millions",
+   "quote": "with a \u00a337 .0-46 .0m range",
+   "source": {
+    "doc_id": "hays/filings/2026-07-10__has-ln-20260710-q4-8k__1572805.md",
+    "published": "2026-07-10",
+    "fetched_at": "2026-08-16T16:47:45.578105Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "consensus_high",
+   "flags": []
+  },
+  {
+   "metric_label": "Pre-exceptional operating profit",
+   "period": "FY2026",
+   "value": 45.2,
+   "raw_text": "\u00a345. 2m",
+   "raw_unit": "GBP_millions",
+   "quote": "- (2) As of  15  April 2026 , company complied consensus for FY26 pre -exceptional operating profit is \u00a345. 2m, based on 11 analysts .",
+   "source": {
+    "doc_id": "hays/filings/2026-04-16__has-ln-20260416-q3-8k-2__955907.md",
+    "published": "2026-04-16",
+    "fetched_at": "2026-08-16T16:47:45.579925Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "guidance_mid",
+   "flags": []
+  },
+  {
+   "metric_label": "Pre-exceptional operating profit",
+   "period": "FY2026",
+   "value": 45.2,
+   "raw_text": "\u00a345. 2m",
+   "raw_unit": "GBP_millions",
+   "quote": "- (2) As of  15  April 2026 , company complied consensus for FY26 pre -exceptional operating profit is \u00a345. 2m, based on 11 analysts .",
+   "source": {
+    "doc_id": "hays/filings/2026-04-16__has-ln-20260416-q3-8k-2__955907.md",
+    "published": "2026-04-16",
+    "fetched_at": "2026-08-16T16:47:45.580080Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "consensus_mid",
+   "flags": []
+  },
+  {
+   "metric_label": "Pre-exceptional operating profit",
    "period": "FY2026H1",
    "value": 20.1,
    "raw_text": "20.1",
    "raw_unit": "GBP_millions",
-   "quote": "Operating profit (before exceptional items) (3)         | 20.1",
+   "quote": "| Operating profit (before exceptional items) (3)         | 20.1   | 25.5   | (21)%         | (25)%         |",
    "source": {
     "doc_id": "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
     "published": "2026-02-27",
-    "fetched_at": "2026-08-16T16:30:28.414724Z",
+    "fetched_at": "2026-08-16T16:47:45.580750Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -374,11 +389,11 @@
    "value": 25.5,
    "raw_text": "25.5",
    "raw_unit": "GBP_millions",
-   "quote": "Operating profit (before exceptional items) (3)         | 20.1   | 25.5",
+   "quote": "| Operating profit (before exceptional items) (3)         | 20.1   | 25.5   | (21)%         | (25)%         |",
    "source": {
     "doc_id": "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
     "published": "2026-02-27",
-    "fetched_at": "2026-08-16T16:30:28.414805Z",
+    "fetched_at": "2026-08-16T16:47:45.580830Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -389,13 +404,32 @@
    "metric_label": "Pre-exceptional operating profit",
    "period": "FY2026H1",
    "value": 20.0,
-   "raw_text": "\u00a3 20 .0m",
+   "raw_text": "20",
+   "raw_unit": "GBP_millions",
+   "quote": "we expect  pre-exceptional  operating profit in our first half to be c.\u00a3 20m",
+   "source": {
+    "doc_id": "hays/filings/2026-01-14__has-ln-20260114-q2-8k__401006.md",
+    "published": "2026-01-14",
+    "fetched_at": "2026-08-16T16:47:45.580948Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "guidance_mid",
+   "flags": [
+    "magnitude_outlier"
+   ]
+  },
+  {
+   "metric_label": "Pre-exceptional operating profit",
+   "period": "FY2026H1",
+   "value": 20.0,
+   "raw_text": "20 .0",
    "raw_unit": "GBP_millions",
    "quote": "Company complied consensus for H1 26 pre -exceptional operating profit is \u00a3 20 .0m",
    "source": {
     "doc_id": "hays/filings/2026-01-14__has-ln-20260114-q2-8k__401006.md",
     "published": "2026-01-14",
-    "fetched_at": "2026-08-16T16:30:28.414952Z",
+    "fetched_at": "2026-08-16T16:47:45.581060Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -410,11 +444,11 @@
    "value": 45.6,
    "raw_text": "45.6",
    "raw_unit": "GBP_millions",
-   "quote": "Operating profit (before exceptional items) (2)         | 45.6   | 105.1",
+   "quote": "| Operating profit (before exceptional items) (2)         | 45.6    | 105.1   | (57)%         | (56)%        |",
    "source": {
     "doc_id": "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md",
     "published": "2025-08-21",
-    "fetched_at": "2026-08-16T16:30:28.415049Z",
+    "fetched_at": "2026-08-16T16:47:45.581154Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -427,11 +461,11 @@
    "value": 105.1,
    "raw_text": "105.1",
    "raw_unit": "GBP_millions",
-   "quote": "Operating profit (before exceptional items) (2)         | 45.6   | 105.1",
+   "quote": "| Operating profit (before exceptional items) (2)         | 45.6    | 105.1   | (57)%         | (56)%        |",
    "source": {
     "doc_id": "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md",
     "published": "2025-08-21",
-    "fetched_at": "2026-08-16T16:30:28.415127Z",
+    "fetched_at": "2026-08-16T16:47:45.581232Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -439,97 +473,6 @@
    "flags": [
     "magnitude_outlier"
    ]
-  },
-  {
-   "metric_label": "Pre-exceptional operating profit",
-   "period": "FY2025",
-   "value": 52.1,
-   "raw_text": "\u00a352.1m",
-   "raw_unit": "GBP_millions",
-   "quote": "Pre-exceptional operating profit (1) | \u00a352.1m    | \u00a3(5.8)m      | \u00a33.6m         | \u00a3(4.3)m        | \u00a345.6m",
-   "source": {
-    "doc_id": "hays/filings/2025-08-21__has-ln-20250821-h2-8k-2__671218.md",
-    "published": "2025-08-21",
-    "fetched_at": "2026-08-16T16:30:28.415442Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": []
-  },
-  {
-   "metric_label": "Pre-exceptional operating profit",
-   "period": "FY2025",
-   "value": -5.8,
-   "raw_text": "\u00a3(5.8)m",
-   "raw_unit": "GBP_millions",
-   "quote": "Pre-exceptional operating profit (1) | \u00a352.1m    | \u00a3(5.8)m      | \u00a33.6m         | \u00a3(4.3)m        | \u00a345.6m",
-   "source": {
-    "doc_id": "hays/filings/2025-08-21__has-ln-20250821-h2-8k-2__671218.md",
-    "published": "2025-08-21",
-    "fetched_at": "2026-08-16T16:30:28.415515Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": [
-    "magnitude_outlier"
-   ]
-  },
-  {
-   "metric_label": "Pre-exceptional operating profit",
-   "period": "FY2025",
-   "value": 3.6,
-   "raw_text": "\u00a33.6m",
-   "raw_unit": "GBP_millions",
-   "quote": "Pre-exceptional operating profit (1) | \u00a352.1m    | \u00a3(5.8)m      | \u00a33.6m         | \u00a3(4.3)m        | \u00a345.6m",
-   "source": {
-    "doc_id": "hays/filings/2025-08-21__has-ln-20250821-h2-8k-2__671218.md",
-    "published": "2025-08-21",
-    "fetched_at": "2026-08-16T16:30:28.415578Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": [
-    "magnitude_outlier"
-   ]
-  },
-  {
-   "metric_label": "Pre-exceptional operating profit",
-   "period": "FY2025",
-   "value": -4.3,
-   "raw_text": "\u00a3(4.3)m",
-   "raw_unit": "GBP_millions",
-   "quote": "Pre-exceptional operating profit (1) | \u00a352.1m    | \u00a3(5.8)m      | \u00a33.6m         | \u00a3(4.3)m        | \u00a345.6m",
-   "source": {
-    "doc_id": "hays/filings/2025-08-21__has-ln-20250821-h2-8k-2__671218.md",
-    "published": "2025-08-21",
-    "fetched_at": "2026-08-16T16:30:28.415647Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": [
-    "magnitude_outlier"
-   ]
-  },
-  {
-   "metric_label": "Pre-exceptional operating profit",
-   "period": "FY2025",
-   "value": 45.0,
-   "raw_text": "\u00a345m",
-   "raw_unit": "GBP_millions",
-   "quote": "c.\u00a345m pre-exceptional operating profit expected in FY25",
-   "source": {
-    "doc_id": "hays/filings/2025-06-19__has-ln-20250619-q4-8k__119747.md",
-    "published": "2025-06-19",
-    "fetched_at": "2026-08-16T16:30:28.416117Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "guidance_mid",
-   "flags": []
   },
   {
    "metric_label": "Pre-exceptional operating profit",
@@ -541,24 +484,7 @@
    "source": {
     "doc_id": "hays/filings/2025-06-19__has-ln-20250619-q4-8k__119747.md",
     "published": "2025-06-19",
-    "fetched_at": "2026-08-16T16:30:28.416264Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "consensus_mid",
-   "flags": []
-  },
-  {
-   "metric_label": "Pre-exceptional operating profit",
-   "period": "FY2025",
-   "value": 56.9,
-   "raw_text": "\u00a356.9m",
-   "raw_unit": "GBP_millions",
-   "quote": "Company compiled consensus operating profit for FY25 is \u00a356.9m",
-   "source": {
-    "doc_id": "hays/filings/2025-04-16__has-ln-20250416-q3-8k__119733.md",
-    "published": "2025-04-16",
-    "fetched_at": "2026-08-16T16:30:28.416406Z",
+    "fetched_at": "2026-08-16T16:47:45.581967Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -571,15 +497,32 @@
    "value": 60.1,
    "raw_text": "60.1",
    "raw_unit": "GBP_millions",
-   "quote": "Operating profit (before exceptional items) (2)         | 25.5   | 60.1",
+   "quote": "| Operating profit (before exceptional items) (2)         | 25.5   | 60.1   | (58)%         | (56)%        |",
    "source": {
     "doc_id": "hays/filings/2025-02-20__has-ln-20250220-q2-8k__119730.md",
     "published": "2025-02-20",
-    "fetched_at": "2026-08-16T16:30:28.416550Z",
+    "fetched_at": "2026-08-16T16:47:45.582143Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
+   "flags": []
+  },
+  {
+   "metric_label": "Pre-exceptional operating profit",
+   "period": "FY2025",
+   "value": 56.9,
+   "raw_text": "\u00a356.9m",
+   "raw_unit": "GBP_millions",
+   "quote": "Company compiled consensus operating profit for FY25 is \u00a356.9m",
+   "source": {
+    "doc_id": "hays/filings/2025-04-16__has-ln-20250416-q3-8k__119733.md",
+    "published": "2025-04-16",
+    "fetched_at": "2026-08-16T16:47:45.582407Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "consensus_mid",
    "flags": []
   },
   {
@@ -592,7 +535,7 @@
    "source": {
     "doc_id": "hays/filings/2025-01-15__has-ln-20250115-q2-8k__119724.md",
     "published": "2025-01-15",
-    "fetched_at": "2026-08-16T16:30:28.416784Z",
+    "fetched_at": "2026-08-16T16:47:45.582530Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -602,31 +545,14 @@
   {
    "metric_label": "Pre-exceptional operating profit",
    "period": "FY2025H1",
-   "value": 24.0,
-   "raw_text": "\u00a324.0",
-   "raw_unit": "GBP_millions",
-   "quote": "with a \u00a324.0-33.2m range",
-   "source": {
-    "doc_id": "hays/filings/2025-01-15__has-ln-20250115-q2-8k__119724.md",
-    "published": "2025-01-15",
-    "fetched_at": "2026-08-16T16:30:28.416885Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "consensus_low",
-   "flags": []
-  },
-  {
-   "metric_label": "Pre-exceptional operating profit",
-   "period": "FY2025H1",
    "value": 33.2,
-   "raw_text": "\u00a333.2",
+   "raw_text": "\u00a333.2m",
    "raw_unit": "GBP_millions",
    "quote": "with a \u00a324.0-33.2m range",
    "source": {
     "doc_id": "hays/filings/2025-01-15__has-ln-20250115-q2-8k__119724.md",
     "published": "2025-01-15",
-    "fetched_at": "2026-08-16T16:30:28.416981Z",
+    "fetched_at": "2026-08-16T16:47:45.582646Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -640,49 +566,7 @@
    "reason": "unparseable value 'c.\u00a385 million'",
    "period": "FY2026",
    "value_as_written": "c.\u00a385 million",
-   "quote": "these 13 countries are expected to deliver a broadly break even pre-exceptional operating profit on c.\u00a385 million net fees in the 12 months to 30 June 2026."
-  },
-  {
-   "metric": "Net fees",
-   "reason": "growth guidance without a base figure",
-   "period": "FY2025Q4",
-   "value_as_written": "-9%",
-   "quote": "We currently expect Group like-for-like net fees to decline by 9% YoY in Q4"
-  },
-  {
-   "metric": "Net fees",
-   "reason": "growth guidance without a base figure",
-   "period": "FY2025Q3",
-   "value_as_written": "9%",
-   "quote": "- Group net fees down 9% YoY with Temp &amp; Contracting and Perm down 6% and 14% respectively"
-  },
-  {
-   "metric": "Net fees",
-   "reason": "growth guidance without a base figure",
-   "period": "FY2025Q3",
-   "value_as_written": "9%",
-   "quote": "Group net fees decreased by 9% year-on-year on a like-for-like basis."
-  },
-  {
-   "metric": "Net fees",
-   "reason": "growth guidance without a base figure",
-   "period": "FY2025Q3",
-   "value_as_written": "11%",
-   "quote": "On an actual basis, net fees decreased by 11% yearon-year"
-  },
-  {
-   "metric": "Net fees",
-   "reason": "unparseable value 'minus 7%'",
-   "period": "FY2025Q3",
-   "value_as_written": "minus 7%",
-   "quote": "The March growth rate was minus 7% on a working day adjusted basis, as net fees declined by 13% YoY in Perm and, on a working day adjusted basis, by 3% in Temp &amp; Contracting."
-  },
-  {
-   "metric": "Pre-exceptional basic EPS",
-   "reason": "unparseable value '1.31 pence'",
-   "period": "FY2025",
-   "value_as_written": "1.31 pence",
-   "quote": "Basic earnings per share (2)  down 67% to 1.31 pence."
+   "quote": "these 13 countries are expected to deliver a broadly break even pre-exceptional operating profit on c.\u00a385 million net fees in the 12 months to 30 June 2026"
   },
   {
    "metric": "Pre-exceptional basic EPS",
@@ -692,32 +576,46 @@
    "quote": "Basic earnings per share (2)  down 53% to 4.03 pence."
   },
   {
-   "metric": "Pre-exceptional operating profit",
-   "reason": "value not found in quote (hallucination gate)",
-   "period": "FY2026",
-   "value_as_written": "\u00a345. 2m",
-   "quote": "we currently expect FY26 pre-exceptional operating profit will be in line with consensus"
+   "metric": "Pre-exceptional basic EPS",
+   "reason": "unparseable value '8.59 pence'",
+   "period": "FY2023",
+   "value_as_written": "8.59 pence",
+   "quote": "Basic earnings per share (2)  down 7% to 8.59 pence."
   },
   {
    "metric": "Pre-exceptional operating profit",
    "reason": "value not found in quote (hallucination gate)",
    "period": "FY2026",
-   "value_as_written": "\u00a345. 2m",
-   "quote": "we currently expect FY26 pre-exceptional  operating profit will be in line with consensus"
+   "value_as_written": "46.0",
+   "quote": "FY26 pre -exceptional operating profit will be at the top of the consensus range"
   },
   {
    "metric": "Pre-exceptional operating profit",
-   "reason": "unparseable value 'c.\u00a3 20m'",
-   "period": "FY2026H1",
-   "value_as_written": "c.\u00a3 20m",
-   "quote": "we expect  pre-exceptional  operating profit in our first half to be c.\u00a3 20m"
+   "reason": "value not found in quote (hallucination gate)",
+   "period": "FY2026",
+   "value_as_written": "46.0",
+   "quote": "FY26 pre -exceptional operating profit will be at the top of the consensus range"
+  },
+  {
+   "metric": "Pre-exceptional operating profit",
+   "reason": "unparseable value 'c.\u00a345m'",
+   "period": "FY2025",
+   "value_as_written": "c.\u00a345m",
+   "quote": "c.\u00a345m pre-exceptional operating profit expected in FY25"
+  },
+  {
+   "metric": "Pre-exceptional operating profit",
+   "reason": "unparseable value 'c.\u00a345m'",
+   "period": "FY2025",
+   "value_as_written": "c.\u00a345m",
+   "quote": "we currently expect FY25 pre-exceptional operating profit of c.\u00a345m*"
   },
   {
    "metric": "Pre-exceptional operating profit",
    "reason": "value not found in quote (hallucination gate)",
    "period": "FY2025",
    "value_as_written": "\u00a356.9m",
-   "quote": "we currently expect FY25 operating profit will be in line with consensus*"
+   "quote": "we currently expect FY25 operating profit will be in line with consensus"
   },
   {
    "metric": "Pre-exceptional operating profit",
@@ -725,6 +623,13 @@
    "period": "FY2025H1",
    "value_as_written": "c.\u00a325m",
    "quote": "we expect H1 pre-exceptional operating profit of c.\u00a325m"
+  },
+  {
+   "metric": "Pre-exceptional operating profit",
+   "reason": "value not found in quote (hallucination gate)",
+   "period": "FY2025H1",
+   "value_as_written": "\u00a324.0m",
+   "quote": "with a \u00a324.0-33.2m range"
   },
   {
    "metric": "Pre-exceptional operating profit",
@@ -737,111 +642,111 @@
  "llm_usage": [
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3741,
-   "completion_tokens": 133,
-   "cached_prompt_tokens": 3738
+   "prompt_tokens": 3845,
+   "completion_tokens": 632,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3687,
-   "completion_tokens": 405,
-   "cached_prompt_tokens": 3684
+   "prompt_tokens": 3791,
+   "completion_tokens": 344,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3834,
-   "completion_tokens": 535,
-   "cached_prompt_tokens": 3831
+   "prompt_tokens": 3938,
+   "completion_tokens": 393,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3681,
-   "completion_tokens": 337,
-   "cached_prompt_tokens": 3678
+   "prompt_tokens": 3785,
+   "completion_tokens": 398,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3311,
-   "completion_tokens": 804,
-   "cached_prompt_tokens": 3308
+   "prompt_tokens": 3415,
+   "completion_tokens": 718,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3663,
-   "completion_tokens": 3167,
-   "cached_prompt_tokens": 3660
+   "prompt_tokens": 3767,
+   "completion_tokens": 498,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3806,
-   "completion_tokens": 1458,
-   "cached_prompt_tokens": 3803
+   "prompt_tokens": 3910,
+   "completion_tokens": 1963,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3588,
-   "completion_tokens": 1251,
-   "cached_prompt_tokens": 3585
+   "prompt_tokens": 3692,
+   "completion_tokens": 1163,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 4173,
-   "completion_tokens": 1300,
-   "cached_prompt_tokens": 4170
+   "prompt_tokens": 4277,
+   "completion_tokens": 1277,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3809,
-   "completion_tokens": 1360,
-   "cached_prompt_tokens": 3806
+   "prompt_tokens": 3913,
+   "completion_tokens": 1120,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3795,
-   "completion_tokens": 132,
-   "cached_prompt_tokens": 3792
+   "prompt_tokens": 3899,
+   "completion_tokens": 1139,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3846,
+   "prompt_tokens": 3950,
    "completion_tokens": 618,
-   "cached_prompt_tokens": 3843
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 4175,
-   "completion_tokens": 2473,
-   "cached_prompt_tokens": 4172
+   "prompt_tokens": 4279,
+   "completion_tokens": 2246,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3961,
-   "completion_tokens": 951,
-   "cached_prompt_tokens": 3958
+   "prompt_tokens": 4065,
+   "completion_tokens": 1640,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3688,
-   "completion_tokens": 1948,
-   "cached_prompt_tokens": 3685
+   "prompt_tokens": 3792,
+   "completion_tokens": 1497,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3994,
-   "completion_tokens": 1199,
-   "cached_prompt_tokens": 3991
+   "prompt_tokens": 4098,
+   "completion_tokens": 722,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3519,
-   "completion_tokens": 1023,
-   "cached_prompt_tokens": 3516
+   "prompt_tokens": 3623,
+   "completion_tokens": 1027,
+   "cached_prompt_tokens": 0
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 4008,
-   "completion_tokens": 1838,
-   "cached_prompt_tokens": 4005
+   "prompt_tokens": 4112,
+   "completion_tokens": 1871,
+   "cached_prompt_tokens": 1279
   }
  ]
 }

@@ -3,7 +3,7 @@
  "company": "Deere & Company",
  "corpus_dir": "deere",
  "target_period": "FY2026Q3",
- "generated_at": "2026-08-16T16:30:29.172015+00:00",
+ "generated_at": "2026-08-16T16:47:48.033163+00:00",
  "metrics": [
   "Worldwide net sales and revenues",
   "Diluted EPS (GAAP)",
@@ -14,30 +14,32 @@
    "metric_label": "Worldwide net sales and revenues",
    "period": "FY2026Q2",
    "value": 13369.0,
-   "raw_text": "13.369",
+   "raw_text": "$13.369 billion",
    "raw_unit": "USD_billions",
    "quote": "Worldwide net sales and revenues increased 5 percent, to $13.369 billion, for the second quarter of 2026",
    "source": {
     "doc_id": "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md",
     "published": "2026-05-21",
-    "fetched_at": "2026-08-16T16:29:53.450401Z",
+    "fetched_at": "2026-08-16T16:47:17.735703Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": []
+   "flags": [
+    "magnitude_outlier"
+   ]
   },
   {
    "metric_label": "Worldwide net sales and revenues",
    "period": "FY2026H1",
    "value": 22981.0,
-   "raw_text": "22.981",
+   "raw_text": "$22.981 billion",
    "raw_unit": "USD_billions",
    "quote": "Worldwide net sales and revenues increased 5 percent, to $13.369 billion, for the second quarter of 2026 and rose 8 percent, to $22.981 billion, for six months.",
    "source": {
     "doc_id": "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md",
     "published": "2026-05-21",
-    "fetched_at": "2026-08-16T16:29:53.450630Z",
+    "fetched_at": "2026-08-16T16:47:17.735907Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -50,16 +52,17 @@
    "value": 12763.0,
    "raw_text": "12,763",
    "raw_unit": "USD_millions",
-   "quote": "| Net sales and revenues | \u200b | $ | 13,369 | | $ | 12,763 | | 5% | | $ | 22,981 | | $ | 21,272 | | 8% | \u200b |",
+   "quote": "Net sales and revenues | \u200b | $ | 13,369 | \u200b | $ | 12,763",
    "source": {
     "doc_id": "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md",
     "published": "2026-05-21",
-    "fetched_at": "2026-08-16T16:29:53.450969Z",
+    "fetched_at": "2026-08-16T16:47:17.736349Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
    "flags": [
+    "quote_not_in_excerpt",
     "magnitude_outlier"
    ]
   },
@@ -69,11 +72,11 @@
    "value": 21272.0,
    "raw_text": "21,272",
    "raw_unit": "USD_millions",
-   "quote": "| Net sales and revenues | \u200b | $ | 13,369 | | $ | 12,763 | | 5% | | $ | 22,981 | | $ | 21,272 | | 8% | \u200b |",
+   "quote": "Net sales and revenues | \u200b | $ | 13,369 | | $ | 12,763 | | 5% | | $ | 22,981 | | $ | 21,272",
    "source": {
     "doc_id": "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md",
     "published": "2026-05-21",
-    "fetched_at": "2026-08-16T16:29:53.451265Z",
+    "fetched_at": "2026-08-16T16:47:17.736913Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -86,11 +89,11 @@
    "value": 9611.0,
    "raw_text": "9,611",
    "raw_unit": "USD_millions",
-   "quote": "Net sales and revenues | \u200b | $ | 9,611 | \u200b | $ | 8,508",
+   "quote": "Net sales and revenues | \u200b | $ | 9,611 | \u200b | $ | 8,508 | \u200b",
    "source": {
     "doc_id": "deere/filings/2026-02-26__de-us-20260226-q1-10q__636995.md",
     "published": "2026-02-26",
-    "fetched_at": "2026-08-16T16:29:53.453014Z",
+    "fetched_at": "2026-08-16T16:47:17.738698Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -105,11 +108,11 @@
    "value": 8508.0,
    "raw_text": "8,508",
    "raw_unit": "USD_millions",
-   "quote": "Net sales and revenues | \u200b | $ | 9,611 | \u200b | $ | 8,508",
+   "quote": "Net sales and revenues | \u200b | $ | 9,611 | \u200b | $ | 8,508 | \u200b",
    "source": {
     "doc_id": "deere/filings/2026-02-26__de-us-20260226-q1-10q__636995.md",
     "published": "2026-02-26",
-    "fetched_at": "2026-08-16T16:29:53.453109Z",
+    "fetched_at": "2026-08-16T16:47:17.738806Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -128,7 +131,7 @@
    "source": {
     "doc_id": "deere/filings/2025-12-18__de-us-20251218-fy-10k__393777.md",
     "published": "2025-12-18",
-    "fetched_at": "2026-08-16T16:29:53.453785Z",
+    "fetched_at": "2026-08-16T16:47:17.739542Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -145,7 +148,7 @@
    "source": {
     "doc_id": "deere/filings/2025-12-18__de-us-20251218-fy-10k__393777.md",
     "published": "2025-12-18",
-    "fetched_at": "2026-08-16T16:29:53.454002Z",
+    "fetched_at": "2026-08-16T16:47:17.739802Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -162,7 +165,7 @@
    "source": {
     "doc_id": "deere/filings/2025-12-18__de-us-20251218-fy-10k__393777.md",
     "published": "2025-12-18",
-    "fetched_at": "2026-08-16T16:29:53.454211Z",
+    "fetched_at": "2026-08-16T16:47:17.740038Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -181,7 +184,7 @@
    "source": {
     "doc_id": "deere/filings/2025-12-18__de-us-20251218-fy-10k__393777.md",
     "published": "2025-12-18",
-    "fetched_at": "2026-08-16T16:29:53.454419Z",
+    "fetched_at": "2026-08-16T16:47:17.740273Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -198,7 +201,7 @@
    "source": {
     "doc_id": "deere/filings/2025-12-18__de-us-20251218-fy-10k__393777.md",
     "published": "2025-12-18",
-    "fetched_at": "2026-08-16T16:29:53.454645Z",
+    "fetched_at": "2026-08-16T16:47:17.740507Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -215,7 +218,7 @@
    "source": {
     "doc_id": "deere/filings/2025-12-18__de-us-20251218-fy-10k__393777.md",
     "published": "2025-12-18",
-    "fetched_at": "2026-08-16T16:29:53.454858Z",
+    "fetched_at": "2026-08-16T16:47:17.740762Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -232,7 +235,7 @@
    "source": {
     "doc_id": "deere/filings/2025-12-18__de-us-20251218-fy-10k__393777.md",
     "published": "2025-12-18",
-    "fetched_at": "2026-08-16T16:29:53.455066Z",
+    "fetched_at": "2026-08-16T16:47:17.740995Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -249,7 +252,7 @@
    "source": {
     "doc_id": "deere/filings/2025-12-18__de-us-20251218-fy-10k__393777.md",
     "published": "2025-12-18",
-    "fetched_at": "2026-08-16T16:29:53.455273Z",
+    "fetched_at": "2026-08-16T16:47:17.741225Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -266,7 +269,7 @@
    "source": {
     "doc_id": "deere/filings/2025-12-18__de-us-20251218-fy-10k__393777.md",
     "published": "2025-12-18",
-    "fetched_at": "2026-08-16T16:29:53.455479Z",
+    "fetched_at": "2026-08-16T16:47:17.741455Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -283,7 +286,7 @@
    "source": {
     "doc_id": "deere/filings/2025-12-18__de-us-20251218-fy-10k__393777.md",
     "published": "2025-12-18",
-    "fetched_at": "2026-08-16T16:29:53.455690Z",
+    "fetched_at": "2026-08-16T16:47:17.741714Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -300,7 +303,7 @@
    "source": {
     "doc_id": "deere/filings/2025-11-26__de-us-20251126-q4-8k__361233.md",
     "published": "2025-11-26",
-    "fetched_at": "2026-08-16T16:29:53.455802Z",
+    "fetched_at": "2026-08-16T16:47:17.741832Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -315,16 +318,17 @@
    "value": 11143.0,
    "raw_text": "$ 11,143",
    "raw_unit": "USD_millions",
-   "quote": "| Net sales and revenues         | $ 12,394         | $ 11,143         | 11%         | $ 45,684    | $ 51,716     | -12%        |",
+   "quote": "Net sales and revenues         $ 12,394         $ 11,143",
    "source": {
     "doc_id": "deere/filings/2025-11-26__de-us-20251126-q4-8k__361233.md",
     "published": "2025-11-26",
-    "fetched_at": "2026-08-16T16:29:53.456048Z",
+    "fetched_at": "2026-08-16T16:47:17.742315Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
    "flags": [
+    "quote_not_in_excerpt",
     "magnitude_outlier"
    ]
   },
@@ -332,13 +336,13 @@
    "metric_label": "Worldwide net sales and revenues",
    "period": "FY2025Q3",
    "value": 12018.0,
-   "raw_text": "$12.018",
+   "raw_text": "$12.018 billion",
    "raw_unit": "USD_billions",
    "quote": "Worldwide net sales and revenues decreased 9 percent, to $12.018 billion, for the third quarter of 2025",
    "source": {
     "doc_id": "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md",
     "published": "2025-08-15",
-    "fetched_at": "2026-08-16T16:29:53.457292Z",
+    "fetched_at": "2026-08-16T16:47:17.743569Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -353,16 +357,17 @@
    "value": 13152.0,
    "raw_text": "$13,152",
    "raw_unit": "USD_millions",
-   "quote": "| Net sales and revenues         | $12,018         | $13,152         | -9%         | $33,290        | $40,572        | -18%         |",
+   "quote": "Net sales and revenues         $12,018         | $13,152",
    "source": {
     "doc_id": "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md",
     "published": "2025-08-15",
-    "fetched_at": "2026-08-16T16:29:53.457556Z",
+    "fetched_at": "2026-08-16T16:47:17.743845Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
    "flags": [
+    "quote_not_in_excerpt",
     "magnitude_outlier"
    ]
   },
@@ -372,18 +377,16 @@
    "value": 6.55,
    "raw_text": "6.55",
    "raw_unit": "USD_per_share",
-   "quote": "| Diluted earnings per share | \u200b | $ | 6.55 | \u200b | $ | 6.64 | \u200b | \u200b | \u200b | \u200b | 8.97 | \u200b | \u200b | 9.82 | \u200b |",
+   "quote": "| Diluted earnings per share | \u200b | $ | 6.55 |",
    "source": {
     "doc_id": "deere/filings/2026-05-28__de-us-20260528-q2-10q__1055932.md",
     "published": "2026-05-28",
-    "fetched_at": "2026-08-16T16:30:13.770400Z",
+    "fetched_at": "2026-08-16T16:47:35.809691Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": [
-    "quote_not_in_excerpt"
-   ]
+   "flags": []
   },
   {
    "metric_label": "Diluted EPS (GAAP)",
@@ -391,56 +394,16 @@
    "value": 6.64,
    "raw_text": "6.64",
    "raw_unit": "USD_per_share",
-   "quote": "| Diluted earnings per share | \u200b | $ | 6.55 | \u200b | $ | 6.64 | \u200b | \u200b | \u200b | \u200b | 8.97 | \u200b | \u200b | 9.82 | \u200b |",
+   "quote": "| Diluted earnings per share | \u200b | $ | 6.55 | \u200b | $ | 6.64 |",
    "source": {
     "doc_id": "deere/filings/2026-05-28__de-us-20260528-q2-10q__1055932.md",
     "published": "2026-05-28",
-    "fetched_at": "2026-08-16T16:30:13.770529Z",
+    "fetched_at": "2026-08-16T16:47:35.809878Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": [
-    "quote_not_in_excerpt"
-   ]
-  },
-  {
-   "metric_label": "Diluted EPS (GAAP)",
-   "period": "FY2026H1",
-   "value": 8.97,
-   "raw_text": "8.97",
-   "raw_unit": "USD_per_share",
-   "quote": "| Diluted earnings per share | \u200b | $ | 6.55 | \u200b | $ | 6.64 | \u200b | \u200b | \u200b | \u200b | 8.97 | \u200b | \u200b | 9.82 | \u200b |",
-   "source": {
-    "doc_id": "deere/filings/2026-05-28__de-us-20260528-q2-10q__1055932.md",
-    "published": "2026-05-28",
-    "fetched_at": "2026-08-16T16:30:13.770629Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": [
-    "quote_not_in_excerpt"
-   ]
-  },
-  {
-   "metric_label": "Diluted EPS (GAAP)",
-   "period": "FY2025H1",
-   "value": 9.82,
-   "raw_text": "9.82",
-   "raw_unit": "USD_per_share",
-   "quote": "| Diluted earnings per share | \u200b | $ | 6.55 | \u200b | $ | 6.64 | \u200b | \u200b | \u200b | \u200b | 8.97 | \u200b | \u200b | 9.82 | \u200b |",
-   "source": {
-    "doc_id": "deere/filings/2026-05-28__de-us-20260528-q2-10q__1055932.md",
-    "published": "2026-05-28",
-    "fetched_at": "2026-08-16T16:30:13.770714Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": [
-    "quote_not_in_excerpt"
-   ]
+   "flags": []
   },
   {
    "metric_label": "Diluted EPS (GAAP)",
@@ -452,7 +415,7 @@
    "source": {
     "doc_id": "deere/filings/2026-02-26__de-us-20260226-q1-10q__636995.md",
     "published": "2026-02-26",
-    "fetched_at": "2026-08-16T16:30:13.773205Z",
+    "fetched_at": "2026-08-16T16:47:35.812331Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -471,7 +434,7 @@
    "source": {
     "doc_id": "deere/filings/2026-02-26__de-us-20260226-q1-10q__636995.md",
     "published": "2026-02-26",
-    "fetched_at": "2026-08-16T16:30:13.773281Z",
+    "fetched_at": "2026-08-16T16:47:35.812446Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -486,11 +449,11 @@
    "value": 3.93,
    "raw_text": "$ 3.93",
    "raw_unit": "USD_per_share",
-   "quote": "| Fully diluted EPS         | $ 3.93         | $ 4.55         |         | $ 18.50     | $ 25.62     |         |",
+   "quote": "| Fully diluted EPS         | $ 3.93         | $ 4.55         |         | $ 18.50     | $ 25.62     |",
    "source": {
     "doc_id": "deere/filings/2025-11-26__de-us-20251126-q4-8k__361233.md",
     "published": "2025-11-26",
-    "fetched_at": "2026-08-16T16:30:13.774159Z",
+    "fetched_at": "2026-08-16T16:47:35.814160Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -503,11 +466,11 @@
    "value": 4.55,
    "raw_text": "$ 4.55",
    "raw_unit": "USD_per_share",
-   "quote": "| Fully diluted EPS         | $ 3.93         | $ 4.55         |         | $ 18.50     | $ 25.62     |         |",
+   "quote": "| Fully diluted EPS         | $ 3.93         | $ 4.55         |         | $ 18.50     | $ 25.62     |",
    "source": {
     "doc_id": "deere/filings/2025-11-26__de-us-20251126-q4-8k__361233.md",
     "published": "2025-11-26",
-    "fetched_at": "2026-08-16T16:30:13.774231Z",
+    "fetched_at": "2026-08-16T16:47:35.814296Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -520,11 +483,11 @@
    "value": 18.5,
    "raw_text": "$ 18.50",
    "raw_unit": "USD_per_share",
-   "quote": "| Fully diluted EPS         | $ 3.93         | $ 4.55         |         | $ 18.50     | $ 25.62     |         |",
+   "quote": "| Fully diluted EPS         | $ 3.93         | $ 4.55         |         | $ 18.50     | $ 25.62     |",
    "source": {
     "doc_id": "deere/filings/2025-11-26__de-us-20251126-q4-8k__361233.md",
     "published": "2025-11-26",
-    "fetched_at": "2026-08-16T16:30:13.774304Z",
+    "fetched_at": "2026-08-16T16:47:35.814440Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -539,11 +502,11 @@
    "value": 25.62,
    "raw_text": "$ 25.62",
    "raw_unit": "USD_per_share",
-   "quote": "| Fully diluted EPS         | $ 3.93         | $ 4.55         |         | $ 18.50     | $ 25.62     |         |",
+   "quote": "| Fully diluted EPS         | $ 3.93         | $ 4.55         |         | $ 18.50     | $ 25.62     |",
    "source": {
     "doc_id": "deere/filings/2025-11-26__de-us-20251126-q4-8k__361233.md",
     "published": "2025-11-26",
-    "fetched_at": "2026-08-16T16:30:13.774376Z",
+    "fetched_at": "2026-08-16T16:47:35.814578Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -558,11 +521,11 @@
    "value": 4.75,
    "raw_text": "$ 4.75",
    "raw_unit": "USD_per_share",
-   "quote": "| Fully diluted EPS         | $ 4.75         | $ 6.29         |         | $ 14.57        | $ 21.04        |         |",
+   "quote": "| Fully diluted EPS         | $ 4.75         | $ 6.29         |         | $ 14.57        | $ 21.04        |",
    "source": {
     "doc_id": "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md",
     "published": "2025-08-15",
-    "fetched_at": "2026-08-16T16:30:13.774447Z",
+    "fetched_at": "2026-08-16T16:47:35.814722Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -575,11 +538,11 @@
    "value": 6.29,
    "raw_text": "$ 6.29",
    "raw_unit": "USD_per_share",
-   "quote": "| Fully diluted EPS         | $ 4.75         | $ 6.29         |         | $ 14.57        | $ 21.04        |         |",
+   "quote": "| Fully diluted EPS         | $ 4.75         | $ 6.29         |         | $ 14.57        | $ 21.04        |",
    "source": {
     "doc_id": "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md",
     "published": "2025-08-15",
-    "fetched_at": "2026-08-16T16:30:13.774517Z",
+    "fetched_at": "2026-08-16T16:47:35.814859Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -592,11 +555,11 @@
    "value": 8.53,
    "raw_text": "$ 8.53",
    "raw_unit": "USD_per_share",
-   "quote": "| Fully diluted EPS         | $ 6.64         | $ 8.53         |         | $ 9.82         | $ 14.74        |",
+   "quote": "Fully diluted EPS         | $ 6.64         | $ 8.53",
    "source": {
     "doc_id": "deere/filings/2025-05-15__de-us-20250515-q2-8k__105808.md",
     "published": "2025-05-15",
-    "fetched_at": "2026-08-16T16:30:13.774990Z",
+    "fetched_at": "2026-08-16T16:47:35.815546Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -613,7 +576,7 @@
    "source": {
     "doc_id": "deere/filings/2025-02-13__de-us-20250213-q1-8k__105841.md",
     "published": "2025-02-13",
-    "fetched_at": "2026-08-16T16:30:13.775244Z",
+    "fetched_at": "2026-08-16T16:47:35.816017Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -626,11 +589,11 @@
    "value": 8.26,
    "raw_text": "$ 8.26",
    "raw_unit": "USD_per_share",
-   "quote": "Fully diluted EPS         | $ 4.55         | $ 8.26         |         | $ 25.62     | $ 34.63     |         ",
+   "quote": "Fully diluted EPS         | $ 4.55         | $ 8.26         |         | $ 25.62     | $ 34.63     |",
    "source": {
     "doc_id": "deere/filings/2024-11-21__de-us-20241121-q4-8k__105840.md",
     "published": "2024-11-21",
-    "fetched_at": "2026-08-16T16:30:13.775750Z",
+    "fetched_at": "2026-08-16T16:47:35.816804Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -643,11 +606,11 @@
    "value": 34.63,
    "raw_text": "$ 34.63",
    "raw_unit": "USD_per_share",
-   "quote": "Fully diluted EPS         | $ 4.55         | $ 8.26         |         | $ 25.62     | $ 34.63     |         ",
+   "quote": "Fully diluted EPS         | $ 4.55         | $ 8.26         |         | $ 25.62     | $ 34.63     |",
    "source": {
     "doc_id": "deere/filings/2024-11-21__de-us-20241121-q4-8k__105840.md",
     "published": "2024-11-21",
-    "fetched_at": "2026-08-16T16:30:13.775877Z",
+    "fetched_at": "2026-08-16T16:47:35.816950Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -662,11 +625,11 @@
    "value": 10.2,
    "raw_text": "$ 10.20",
    "raw_unit": "USD_per_share",
-   "quote": "Fully diluted EPS         | $ 6.29         | $ 10.20         |         | $ 21.04        | $ 26.35        |         ",
+   "quote": "Fully diluted EPS         | $ 6.29         | $ 10.20         |         | $ 21.04        | $ 26.35        |",
    "source": {
     "doc_id": "deere/filings/2024-08-15__de-us-20240815-q3-8k__105836.md",
     "published": "2024-08-15",
-    "fetched_at": "2026-08-16T16:30:13.776004Z",
+    "fetched_at": "2026-08-16T16:47:35.817093Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -679,11 +642,11 @@
    "value": 9.65,
    "raw_text": "$ 9.65",
    "raw_unit": "USD_per_share",
-   "quote": "Fully diluted EPS         | $ 8.53         | $ 9.65         |         | $ 14.74        | $ 16.18        |         ",
+   "quote": "Fully diluted EPS         | $ 8.53         | $ 9.65         |         | $ 14.74        | $ 16.18        |",
    "source": {
     "doc_id": "deere/filings/2024-05-16__de-us-20240516-q2-8k__105819.md",
     "published": "2024-05-16",
-    "fetched_at": "2026-08-16T16:30:13.776411Z",
+    "fetched_at": "2026-08-16T16:47:35.817539Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -694,13 +657,13 @@
    "metric_label": "Diluted EPS (GAAP)",
    "period": "FY2023Q1",
    "value": 6.55,
-   "raw_text": "6.55",
+   "raw_text": "$ 6.55",
    "raw_unit": "USD_per_share",
    "quote": "Fully diluted EPS $ 6.23 $ 6.55",
    "source": {
     "doc_id": "deere/filings/2024-02-15__de-us-20240215-q1-8k__105824.md",
     "published": "2024-02-15",
-    "fetched_at": "2026-08-16T16:30:13.776950Z",
+    "fetched_at": "2026-08-16T16:47:35.817931Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -717,7 +680,7 @@
    "source": {
     "doc_id": "deere/filings/2023-11-22__de-us-20231122-q4-8k__105823.md",
     "published": "2023-11-22",
-    "fetched_at": "2026-08-16T16:30:13.777342Z",
+    "fetched_at": "2026-08-16T16:47:35.818290Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -734,7 +697,7 @@
    "source": {
     "doc_id": "deere/filings/2023-11-22__de-us-20231122-q4-8k__105823.md",
     "published": "2023-11-22",
-    "fetched_at": "2026-08-16T16:30:13.777480Z",
+    "fetched_at": "2026-08-16T16:47:35.818429Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -753,7 +716,7 @@
    "source": {
     "doc_id": "deere/filings/2023-08-18__de-us-20230818-q3-8k__105829.md",
     "published": "2023-08-18",
-    "fetched_at": "2026-08-16T16:30:13.777626Z",
+    "fetched_at": "2026-08-16T16:47:35.818559Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -766,11 +729,11 @@
    "value": 706.0,
    "raw_text": "706",
    "raw_unit": "USD_millions",
-   "quote": "Production & Precision Ag | \u200b | $ | 706 | \u200b | $ | 1,148 | | -39",
+   "quote": "| Production & Precision Ag | \u200b | $ | 706 | \u200b | $ | 1,148 | | -39 |",
    "source": {
     "doc_id": "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md",
     "published": "2026-05-21",
-    "fetched_at": "2026-08-16T16:30:29.168171Z",
+    "fetched_at": "2026-08-16T16:47:48.028883Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -783,11 +746,11 @@
    "value": 1148.0,
    "raw_text": "1,148",
    "raw_unit": "USD_millions",
-   "quote": "Production & Precision Ag | \u200b | $ | 706 | \u200b | $ | 1,148 | | -39",
+   "quote": "| Production & Precision Ag | \u200b | $ | 706 | \u200b | $ | 1,148 | | -39 |",
    "source": {
     "doc_id": "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md",
     "published": "2026-05-21",
-    "fetched_at": "2026-08-16T16:30:29.168391Z",
+    "fetched_at": "2026-08-16T16:47:48.029168Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -800,11 +763,11 @@
    "value": 845.0,
    "raw_text": "845",
    "raw_unit": "USD_millions",
-   "quote": "Production & Precision Ag | \u200b | $ | 845 | \u200b | $ | 1,486 | | -43",
+   "quote": "| Production & Precision Ag | \u200b | $ | 845 | \u200b | $ | 1,486 | | -43 |",
    "source": {
     "doc_id": "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md",
     "published": "2026-05-21",
-    "fetched_at": "2026-08-16T16:30:29.168558Z",
+    "fetched_at": "2026-08-16T16:47:48.029391Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -819,30 +782,31 @@
    "value": 1486.0,
    "raw_text": "1,486",
    "raw_unit": "USD_millions",
-   "quote": "Production & Precision Ag | \u200b | $ | 845 | \u200b | $ | 1,486 | | -43",
+   "quote": "| Production & Precision Ag | \u200b | $ | 845 | \u200b | $ | 1,486 | | -43 |",
    "source": {
     "doc_id": "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md",
     "published": "2026-05-21",
-    "fetched_at": "2026-08-16T16:30:29.168761Z",
+    "fetched_at": "2026-08-16T16:47:48.029614Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
    "flags": [
-    "quote_not_in_excerpt"
+    "quote_not_in_excerpt",
+    "magnitude_outlier"
    ]
   },
   {
    "metric_label": "Production & Precision Ag operating profit",
    "period": "FY2026Q1",
-   "value": 139.0,
-   "raw_text": "139",
-   "raw_unit": "USD_millions",
+   "value": 0.000139,
+   "raw_text": "$ 139",
+   "raw_unit": "USD",
    "quote": "Production & Precision Ag         | $ 139         | $ 338         | -59",
    "source": {
     "doc_id": "deere/filings/2026-02-19__de-us-20260219-q1-8k__603009.md",
     "published": "2026-02-19",
-    "fetched_at": "2026-08-16T16:30:29.169660Z",
+    "fetched_at": "2026-08-16T16:47:48.030623Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -854,14 +818,14 @@
   {
    "metric_label": "Production & Precision Ag operating profit",
    "period": "FY2025Q1",
-   "value": 338.0,
-   "raw_text": "338",
-   "raw_unit": "USD_millions",
+   "value": 0.000338,
+   "raw_text": "$ 338",
+   "raw_unit": "USD",
    "quote": "Production & Precision Ag         | $ 139         | $ 338         | -59",
    "source": {
     "doc_id": "deere/filings/2026-02-19__de-us-20260219-q1-8k__603009.md",
     "published": "2026-02-19",
-    "fetched_at": "2026-08-16T16:30:29.169728Z",
+    "fetched_at": "2026-08-16T16:47:48.030698Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -874,47 +838,51 @@
    "metric_label": "Production & Precision Ag operating profit",
    "period": "FY2025Q4",
    "value": 604.0,
-   "raw_text": "604",
-   "raw_unit": "USD_millions",
+   "raw_text": "$ 604",
+   "raw_unit": "USD",
    "quote": "Production & Precision Ag         | $ 604         | $ 657         | -8         | $ 2,671         | $ 4,514         | -41",
    "source": {
     "doc_id": "deere/filings/2025-11-26__de-us-20251126-q4-8k__361233.md",
     "published": "2025-11-26",
-    "fetched_at": "2026-08-16T16:30:29.169830Z",
+    "fetched_at": "2026-08-16T16:47:48.030809Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": []
+   "flags": [
+    "auto_corrected_scale_x1e+06 (was 0.000604)"
+   ]
   },
   {
    "metric_label": "Production & Precision Ag operating profit",
    "period": "FY2024Q4",
    "value": 657.0,
-   "raw_text": "657",
-   "raw_unit": "USD_millions",
+   "raw_text": "$ 657",
+   "raw_unit": "USD",
    "quote": "Production & Precision Ag         | $ 604         | $ 657         | -8         | $ 2,671         | $ 4,514         | -41",
    "source": {
     "doc_id": "deere/filings/2025-11-26__de-us-20251126-q4-8k__361233.md",
     "published": "2025-11-26",
-    "fetched_at": "2026-08-16T16:30:29.169928Z",
+    "fetched_at": "2026-08-16T16:47:48.030904Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": []
+   "flags": [
+    "auto_corrected_scale_x1e+06 (was 0.000657)"
+   ]
   },
   {
    "metric_label": "Production & Precision Ag operating profit",
    "period": "FY2025",
-   "value": 2671.0,
-   "raw_text": "2,671",
-   "raw_unit": "USD_millions",
+   "value": 0.002671,
+   "raw_text": "$ 2,671",
+   "raw_unit": "USD",
    "quote": "Production & Precision Ag         | $ 604         | $ 657         | -8         | $ 2,671         | $ 4,514         | -41",
    "source": {
     "doc_id": "deere/filings/2025-11-26__de-us-20251126-q4-8k__361233.md",
     "published": "2025-11-26",
-    "fetched_at": "2026-08-16T16:30:29.170028Z",
+    "fetched_at": "2026-08-16T16:47:48.031006Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -926,14 +894,14 @@
   {
    "metric_label": "Production & Precision Ag operating profit",
    "period": "FY2024",
-   "value": 4514.0,
-   "raw_text": "4,514",
-   "raw_unit": "USD_millions",
+   "value": 0.004514,
+   "raw_text": "$ 4,514",
+   "raw_unit": "USD",
    "quote": "Production & Precision Ag         | $ 604         | $ 657         | -8         | $ 2,671         | $ 4,514         | -41",
    "source": {
     "doc_id": "deere/filings/2025-11-26__de-us-20251126-q4-8k__361233.md",
     "published": "2025-11-26",
-    "fetched_at": "2026-08-16T16:30:29.170124Z",
+    "fetched_at": "2026-08-16T16:47:48.031102Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -948,18 +916,16 @@
    "value": 580.0,
    "raw_text": "$ 580",
    "raw_unit": "USD_millions",
-   "quote": "Production & precision ag         | $ 580         | $ 1,162         | -50",
+   "quote": "| Production & precision ag         | $ 580         | $ 1,162         | -50         | $ 2,066         | $ 3,857         | -46         |",
    "source": {
     "doc_id": "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md",
     "published": "2025-08-15",
-    "fetched_at": "2026-08-16T16:30:29.170235Z",
+    "fetched_at": "2026-08-16T16:47:48.031214Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": [
-    "magnitude_outlier"
-   ]
+   "flags": []
   },
   {
    "metric_label": "Production & Precision Ag operating profit",
@@ -967,11 +933,11 @@
    "value": 1162.0,
    "raw_text": "$ 1,162",
    "raw_unit": "USD_millions",
-   "quote": "Production & precision ag         | $ 580         | $ 1,162         | -50",
+   "quote": "| Production & precision ag         | $ 580         | $ 1,162         | -50         | $ 2,066         | $ 3,857         | -46         |",
    "source": {
     "doc_id": "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md",
     "published": "2025-08-15",
-    "fetched_at": "2026-08-16T16:30:29.170325Z",
+    "fetched_at": "2026-08-16T16:47:48.031307Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -984,28 +950,30 @@
    "value": 1650.0,
    "raw_text": "$ 1,650",
    "raw_unit": "USD_millions",
-   "quote": "Production & precision ag         | $ 1,148         | $ 1,650         | -30",
+   "quote": "| Production & precision ag         | $ 1,148         | $ 1,650         | -30         | $ 1,486         | $ 2,695         | -45         |",
    "source": {
     "doc_id": "deere/filings/2025-05-15__de-us-20250515-q2-8k__105808.md",
     "published": "2025-05-15",
-    "fetched_at": "2026-08-16T16:30:29.170499Z",
+    "fetched_at": "2026-08-16T16:47:48.031494Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": []
+   "flags": [
+    "magnitude_outlier"
+   ]
   },
   {
    "metric_label": "Production & Precision Ag operating profit",
-   "period": "FY2024H1",
-   "value": 2695.0,
-   "raw_text": "$ 2,695",
+   "period": "FY2025Q1",
+   "value": 338.0,
+   "raw_text": "$ 338",
    "raw_unit": "USD_millions",
-   "quote": "Production & precision ag         | $ 1,148         | $ 1,650         | -30         | $ 1,486         | $ 2,695         | -45",
+   "quote": "| Production & precision ag         | $ 338         | $ 1,045         | -68         |",
    "source": {
-    "doc_id": "deere/filings/2025-05-15__de-us-20250515-q2-8k__105808.md",
-    "published": "2025-05-15",
-    "fetched_at": "2026-08-16T16:30:29.170682Z",
+    "doc_id": "deere/filings/2025-02-13__de-us-20250213-q1-8k__105841.md",
+    "published": "2025-02-13",
+    "fetched_at": "2026-08-16T16:47:48.031568Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1024,7 +992,7 @@
    "source": {
     "doc_id": "deere/filings/2025-02-13__de-us-20250213-q1-8k__105841.md",
     "published": "2025-02-13",
-    "fetched_at": "2026-08-16T16:30:29.170825Z",
+    "fetched_at": "2026-08-16T16:47:48.031637Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1034,58 +1002,59 @@
   {
    "metric_label": "Production & Precision Ag operating profit",
    "period": "FY2023Q4",
-   "value": 1836.0,
+   "value": 0.001836,
    "raw_text": "1,836",
-   "raw_unit": "USD_millions",
-   "quote": "| Production & precision ag         | $ 657         | 1,836         | -64         | $ 4,514         | 6,996         | -35         |",
+   "raw_unit": "USD",
+   "quote": "Production & precision ag         | $ 657         | $ 1,836         | -64         | $ 4,514         | $ 6,996         | -35",
    "source": {
     "doc_id": "deere/filings/2024-11-21__de-us-20241121-q4-8k__105840.md",
     "published": "2024-11-21",
-    "fetched_at": "2026-08-16T16:30:29.171014Z",
+    "fetched_at": "2026-08-16T16:47:48.031829Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
    "flags": [
-    "quote_not_in_excerpt"
+    "magnitude_outlier"
    ]
   },
   {
    "metric_label": "Production & Precision Ag operating profit",
    "period": "FY2023",
-   "value": 6996.0,
+   "value": 0.006996,
    "raw_text": "6,996",
-   "raw_unit": "USD_millions",
-   "quote": "| Production & precision ag         | $ 657         | 1,836         | -64         | $ 4,514         | 6,996         | -35         |",
+   "raw_unit": "USD",
+   "quote": "Production & precision ag         | $ 657         | $ 1,836         | -64         | $ 4,514         | $ 6,996         | -35",
    "source": {
     "doc_id": "deere/filings/2024-11-21__de-us-20241121-q4-8k__105840.md",
     "published": "2024-11-21",
-    "fetched_at": "2026-08-16T16:30:29.171190Z",
+    "fetched_at": "2026-08-16T16:47:48.031989Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
    "flags": [
-    "quote_not_in_excerpt",
     "magnitude_outlier"
    ]
   },
   {
    "metric_label": "Production & Precision Ag operating profit",
    "period": "FY2023Q3",
-   "value": 1782.0,
+   "value": 0.001782,
    "raw_text": "1,782",
-   "raw_unit": "USD_millions",
-   "quote": "| Production & precision ag         | $ 1,162         | $ 1,782         | -35         | $ 3,857         | $ 5,160         | -25         |",
+   "raw_unit": "USD",
+   "quote": "Production & precision ag         | $ 1,162         | $ 1,782         | -35         | $ 3,857         | $ 5,160         | -25",
    "source": {
     "doc_id": "deere/filings/2024-08-15__de-us-20240815-q3-8k__105836.md",
     "published": "2024-08-15",
-    "fetched_at": "2026-08-16T16:30:29.171354Z",
+    "fetched_at": "2026-08-16T16:47:48.032139Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": []
+   "flags": [
+    "magnitude_outlier"
+   ]
   },
   {
    "metric_label": "Production & Precision Ag operating profit",
@@ -1097,12 +1066,14 @@
    "source": {
     "doc_id": "deere/filings/2024-05-16__de-us-20240516-q2-8k__105819.md",
     "published": "2024-05-16",
-    "fetched_at": "2026-08-16T16:30:29.171525Z",
+    "fetched_at": "2026-08-16T16:47:48.032295Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": []
+   "flags": [
+    "magnitude_outlier"
+   ]
   },
   {
    "metric_label": "Production & Precision Ag operating profit",
@@ -1114,7 +1085,7 @@
    "source": {
     "doc_id": "deere/filings/2024-02-15__de-us-20240215-q1-8k__105824.md",
     "published": "2024-02-15",
-    "fetched_at": "2026-08-16T16:30:29.171657Z",
+    "fetched_at": "2026-08-16T16:47:48.032405Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1126,111 +1097,111 @@
  "llm_usage": [
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 5122,
-   "completion_tokens": 2260,
-   "cached_prompt_tokens": 5119
+   "prompt_tokens": 5226,
+   "completion_tokens": 1437,
+   "cached_prompt_tokens": 0
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3660,
-   "completion_tokens": 1761,
-   "cached_prompt_tokens": 3657
+   "prompt_tokens": 3764,
+   "completion_tokens": 1674,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3861,
-   "completion_tokens": 1018,
-   "cached_prompt_tokens": 3858
+   "prompt_tokens": 3965,
+   "completion_tokens": 928,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 4077,
-   "completion_tokens": 2526,
-   "cached_prompt_tokens": 4074
+   "prompt_tokens": 4181,
+   "completion_tokens": 2425,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 4463,
-   "completion_tokens": 2435,
-   "cached_prompt_tokens": 4460
+   "prompt_tokens": 4567,
+   "completion_tokens": 2416,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3782,
-   "completion_tokens": 2288,
-   "cached_prompt_tokens": 3779
+   "prompt_tokens": 3886,
+   "completion_tokens": 1172,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 4196,
-   "completion_tokens": 3155,
-   "cached_prompt_tokens": 4193
+   "prompt_tokens": 4300,
+   "completion_tokens": 1475,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3242,
-   "completion_tokens": 1320,
-   "cached_prompt_tokens": 3239
+   "prompt_tokens": 3346,
+   "completion_tokens": 1492,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3306,
-   "completion_tokens": 2138,
-   "cached_prompt_tokens": 3303
+   "prompt_tokens": 3410,
+   "completion_tokens": 1750,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3387,
-   "completion_tokens": 1367,
-   "cached_prompt_tokens": 3384
+   "prompt_tokens": 3491,
+   "completion_tokens": 1311,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3570,
-   "completion_tokens": 1729,
-   "cached_prompt_tokens": 3567
+   "prompt_tokens": 3674,
+   "completion_tokens": 1782,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3524,
-   "completion_tokens": 1639,
-   "cached_prompt_tokens": 3521
+   "prompt_tokens": 3628,
+   "completion_tokens": 1564,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 4283,
-   "completion_tokens": 1685,
-   "cached_prompt_tokens": 4280
+   "prompt_tokens": 4387,
+   "completion_tokens": 1478,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3653,
-   "completion_tokens": 1027,
-   "cached_prompt_tokens": 3650
+   "prompt_tokens": 3757,
+   "completion_tokens": 1053,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3813,
-   "completion_tokens": 1414,
-   "cached_prompt_tokens": 3810
+   "prompt_tokens": 3917,
+   "completion_tokens": 872,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3782,
-   "completion_tokens": 559,
-   "cached_prompt_tokens": 3779
+   "prompt_tokens": 3886,
+   "completion_tokens": 369,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 3509,
-   "completion_tokens": 1132,
-   "cached_prompt_tokens": 3506
+   "prompt_tokens": 3613,
+   "completion_tokens": 1104,
+   "cached_prompt_tokens": 1279
   },
   {
    "model": "gpt-5.6-luna",
-   "prompt_tokens": 4030,
-   "completion_tokens": 647,
-   "cached_prompt_tokens": 4027
+   "prompt_tokens": 4134,
+   "completion_tokens": 532,
+   "cached_prompt_tokens": 1279
   }
  ]
 }

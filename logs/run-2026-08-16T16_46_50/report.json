@@ -1,0 +1,3792 @@
+{
+  "meta": {
+    "run_id": "run-2026-08-16T16_46_50",
+    "started": "2026-08-16T16:46:50.889923Z",
+    "finished": "2026-08-16T16:50:30.657942Z",
+    "enable_reconcile": true,
+    "llm_provider": "openai",
+    "model_big": "gpt-5.6-sol",
+    "model_small": "gpt-5.6-luna",
+    "panel_members": [
+      "openai:gpt-5.6-sol",
+      "openrouter:anthropic/claude-fable-5",
+      "openrouter:x-ai/grok-4.6"
+    ],
+    "git_commit": "7808249ad5444c5a31f62fefea2481f1573bd0bb",
+    "totals": {
+      "llm_calls": 18,
+      "prompt_tokens": 75214,
+      "completion_tokens": 66679,
+      "cached_prompt_tokens": 6072,
+      "tool_cache_hits": 0,
+      "tool_cache_live": 4,
+      "est_cost_usd": 2.0954
+    }
+  },
+  "metrics": [
+    {
+      "company": "Home Depot",
+      "ticker": "HD",
+      "label": "Net sales",
+      "unit": "USDm",
+      "period": "FY2026Q2",
+      "anchor": {
+        "value": 45277.0,
+        "period": "FY2025Q2",
+        "quote": "Net sales | $ | 45,277",
+        "source_doc": "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md"
+      },
+      "baseline_candidates": [
+        {
+          "method": "seasonal_yoy",
+          "value": 45502.63212648903,
+          "backtest_mae": 2015.0580223247598,
+          "backtest_bias": -87.1803699176744,
+          "backtest_n": 4
+        },
+        {
+          "method": "growth_drift",
+          "value": 45484.789565926185,
+          "backtest_mae": 3328.6951729228786,
+          "backtest_bias": -1514.6631835445914,
+          "backtest_n": 2
+        }
+      ],
+      "baseline_chosen": "seasonal_yoy",
+      "guidance": null,
+      "estimate": {
+        "method": "Triangulated the chosen seasonal baseline against recent year-over-year reported-sales growth, the gap between reported sales and comparable sales, and the absence of target-quarter sales guidance.",
+        "growth_p10": 0.0,
+        "growth_p50": 1.5,
+        "growth_p90": 3.2,
+        "momentum": {
+          "explanation": "panel 3/3: Reported sales growth rebounded to 4.79% in FY2026Q1 after a 3.79% decline in FY2025Q4, while Q1 comparable sales remained positive at 0.6%. The rebound indicates improving topline direction, although the modest comparable-sales rate argues against calling the trend hot.",
+          "label": "warming",
+          "citations": [
+            "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md",
+            "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md",
+            "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md"
+          ]
+        },
+        "guidance_style": {
+          "explanation": "panel 3/3: Management's FY2025 adjusted-EPS outlook moved from 14.94 in August to 14.48 in November, while the subsequently reported FY2025 base was 14.69. That outcome fell between the two forecasts and indicates broadly accurate, rather than consistently conservative or promotional, guidance.",
+          "label": "accurate",
+          "citations": [
+            "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md",
+            "home-depot/filings/2025-11-18__hd-us-20251118-q3-8k__359994.md",
+            "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md"
+          ]
+        },
+        "surprise_skew": {
+          "explanation": "panel 3/3: The net-sales baseline embeds much slower growth than FY2026Q1's 4.79%, and recent positive comparable sales provide some support above the baseline. With no target-quarter sales guidance, the tilt is only moderately positive.",
+          "label": "upside",
+          "citations": [
+            "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md",
+            "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md",
+            "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md"
+          ]
+        },
+        "confidence": "medium",
+        "rationale": "panel 3 member(s): The 45,502.63 baseline implies only about 0.5% growth from FY2025Q2 sales of 45,277. Positive comparable sales and FY2026Q1's 4.79% reported-sales growth support a modest upside adjustment, but the lack of quarter-specific guidance and weak recent comparable-sales levels keep the range broad."
+      },
+      "nudges": {
+        "components": [
+          {
+            "name": "quantile_p50",
+            "label": null,
+            "raw": 1.5,
+            "applied": 0.7878427674125821,
+            "capped": false,
+            "note": "shrink 0.525 (spread 3.2)"
+          },
+          {
+            "name": "momentum",
+            "label": "warming",
+            "raw": 0.8850211513546606,
+            "applied": 0.8850211513546606,
+            "capped": false,
+            "note": "fixed_fallback"
+          },
+          {
+            "name": "surprise_skew",
+            "label": "upside",
+            "raw": 0.5310126908127963,
+            "applied": 0.5310126908127963,
+            "capped": false,
+            "note": "fixed_fallback"
+          }
+        ],
+        "cap": 1511.2935167435699,
+        "adjustment": 1002.821866178944,
+        "caps_applied": [],
+        "pre_reconcile_value": 46505.45399266797
+      },
+      "consensus": {
+        "value": 47235.4491,
+        "source": "yfinance revenue_estimate avg [0q]",
+        "fetched_at": null
+      },
+      "reconciliation": {
+        "verdict": "partial",
+        "weight_ours": 0.4,
+        "rationale": "Our estimate is 1.55% below consensus, a modest gap relative to the baseline's $2.02bn backtest MAE. The cited record supports some caution: recent comparable-sales growth was weak and there was no quarter-specific guidance. However, FY2026Q1 reported-sales growth of 4.79% and positive comparable sales also support the higher growth embedded in consensus; the estimator does not cite specific evidence strong enough to establish that Q2 growth should slow to roughly 2.7% year over year versus consensus's roughly 4.3%. The consensus source provides no analyst count or dispersion, limiting deference somewhat. Blend toward consensus while retaining weight on the evidence-based downside view."
+      },
+      "validation": [
+        {
+          "check": "magnitude",
+          "passed": true,
+          "detail": "46943.451057067185 is 1.12x last reported 41765.0 (band 0.50x-2.00x)"
+        },
+        {
+          "check": "pence_trap",
+          "passed": true,
+          "detail": "n/a (not a pence per-share metric)"
+        },
+        {
+          "check": "percent_trap",
+          "passed": true,
+          "detail": "n/a (not a percentage metric)"
+        },
+        {
+          "check": "guidance_sanity",
+          "passed": true,
+          "detail": "no guidance available"
+        },
+        {
+          "check": "extraction_flags",
+          "passed": true,
+          "detail": "facts carried flags: quote_not_in_excerpt"
+        }
+      ],
+      "fallback_used": null,
+      "candidates": [
+        {
+          "name": "reconciled",
+          "value": 46943.451057067185,
+          "status": "chosen",
+          "reason": null
+        },
+        {
+          "name": "baseline:seasonal_yoy",
+          "value": 45502.63212648903,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "guidance_mid",
+          "value": null,
+          "status": "absent",
+          "reason": null
+        },
+        {
+          "name": "consensus",
+          "value": 47235.4491,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "anchor_last_year",
+          "value": 45277.0,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "last_reported_actual",
+          "value": 41765.0,
+          "status": "viable",
+          "reason": null
+        }
+      ],
+      "panel": {
+        "members": [
+          {
+            "member": "openai:gpt-5.6-sol",
+            "p50": 0.8,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:anthropic/claude-fable-5",
+            "p50": 3.7,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:x-ai/grok-4.6",
+            "p50": 1.5,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          }
+        ],
+        "failed": [],
+        "p50_spread": 2.9000000000000004
+      },
+      "derivation": [
+        {
+          "name": "anchor",
+          "formula": "A = actual[FY2025Q2]",
+          "substituted": "A = 45,277 USDm",
+          "result": 45277.0,
+          "provenance": "data",
+          "refs": [
+            "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md (tier 1)"
+          ],
+          "note": "same period last fiscal year, exact reported figure"
+        },
+        {
+          "name": "baseline",
+          "formula": "B = anchor \u00d7 (1 + mean(recent YoY))",
+          "substituted": "B = 45,277 \u00d7 (1 +0.50%) = 45,503",
+          "result": 45502.63212648903,
+          "provenance": "math",
+          "refs": [
+            "chosen by walk-forward backtest: MAE 2,015 over n=4 periods"
+          ],
+          "note": null
+        },
+        {
+          "name": "judgment: quantile",
+          "formula": "\u0394q = p50 \u00d7 shrink",
+          "substituted": "\u0394q = +1.50%(LLM) \u00d7 0.525 = +0.788%",
+          "result": 0.7878427674125821,
+          "provenance": "llm",
+          "refs": [],
+          "note": "shrink = 1/(1+(p90\u2212p10)/\u03c3), \u03c3=3.54 \u2014 wide model uncertainty shrinks its own influence"
+        },
+        {
+          "name": "judgment: momentum",
+          "formula": "\u0394 = map(momentum label) \u00d7 \u03c3",
+          "substituted": "\u0394(warming(LLM)) = +0.885%",
+          "result": 0.8850211513546606,
+          "provenance": "llm",
+          "refs": [
+            "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md",
+            "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md",
+            "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "judgment: surprise skew",
+          "formula": "\u0394 = map(surprise_skew label) \u00d7 \u03c3",
+          "substituted": "\u0394(upside(LLM)) = +0.531%",
+          "result": 0.5310126908127963,
+          "provenance": "llm",
+          "refs": [
+            "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md",
+            "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md",
+            "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "cap & apply",
+          "formula": "adj = clamp(B \u00d7 (\u0394q+\u0394m+\u0394s)/100, \u00b10.75\u00d7MAE)",
+          "substituted": "adj = clamp(1,003, \u00b11,511) = 1,003",
+          "result": 1002.821866178944,
+          "provenance": "math",
+          "refs": [],
+          "note": "within_cap"
+        },
+        {
+          "name": "pre-reconcile",
+          "formula": "V = B + adj",
+          "substituted": "V = 45,503 +1,002.82 = 46,505",
+          "result": 46505.45399266797,
+          "provenance": "math",
+          "refs": [],
+          "note": null
+        },
+        {
+          "name": "reconcile blend",
+          "formula": "F = w\u00b7V + (1\u2212w)\u00b7C",
+          "substituted": "F = 0.40(LLM)\u00b746,505 + 0.60\u00b747,235 = 46,943",
+          "result": 46943.451057067185,
+          "provenance": "math",
+          "refs": [
+            "consensus: yfinance revenue_estimate avg [0q]"
+          ],
+          "note": "reconciler verdict: partial (LLM)"
+        }
+      ],
+      "worksheet": [
+        {
+          "provenance": "data",
+          "label": "anchor \u2014 FY2025Q2 actual",
+          "amount": 45277.0,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "\u00d7 seasonal growth (+0.50%)",
+          "amount": 45502.63212648903,
+          "is_final": false
+        },
+        {
+          "provenance": "llm",
+          "label": "+ judgment (+1,002.8, within cap)",
+          "amount": 46505.45399266797,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "blend: 40% ours / 60% consensus (47,235)",
+          "amount": 46943.451057067185,
+          "is_final": true
+        }
+      ],
+      "final_value": 46943.451057067185
+    },
+    {
+      "company": "Home Depot",
+      "ticker": "HD",
+      "label": "Adjusted diluted EPS",
+      "unit": "USD / share",
+      "period": "FY2026Q2",
+      "anchor": {
+        "value": 4.68,
+        "period": "FY2025Q2",
+        "quote": "Adjusted diluted earnings per share for the second quarter of fiscal 2025 were $4.68",
+        "source_doc": "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md"
+      },
+      "baseline_candidates": [
+        {
+          "method": "seasonal_yoy",
+          "value": 4.288032989912769,
+          "backtest_mae": 0.20728532629050545,
+          "backtest_bias": 0.05508522286124107,
+          "backtest_n": 6
+        },
+        {
+          "method": "growth_drift",
+          "value": 4.197572845072407,
+          "backtest_mae": 0.2873405087486671,
+          "backtest_bias": 0.1666163652316169,
+          "backtest_n": 5
+        }
+      ],
+      "baseline_chosen": "seasonal_yoy",
+      "guidance": null,
+      "estimate": {
+        "method": "Reconciled the quarterly seasonal baseline with FY2026Q1 actual EPS and management's full-year adjusted diluted EPS range, while preserving a year-over-year Q2 decline in the central case.",
+        "growth_p10": 2.0,
+        "growth_p50": 7.0,
+        "growth_p90": 12.0,
+        "momentum": {
+          "explanation": "panel 2/3: Adjusted EPS has been declining YoY (-3.65% in FY2026Q1, -13.1% in FY2025Q4), but the rate of decline improved by +9.45pts in Q1 and full-year guidance calls for flat-to-+4% growth, implying the EPS trend is inflecting from cooling toward stabilization \u2014 still cooling in the reported series itself.",
+          "label": "cooling",
+          "citations": [
+            "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md",
+            "home-depot/filings/2025-02-25__hd-us-20250225-q4-8k__101827.md",
+            "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md",
+            "home-depot/filings/2025-05-20__hd-us-20250520-q1-8k__101847.md"
+          ]
+        },
+        "guidance_style": {
+          "explanation": "panel 2/3: The FY2025 adjusted-EPS result of 14.69 was below the August outlook of about 14.94 but above the November outlook of about 14.48. Together with the relatively broad FY2026 range of flat to 4% growth, this history is more consistent with generally accurate guidance than persistent sandbagging or promotion.",
+          "label": "accurate",
+          "citations": [
+            "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md",
+            "home-depot/filings/2025-11-18__hd-us-20251118-q3-8k__359994.md",
+            "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md"
+          ]
+        },
+        "surprise_skew": {
+          "explanation": "panel 2/3: Management's full-year adjusted-EPS guidance calls for flat to 4% growth from 14.69, whereas the Q2 baseline represents a steep year-over-year decline. Unless earnings improvement is heavily deferred to the second half, this creates a meaningful upside tilt versus the quarterly baseline.",
+          "label": "upside",
+          "citations": [
+            "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md",
+            "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md"
+          ]
+        },
+        "confidence": "medium",
+        "rationale": "panel 3 member(s): At 4.29, the baseline is about 8.3% below FY2025Q2's 4.68. After Q1 EPS of 3.43, achieving management's FY2026 range of 14.69\u201315.28 requires the remaining quarters collectively to improve from their FY2025 level. A central result near 4.48 remains below the prior-year quarter but is more compatible with that annual outlook than the baseline."
+      },
+      "nudges": {
+        "components": [
+          {
+            "name": "quantile_p50",
+            "label": null,
+            "raw": 7.0,
+            "applied": 2.6616081806194503,
+            "capped": false,
+            "note": "shrink 0.380 (spread 10.0)"
+          },
+          {
+            "name": "momentum",
+            "label": "cooling",
+            "raw": -1.5337527656731358,
+            "applied": -1.5337527656731358,
+            "capped": false,
+            "note": "fixed_fallback"
+          },
+          {
+            "name": "surprise_skew",
+            "label": "upside",
+            "raw": 0.9202516594038814,
+            "applied": 0.9202516594038814,
+            "capped": false,
+            "note": "fixed_fallback"
+          }
+        ],
+        "cap": 0.15546399471787908,
+        "adjustment": 0.08782350701687365,
+        "caps_applied": [],
+        "pre_reconcile_value": 4.375856496929643
+      },
+      "consensus": {
+        "value": 4.7326,
+        "source": "yfinance earnings_estimate avg [0q]",
+        "fetched_at": null
+      },
+      "reconciliation": {
+        "verdict": "defer_to_consensus",
+        "weight_ours": 0.2,
+        "rationale": "The 7.5% shortfall versus consensus is not supported by sufficiently quarter-specific evidence. The cited FY2026 Q1 result of $3.43 and management\u2019s full-year EPS range of $14.69\u2013$15.28 justify moving above the $4.29 seasonal baseline, because the remaining quarters must collectively improve versus FY2025. However, they do not establish that Q2 itself should remain below FY2025Q2\u2019s $4.68, particularly when consensus is $4.73. The pipeline\u2019s own rationale viewed roughly $4.48 as more compatible with guidance, yet the final estimate is only $4.38. Consensus breadth and dispersion are unavailable, limiting full deference, but the cited record does not justify most of the material gap."
+      },
+      "validation": [
+        {
+          "check": "magnitude",
+          "passed": true,
+          "detail": "4.6612512993859285 is 1.36x last reported 3.43 (band 0.50x-2.00x)"
+        },
+        {
+          "check": "pence_trap",
+          "passed": true,
+          "detail": "n/a (not a pence per-share metric)"
+        },
+        {
+          "check": "percent_trap",
+          "passed": true,
+          "detail": "n/a (not a percentage metric)"
+        },
+        {
+          "check": "guidance_sanity",
+          "passed": true,
+          "detail": "no guidance available"
+        },
+        {
+          "check": "extraction_flags",
+          "passed": true,
+          "detail": "facts carried flags: auto_corrected_scale_x100 (was 0.3), derived_from_growth, magnitude_outlier"
+        }
+      ],
+      "fallback_used": null,
+      "candidates": [
+        {
+          "name": "reconciled",
+          "value": 4.6612512993859285,
+          "status": "chosen",
+          "reason": null
+        },
+        {
+          "name": "baseline:seasonal_yoy",
+          "value": 4.288032989912769,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "guidance_mid",
+          "value": null,
+          "status": "absent",
+          "reason": null
+        },
+        {
+          "name": "consensus",
+          "value": 4.7326,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "anchor_last_year",
+          "value": 4.68,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "last_reported_actual",
+          "value": 3.43,
+          "status": "viable",
+          "reason": null
+        }
+      ],
+      "panel": {
+        "members": [
+          {
+            "member": "openai:gpt-5.6-sol",
+            "p50": 4.5,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:anthropic/claude-fable-5",
+            "p50": 8.0,
+            "momentum": "cooling",
+            "guidance_style": "promotional",
+            "surprise_skew": "downside",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:x-ai/grok-4.6",
+            "p50": 7.0,
+            "momentum": "cooling",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          }
+        ],
+        "failed": [],
+        "p50_spread": 3.5
+      },
+      "derivation": [
+        {
+          "name": "anchor",
+          "formula": "A = actual[FY2025Q2]",
+          "substituted": "A = 4.68 USD / share",
+          "result": 4.68,
+          "provenance": "data",
+          "refs": [
+            "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md (tier 1)"
+          ],
+          "note": "same period last fiscal year, exact reported figure"
+        },
+        {
+          "name": "baseline",
+          "formula": "B = anchor \u00d7 (1 + mean(recent YoY))",
+          "substituted": "B = 4.68 \u00d7 (1 -8.38%) = 4.29",
+          "result": 4.288032989912769,
+          "provenance": "math",
+          "refs": [
+            "chosen by walk-forward backtest: MAE 0.21 over n=6 periods"
+          ],
+          "note": null
+        },
+        {
+          "name": "judgment: quantile",
+          "formula": "\u0394q = p50 \u00d7 shrink",
+          "substituted": "\u0394q = +7.00%(LLM) \u00d7 0.380 = +2.662%",
+          "result": 2.6616081806194503,
+          "provenance": "llm",
+          "refs": [],
+          "note": "shrink = 1/(1+(p90\u2212p10)/\u03c3), \u03c3=6.14 \u2014 wide model uncertainty shrinks its own influence"
+        },
+        {
+          "name": "judgment: momentum",
+          "formula": "\u0394 = map(momentum label) \u00d7 \u03c3",
+          "substituted": "\u0394(cooling(LLM)) = -1.534%",
+          "result": -1.5337527656731358,
+          "provenance": "llm",
+          "refs": [
+            "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md",
+            "home-depot/filings/2025-02-25__hd-us-20250225-q4-8k__101827.md",
+            "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md",
+            "home-depot/filings/2025-05-20__hd-us-20250520-q1-8k__101847.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "judgment: surprise skew",
+          "formula": "\u0394 = map(surprise_skew label) \u00d7 \u03c3",
+          "substituted": "\u0394(upside(LLM)) = +0.920%",
+          "result": 0.9202516594038814,
+          "provenance": "llm",
+          "refs": [
+            "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md",
+            "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "cap & apply",
+          "formula": "adj = clamp(B \u00d7 (\u0394q+\u0394m+\u0394s)/100, \u00b10.75\u00d7MAE)",
+          "substituted": "adj = clamp(0.09, \u00b10.16) = 0.09",
+          "result": 0.08782350701687365,
+          "provenance": "math",
+          "refs": [],
+          "note": "within_cap"
+        },
+        {
+          "name": "pre-reconcile",
+          "formula": "V = B + adj",
+          "substituted": "V = 4.29 +0.09 = 4.38",
+          "result": 4.375856496929643,
+          "provenance": "math",
+          "refs": [],
+          "note": null
+        },
+        {
+          "name": "reconcile blend",
+          "formula": "F = w\u00b7V + (1\u2212w)\u00b7C",
+          "substituted": "F = 0.20(LLM)\u00b74.38 + 0.80\u00b74.73 = 4.66",
+          "result": 4.6612512993859285,
+          "provenance": "math",
+          "refs": [
+            "consensus: yfinance earnings_estimate avg [0q]"
+          ],
+          "note": "reconciler verdict: defer_to_consensus (LLM)"
+        }
+      ],
+      "worksheet": [
+        {
+          "provenance": "data",
+          "label": "anchor \u2014 FY2025Q2 actual",
+          "amount": 4.68,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "\u00d7 seasonal growth (-8.38%)",
+          "amount": 4.288032989912769,
+          "is_final": false
+        },
+        {
+          "provenance": "llm",
+          "label": "+ judgment (+0.09, within cap)",
+          "amount": 4.375856496929643,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "blend: 20% ours / 80% consensus (4.73)",
+          "amount": 4.6612512993859285,
+          "is_final": true
+        }
+      ],
+      "final_value": 4.6612512993859285
+    },
+    {
+      "company": "Home Depot",
+      "ticker": "HD",
+      "label": "Comparable sales, total company",
+      "unit": "%",
+      "period": "FY2026Q2",
+      "anchor": {
+        "value": 1.0,
+        "period": "FY2025Q2",
+        "quote": "Comparable sales (% change) | 1.0 | %",
+        "source_doc": "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md"
+      },
+      "baseline_candidates": [
+        {
+          "method": "seasonal_yoy",
+          "value": 3.15,
+          "backtest_mae": 1.5499999999999998,
+          "backtest_bias": -1.5499999999999998,
+          "backtest_n": 6
+        }
+      ],
+      "baseline_chosen": "seasonal_yoy",
+      "guidance": null,
+      "estimate": {
+        "method": "Compared the 3.15% seasonal baseline with the recent sequence of reported company comparable-sales rates and allowed for substantial uncertainty because no target-quarter guidance or fresh evidence was provided.",
+        "growth_p10": -3.0,
+        "growth_p50": -1.6,
+        "growth_p90": 0.0,
+        "momentum": {
+          "explanation": "panel 3/3: Comparable sales improved from negative 3.3% in FY2024Q2 to positive 1.0% in FY2025Q2 and remained positive at 0.2%, 0.4%, and 0.6% through FY2026Q1. This is a gradual improvement, but not acceleration toward the 3% range.",
+          "label": "warming",
+          "citations": [
+            "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md",
+            "home-depot/filings/2025-11-18__hd-us-20251118-q3-8k__359994.md",
+            "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md"
+          ]
+        },
+        "guidance_style": {
+          "explanation": "panel 3/3: No target-period comparable-sales guidance is available. On the observable adjusted-EPS guidance record, FY2025 actual performance landed between management's August and November forecasts, supporting an overall characterization of management as reasonably accurate.",
+          "label": "accurate",
+          "citations": [
+            "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md",
+            "home-depot/filings/2025-11-18__hd-us-20251118-q3-8k__359994.md",
+            "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md"
+          ]
+        },
+        "surprise_skew": {
+          "explanation": "panel 3/3: The 3.15% baseline is more than two points above FY2026Q1's 0.6% result and well above the recent 0.2%\u20131.0% range. With no company guidance indicating a sharp acceleration, the risk is tilted clearly below the baseline.",
+          "label": "downside",
+          "citations": [
+            "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md",
+            "home-depot/filings/2025-11-18__hd-us-20251118-q3-8k__359994.md",
+            "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md"
+          ]
+        },
+        "confidence": "medium",
+        "rationale": "panel 3 member(s): The 3.15% baseline is materially above every recent reported comparable-sales result: 1.0% in FY2025Q2, 0.2% in Q3, 0.4% in Q4, and 0.6% in FY2026Q1. The central deviation of negative 1.6 points implies approximately 1.55% comparable growth, preserving improvement while recognizing that the baseline appears aggressive."
+      },
+      "nudges": {
+        "components": [
+          {
+            "name": "quantile_p50",
+            "label": null,
+            "raw": -1.6,
+            "applied": -0.5289875738107684,
+            "capped": false,
+            "note": "shrink 0.331 (spread 3.0)"
+          },
+          {
+            "name": "momentum",
+            "label": "warming",
+            "raw": 0.37043517951488114,
+            "applied": 0.37043517951488114,
+            "capped": false,
+            "note": "fixed_fallback"
+          },
+          {
+            "name": "surprise_skew",
+            "label": "downside",
+            "raw": -0.22226110770892868,
+            "applied": -0.22226110770892868,
+            "capped": false,
+            "note": "fixed_fallback"
+          }
+        ],
+        "cap": 1.1624999999999999,
+        "adjustment": -0.380813502004816,
+        "caps_applied": [],
+        "pre_reconcile_value": 2.769186497995184
+      },
+      "consensus": {
+        "value": null,
+        "source": "no comparable consensus series",
+        "fetched_at": null
+      },
+      "reconciliation": null,
+      "validation": [
+        {
+          "check": "magnitude",
+          "passed": true,
+          "detail": "2.769186497995184 within 15 pts of recent median 0.4"
+        },
+        {
+          "check": "pence_trap",
+          "passed": true,
+          "detail": "n/a (not a pence per-share metric)"
+        },
+        {
+          "check": "percent_trap",
+          "passed": true,
+          "detail": "2.769186497995184 points plausible"
+        },
+        {
+          "check": "guidance_sanity",
+          "passed": true,
+          "detail": "no guidance available"
+        }
+      ],
+      "fallback_used": null,
+      "candidates": [
+        {
+          "name": "estimator_nudged",
+          "value": 2.769186497995184,
+          "status": "chosen",
+          "reason": null
+        },
+        {
+          "name": "baseline:seasonal_yoy",
+          "value": 3.15,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "guidance_mid",
+          "value": null,
+          "status": "absent",
+          "reason": null
+        },
+        {
+          "name": "consensus",
+          "value": null,
+          "status": "absent",
+          "reason": null
+        },
+        {
+          "name": "anchor_last_year",
+          "value": 1.0,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "last_reported_actual",
+          "value": 0.6,
+          "status": "viable",
+          "reason": null
+        }
+      ],
+      "panel": {
+        "members": [
+          {
+            "member": "openai:gpt-5.6-sol",
+            "p50": -1.6,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "downside",
+            "confidence": "low"
+          },
+          {
+            "member": "openrouter:anthropic/claude-fable-5",
+            "p50": -1.9,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "downside",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:x-ai/grok-4.6",
+            "p50": -1.3,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "downside",
+            "confidence": "medium"
+          }
+        ],
+        "failed": [],
+        "p50_spread": 0.5999999999999999
+      },
+      "derivation": [
+        {
+          "name": "anchor",
+          "formula": "A = actual[FY2025Q2]",
+          "substituted": "A = 1 %",
+          "result": 1.0,
+          "provenance": "data",
+          "refs": [
+            "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md (tier 1)"
+          ],
+          "note": "same period last fiscal year, exact reported figure"
+        },
+        {
+          "name": "baseline",
+          "formula": "B = anchor \u00d7 (1 + mean(recent YoY))",
+          "substituted": "B = mean(FY2024Q2=-3.3, FY2025Q2=1.0) + trend +4.30 = 3.15",
+          "result": 3.15,
+          "provenance": "math",
+          "refs": [
+            "chosen by walk-forward backtest: MAE 1.55 over n=6 periods"
+          ],
+          "note": null
+        },
+        {
+          "name": "judgment: quantile",
+          "formula": "\u0394q = p50 \u00d7 shrink",
+          "substituted": "\u0394q = -1.60pts(LLM) \u00d7 0.331 = -0.529pts",
+          "result": -0.5289875738107684,
+          "provenance": "llm",
+          "refs": [],
+          "note": "shrink = 1/(1+(p90\u2212p10)/\u03c3), \u03c3=1.48 \u2014 wide model uncertainty shrinks its own influence"
+        },
+        {
+          "name": "judgment: momentum",
+          "formula": "\u0394 = map(momentum label) \u00d7 \u03c3",
+          "substituted": "\u0394(warming(LLM)) = +0.370pts",
+          "result": 0.37043517951488114,
+          "provenance": "llm",
+          "refs": [
+            "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md",
+            "home-depot/filings/2025-11-18__hd-us-20251118-q3-8k__359994.md",
+            "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "judgment: surprise skew",
+          "formula": "\u0394 = map(surprise_skew label) \u00d7 \u03c3",
+          "substituted": "\u0394(downside(LLM)) = -0.222pts",
+          "result": -0.22226110770892868,
+          "provenance": "llm",
+          "refs": [
+            "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md",
+            "home-depot/filings/2025-11-18__hd-us-20251118-q3-8k__359994.md",
+            "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "cap & apply",
+          "formula": "adj = clamp(\u0394q+\u0394m+\u0394s, \u00b10.75\u00d7MAE)",
+          "substituted": "adj = clamp(-0.38, \u00b11.16) = -0.38",
+          "result": -0.380813502004816,
+          "provenance": "math",
+          "refs": [],
+          "note": "within_cap"
+        },
+        {
+          "name": "pre-reconcile",
+          "formula": "V = B + adj",
+          "substituted": "V = 3.15 -0.38 = 2.77",
+          "result": 2.769186497995184,
+          "provenance": "math",
+          "refs": [],
+          "note": null
+        },
+        {
+          "name": "final",
+          "formula": "F = V",
+          "substituted": "F = 2.77",
+          "result": 2.769186497995184,
+          "provenance": "math",
+          "refs": [],
+          "note": "no consensus blend (pure-blind mode or no consensus)"
+        }
+      ],
+      "worksheet": [
+        {
+          "provenance": "data",
+          "label": "anchor \u2014 FY2025Q2 actual",
+          "amount": 1.0,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "seasonal level + trend (+4.30 pts)",
+          "amount": 3.15,
+          "is_final": false
+        },
+        {
+          "provenance": "llm",
+          "label": "+ judgment (-0.38 pts, within cap)",
+          "amount": 2.769186497995184,
+          "is_final": true
+        }
+      ],
+      "final_value": 2.769186497995184
+    },
+    {
+      "company": "Analog Devices",
+      "ticker": "ADI",
+      "label": "Revenue",
+      "unit": "USDm",
+      "period": "FY2026Q3",
+      "anchor": {
+        "value": 2640.068,
+        "period": "FY2025Q3",
+        "quote": "| Revenue         | $ 3,623,465         | $ 2,640,068",
+        "source_doc": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-10q__1040607.md"
+      },
+      "baseline_candidates": [
+        {
+          "method": "seasonal_yoy",
+          "value": 3533.1129233285324,
+          "backtest_mae": 239.51749321418325,
+          "backtest_bias": -177.0927675695948,
+          "backtest_n": 6
+        },
+        {
+          "method": "growth_drift",
+          "value": 3837.45174759122,
+          "backtest_mae": 243.94373321540127,
+          "backtest_bias": -136.95035941979143,
+          "backtest_n": 4
+        },
+        {
+          "method": "guidance_mid",
+          "value": 3900.0,
+          "backtest_mae": 276.53499999999985,
+          "backtest_bias": 276.53499999999985,
+          "backtest_n": 1
+        }
+      ],
+      "baseline_chosen": "seasonal_yoy",
+      "guidance": {
+        "low": 3800.0,
+        "mid": 3900.0,
+        "high": 4000.0,
+        "beat_factor": null,
+        "quote": "we are forecasting revenue of $3.9 billion, +/- $100 million",
+        "source_doc": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md"
+      },
+      "estimate": {
+        "method": "Anchor to the recent company guidance range, with uncertainty widened because the selected seasonal baseline is far below guidance and revenue-guidance history is limited.",
+        "growth_p10": 7.5,
+        "growth_p50": 10.8,
+        "growth_p90": 13.3,
+        "momentum": {
+          "explanation": "panel 2/3: Revenue YoY growth has accelerated sharply: +22.3% in FY2025Q2, +25.9% in FY2025Q4, +30.4% in FY2026Q1, +37.2% in FY2026Q2, with double-digit growth across all end markets reported. Guidance of $3.9B implies continued ~35%+ YoY growth (vs FY2025Q3 actual of $2.88B per the tier-1 filing). This is a business heating up beyond what the older historical series shows.",
+          "label": "hot",
+          "citations": [
+            "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
+            "analog-devices/filings/2025-05-22__adi-us-20250522-q2-8k__102679.md"
+          ]
+        },
+        "guidance_style": {
+          "explanation": "panel 2/3: Management has beaten its adjusted EPS guidance midpoint in all nine quarters of documented history (e.g., FY2026Q1 guided $2.29 vs actual $2.46; FY2026Q2 guided $2.88 vs actual $3.09), with beats of 2-11%. This consistent guide-low-beat pattern indicates sandbagging, which plausibly extends to the revenue guide.",
+          "label": "sandbagger",
+          "citations": [
+            "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
+            "analog-devices/filings/2026-02-18__adi-us-20260218-q1-8k-2__602115.md",
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
+            "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
+            "analog-devices/filings/2025-05-22__adi-us-20250522-q2-8k__102679.md",
+            "analog-devices/filings/2024-02-21__adi-us-20240221-q1-8k__102673.md"
+          ]
+        },
+        "surprise_skew": {
+          "explanation": "panel 3/3: Even the low end of management\u2019s recent revenue range is materially above the chosen seasonal baseline, so baseline-relative risk is tilted upward despite normal execution uncertainty.",
+          "label": "upside",
+          "citations": [
+            "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md"
+          ]
+        },
+        "confidence": "medium",
+        "rationale": "panel 3 member(s): Management\u2019s $3.8-$4.0 billion range translates into a substantial positive deviation from the $3.533 billion seasonal baseline, with the midpoint supporting the central delta. The range is recent and explicit, but limited revenue-guidance history warrants a moderately wide distribution."
+      },
+      "nudges": {
+        "components": [
+          {
+            "name": "quantile_p50",
+            "label": null,
+            "raw": 10.8,
+            "applied": 6.3297625806492155,
+            "capped": false,
+            "note": "shrink 0.586 (spread 5.800000000000001)"
+          },
+          {
+            "name": "momentum",
+            "label": "hot",
+            "raw": 4.106339275050993,
+            "applied": 4.106339275050993,
+            "capped": false,
+            "note": "fixed_fallback"
+          },
+          {
+            "name": "surprise_skew",
+            "label": "upside",
+            "raw": 1.2319017825152978,
+            "applied": 1.2319017825152978,
+            "capped": false,
+            "note": "fixed_fallback"
+          }
+        ],
+        "cap": 179.63811991063744,
+        "adjustment": 179.63811991063744,
+        "caps_applied": [
+          "capped_at_k_x_mae"
+        ],
+        "pre_reconcile_value": 3712.75104323917
+      },
+      "consensus": {
+        "value": 3925.03652,
+        "source": "yfinance revenue_estimate avg [0q]",
+        "fetched_at": null
+      },
+      "reconciliation": {
+        "verdict": "defer_to_consensus",
+        "weight_ours": 0.1,
+        "rationale": "Our estimate is 5.4% below consensus and, more importantly, below management\u2019s recent explicit $3.8-$4.0 billion guidance range cited from the May 20, 2026 filing. Consensus of $3.925 billion is close to the $3.9 billion guidance midpoint, whereas our $3.713 billion resulted from an adjustment cap rather than contrary company-specific evidence. Although no analyst count or dispersion is provided for consensus, its close alignment with current guidance makes it substantially more credible here."
+      },
+      "validation": [
+        {
+          "check": "magnitude",
+          "passed": true,
+          "detail": "3903.807972323917 is 1.08x last reported 3623.465 (band 0.50x-2.00x)"
+        },
+        {
+          "check": "pence_trap",
+          "passed": true,
+          "detail": "n/a (not a pence per-share metric)"
+        },
+        {
+          "check": "percent_trap",
+          "passed": true,
+          "detail": "n/a (not a percentage metric)"
+        },
+        {
+          "check": "guidance_sanity",
+          "passed": true,
+          "detail": "3903.807972323917 within guidance [3800.0, 4000.0]"
+        },
+        {
+          "check": "extraction_flags",
+          "passed": true,
+          "detail": "facts carried flags: derived_from_spread, quote_not_in_excerpt"
+        }
+      ],
+      "fallback_used": null,
+      "candidates": [
+        {
+          "name": "reconciled",
+          "value": 3903.807972323917,
+          "status": "chosen",
+          "reason": null
+        },
+        {
+          "name": "baseline:seasonal_yoy",
+          "value": 3533.1129233285324,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "guidance_mid",
+          "value": 3900.0,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "consensus",
+          "value": 3925.03652,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "anchor_last_year",
+          "value": 2640.068,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "last_reported_actual",
+          "value": 3623.465,
+          "status": "viable",
+          "reason": null
+        }
+      ],
+      "panel": {
+        "members": [
+          {
+            "member": "openai:gpt-5.6-sol",
+            "p50": 10.4,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:anthropic/claude-fable-5",
+            "p50": 11.2,
+            "momentum": "hot",
+            "guidance_style": "sandbagger",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:x-ai/grok-4.6",
+            "p50": 10.8,
+            "momentum": "hot",
+            "guidance_style": "sandbagger",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          }
+        ],
+        "failed": [],
+        "p50_spread": 0.7999999999999989
+      },
+      "derivation": [
+        {
+          "name": "anchor",
+          "formula": "A = actual[FY2025Q3]",
+          "substituted": "A = 2,640 USDm",
+          "result": 2640.068,
+          "provenance": "data",
+          "refs": [
+            "analog-devices/filings/2026-05-20__adi-us-20260520-q2-10q__1040607.md (tier 1)"
+          ],
+          "note": "same period last fiscal year, exact reported figure"
+        },
+        {
+          "name": "baseline",
+          "formula": "B = anchor \u00d7 (1 + mean(recent YoY))",
+          "substituted": "B = 2,640 \u00d7 (1 +33.83%) = 3,533",
+          "result": 3533.1129233285324,
+          "provenance": "math",
+          "refs": [
+            "chosen by walk-forward backtest: MAE 239.52 over n=6 periods"
+          ],
+          "note": null
+        },
+        {
+          "name": "judgment: quantile",
+          "formula": "\u0394q = p50 \u00d7 shrink",
+          "substituted": "\u0394q = +10.80%(LLM) \u00d7 0.586 = +6.330%",
+          "result": 6.3297625806492155,
+          "provenance": "llm",
+          "refs": [],
+          "note": "shrink = 1/(1+(p90\u2212p10)/\u03c3), \u03c3=8.21 \u2014 wide model uncertainty shrinks its own influence"
+        },
+        {
+          "name": "judgment: momentum",
+          "formula": "\u0394 = map(momentum label) \u00d7 \u03c3",
+          "substituted": "\u0394(hot(LLM)) = +4.106%",
+          "result": 4.106339275050993,
+          "provenance": "llm",
+          "refs": [
+            "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
+            "analog-devices/filings/2025-05-22__adi-us-20250522-q2-8k__102679.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "judgment: surprise skew",
+          "formula": "\u0394 = map(surprise_skew label) \u00d7 \u03c3",
+          "substituted": "\u0394(upside(LLM)) = +1.232%",
+          "result": 1.2319017825152978,
+          "provenance": "llm",
+          "refs": [
+            "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "cap & apply",
+          "formula": "adj = clamp(B \u00d7 (\u0394q+\u0394m+\u0394s)/100, \u00b10.75\u00d7MAE)",
+          "substituted": "adj = clamp(412.24, \u00b1179.64) = 179.64",
+          "result": 179.63811991063744,
+          "provenance": "math",
+          "refs": [],
+          "note": "capped_at_k_x_mae"
+        },
+        {
+          "name": "pre-reconcile",
+          "formula": "V = B + adj",
+          "substituted": "V = 3,533 +179.64 = 3,713",
+          "result": 3712.75104323917,
+          "provenance": "math",
+          "refs": [],
+          "note": null
+        },
+        {
+          "name": "reconcile blend",
+          "formula": "F = w\u00b7V + (1\u2212w)\u00b7C",
+          "substituted": "F = 0.10(LLM)\u00b73,713 + 0.90\u00b73,925 = 3,904",
+          "result": 3903.807972323917,
+          "provenance": "math",
+          "refs": [
+            "consensus: yfinance revenue_estimate avg [0q]"
+          ],
+          "note": "reconciler verdict: defer_to_consensus (LLM)"
+        }
+      ],
+      "worksheet": [
+        {
+          "provenance": "data",
+          "label": "anchor \u2014 FY2025Q3 actual",
+          "amount": 2640.068,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "\u00d7 seasonal growth (+33.83%)",
+          "amount": 3533.1129233285324,
+          "is_final": false
+        },
+        {
+          "provenance": "llm",
+          "label": "+ judgment (raw +412.2, capped at +179.6)",
+          "amount": 3712.75104323917,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "blend: 10% ours / 90% consensus (3,925)",
+          "amount": 3903.807972323917,
+          "is_final": true
+        }
+      ],
+      "final_value": 3903.807972323917
+    },
+    {
+      "company": "Analog Devices",
+      "ticker": "ADI",
+      "label": "Adjusted diluted EPS",
+      "unit": "USD / share",
+      "period": "FY2026Q3",
+      "anchor": {
+        "value": 2.05,
+        "period": "FY2025Q3",
+        "quote": "| Adjusted diluted earnings per share | $         | 2.05         | $ 1.58         | 30 %         |",
+        "source_doc": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md"
+      },
+      "baseline_candidates": [
+        {
+          "method": "guidance_x_beat",
+          "value": 3.5157514703439317,
+          "backtest_mae": 0.03529937469057898,
+          "backtest_bias": -0.00024199956030150163,
+          "backtest_n": 6
+        },
+        {
+          "method": "guidance_mid",
+          "value": 3.3,
+          "backtest_mae": 0.13666666666666658,
+          "backtest_bias": -0.13666666666666658,
+          "backtest_n": 6
+        },
+        {
+          "method": "growth_drift",
+          "value": 3.641081506100338,
+          "backtest_mae": 0.2273463422343092,
+          "backtest_bias": -0.016436058410966587,
+          "backtest_n": 6
+        },
+        {
+          "method": "seasonal_yoy",
+          "value": 3.25895954236445,
+          "backtest_mae": 0.34134850192314464,
+          "backtest_bias": -0.34134850192314464,
+          "backtest_n": 6
+        }
+      ],
+      "baseline_chosen": "guidance_x_beat",
+      "guidance": {
+        "low": 3.15,
+        "mid": 3.3,
+        "high": 3.45,
+        "beat_factor": 6.537923343755521,
+        "quote": "adjusted EPS to be $3.30, +/-$0.15.",
+        "source_doc": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md"
+      },
+      "estimate": {
+        "method": "Use the backtested guidance-plus-historical-beat baseline as the primary anchor, adding only a very small further adjustment because the recurring beat pattern is already embedded.",
+        "growth_p10": -2.5,
+        "growth_p50": 0.3,
+        "growth_p90": 3.0,
+        "momentum": {
+          "explanation": "panel 3/3: Adjusted EPS advanced from FY2026Q1 to FY2026Q2, year-over-year growth accelerated to 67%, and target-quarter guidance calls for another sequential increase. This is a strong continuation of the earnings recovery.",
+          "label": "hot",
+          "citations": [
+            "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
+            "analog-devices/filings/2026-02-18__adi-us-20260218-q1-8k-2__602115.md",
+            "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md"
+          ]
+        },
+        "guidance_style": {
+          "explanation": "panel 3/3: Adjusted EPS exceeded the guidance midpoint in every listed completed comparison, including FY2024Q2, FY2024Q3, FY2025Q2, FY2025Q3, and FY2026Q2. The repeated and often meaningful beats indicate consistently conservative adjusted-EPS guidance.",
+          "label": "sandbagger",
+          "citations": [
+            "analog-devices/filings/2024-02-21__adi-us-20240221-q1-8k__102673.md",
+            "analog-devices/filings/2024-05-22__adi-us-20240522-q2-8k__102675.md",
+            "analog-devices/filings/2025-02-19__adi-us-20250219-q1-8k__102670.md",
+            "analog-devices/filings/2025-05-22__adi-us-20250522-q2-8k__102679.md",
+            "analog-devices/filings/2026-02-18__adi-us-20260218-q1-8k-2__602115.md",
+            "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
+            "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
+            "analog-devices/filings/2024-11-26__adi-us-20241126-q4-8k__102666.md",
+            "analog-devices/filings/2024-08-21__adi-us-20240821-q3-8k__102648.md"
+          ]
+        },
+        "surprise_skew": {
+          "explanation": "panel 2/3: The baseline already embeds the historical beat (guidance $3.30 x beat factor = $3.52, backtest MAE only $0.04). With beat magnitudes trending up in the last two quarters (+7.4%, +7.3%) and momentum accelerating, residual risk vs this beat-adjusted baseline is mildly to the upside, but most of the sandbag is already priced in.",
+          "label": "upside",
+          "citations": [
+            "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
+            "analog-devices/filings/2026-02-18__adi-us-20260218-q1-8k-2__602115.md"
+          ]
+        },
+        "confidence": "high",
+        "rationale": "panel 3 member(s): The chosen baseline already lifts management\u2019s $3.30 midpoint to reflect the company\u2019s exceptionally consistent EPS beats and has very low walk-forward error. Consequently, the proper adjustment is near zero, with a slight positive median supported by rising revenue and sustained high gross margin."
+      },
+      "nudges": {
+        "components": [
+          {
+            "name": "quantile_p50",
+            "label": null,
+            "raw": 0.3,
+            "applied": 0.26031401538855287,
+            "capped": false,
+            "note": "shrink 0.868 (spread 5.5)"
+          },
+          {
+            "name": "momentum",
+            "label": "hot",
+            "raw": 18.038195330853263,
+            "applied": 18.038195330853263,
+            "capped": false,
+            "note": "fixed_fallback"
+          },
+          {
+            "name": "surprise_skew",
+            "label": "upside",
+            "raw": 5.411458599255979,
+            "applied": 5.411458599255979,
+            "capped": false,
+            "note": "fixed_fallback"
+          }
+        ],
+        "cap": 0.026474531017934233,
+        "adjustment": 0.026474531017934233,
+        "caps_applied": [
+          "capped_at_k_x_mae"
+        ],
+        "pre_reconcile_value": 3.542226001361866
+      },
+      "consensus": {
+        "value": 3.33389,
+        "source": "yfinance earnings_estimate avg [0q]",
+        "fetched_at": null
+      },
+      "reconciliation": {
+        "verdict": "hold",
+        "weight_ours": 0.78,
+        "rationale": "The 6.25% gap is material, but our estimate is supported by a directly backtested guidance-plus-beat baseline: $3.52 versus the final $3.54 estimate, with walk-forward MAE of only $0.04. The cited ADI quarterly filings document the exceptionally consistent EPS-beat pattern used by that baseline, while the May 20, 2026 Q2 filing supports the modest additional uplift through rising revenue and sustained high gross margin. The discretionary adjustment was capped at just $0.026, so the deviation is driven primarily by the validated baseline rather than aggressive judgment. Consensus at $3.33 is close to management's $3.30 midpoint and comes from a yfinance average with no analyst count, dispersion, or freshness supplied, giving little basis to override the stronger historical calibration. Keep most of our estimate, while retaining some consensus weight because the $0.21 gap is several times the baseline MAE."
+      },
+      "validation": [
+        {
+          "check": "magnitude",
+          "passed": true,
+          "detail": "3.4963920810622553 is 1.13x last reported 3.09 (band 0.50x-2.00x)"
+        },
+        {
+          "check": "pence_trap",
+          "passed": true,
+          "detail": "n/a (not a pence per-share metric)"
+        },
+        {
+          "check": "percent_trap",
+          "passed": true,
+          "detail": "n/a (not a percentage metric)"
+        },
+        {
+          "check": "guidance_sanity",
+          "passed": true,
+          "detail": "3.4963920810622553 is 1% outside guidance [3.15, 3.45] \u2014 tolerated (<25%)"
+        },
+        {
+          "check": "extraction_flags",
+          "passed": true,
+          "detail": "facts carried flags: derived_from_spread"
+        }
+      ],
+      "fallback_used": null,
+      "candidates": [
+        {
+          "name": "reconciled",
+          "value": 3.4963920810622553,
+          "status": "chosen",
+          "reason": null
+        },
+        {
+          "name": "baseline:guidance_x_beat",
+          "value": 3.5157514703439317,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "guidance_mid",
+          "value": 3.3,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "consensus",
+          "value": 3.33389,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "anchor_last_year",
+          "value": 2.05,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "last_reported_actual",
+          "value": 3.09,
+          "status": "viable",
+          "reason": null
+        }
+      ],
+      "panel": {
+        "members": [
+          {
+            "member": "openai:gpt-5.6-sol",
+            "p50": 0.3,
+            "momentum": "hot",
+            "guidance_style": "sandbagger",
+            "surprise_skew": "balanced",
+            "confidence": "high"
+          },
+          {
+            "member": "openrouter:anthropic/claude-fable-5",
+            "p50": 0.3,
+            "momentum": "hot",
+            "guidance_style": "sandbagger",
+            "surprise_skew": "upside",
+            "confidence": "high"
+          },
+          {
+            "member": "openrouter:x-ai/grok-4.6",
+            "p50": 0.4,
+            "momentum": "hot",
+            "guidance_style": "sandbagger",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          }
+        ],
+        "failed": [],
+        "p50_spread": 0.10000000000000003
+      },
+      "derivation": [
+        {
+          "name": "anchor",
+          "formula": "A = actual[FY2025Q3]",
+          "substituted": "A = 2.05 USD / share",
+          "result": 2.05,
+          "provenance": "data",
+          "refs": [
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md (tier 1)"
+          ],
+          "note": "same period last fiscal year, exact reported figure"
+        },
+        {
+          "name": "baseline",
+          "formula": "B = guidance mid \u00d7 (1 + historical beat)",
+          "substituted": "B = G_mid \u00d7 (1 +6.54%) = 3.52",
+          "result": 3.5157514703439317,
+          "provenance": "math",
+          "refs": [
+            "chosen by walk-forward backtest: MAE 0.04 over n=6 periods"
+          ],
+          "note": null
+        },
+        {
+          "name": "judgment: quantile",
+          "formula": "\u0394q = p50 \u00d7 shrink",
+          "substituted": "\u0394q = +0.30%(LLM) \u00d7 0.868 = +0.260%",
+          "result": 0.26031401538855287,
+          "provenance": "llm",
+          "refs": [],
+          "note": "shrink = 1/(1+(p90\u2212p10)/\u03c3), \u03c3=36.08 \u2014 wide model uncertainty shrinks its own influence"
+        },
+        {
+          "name": "judgment: momentum",
+          "formula": "\u0394 = map(momentum label) \u00d7 \u03c3",
+          "substituted": "\u0394(hot(LLM)) = +18.038%",
+          "result": 18.038195330853263,
+          "provenance": "llm",
+          "refs": [
+            "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
+            "analog-devices/filings/2026-02-18__adi-us-20260218-q1-8k-2__602115.md",
+            "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "judgment: surprise skew",
+          "formula": "\u0394 = map(surprise_skew label) \u00d7 \u03c3",
+          "substituted": "\u0394(upside(LLM)) = +5.411%",
+          "result": 5.411458599255979,
+          "provenance": "llm",
+          "refs": [
+            "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
+            "analog-devices/filings/2026-02-18__adi-us-20260218-q1-8k-2__602115.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "cap & apply",
+          "formula": "adj = clamp(B \u00d7 (\u0394q+\u0394m+\u0394s)/100, \u00b10.75\u00d7MAE)",
+          "substituted": "adj = clamp(0.83, \u00b10.03) = 0.03",
+          "result": 0.026474531017934233,
+          "provenance": "math",
+          "refs": [],
+          "note": "capped_at_k_x_mae"
+        },
+        {
+          "name": "pre-reconcile",
+          "formula": "V = B + adj",
+          "substituted": "V = 3.52 +0.03 = 3.54",
+          "result": 3.542226001361866,
+          "provenance": "math",
+          "refs": [],
+          "note": null
+        },
+        {
+          "name": "reconcile blend",
+          "formula": "F = w\u00b7V + (1\u2212w)\u00b7C",
+          "substituted": "F = 0.78(LLM)\u00b73.54 + 0.22\u00b73.33 = 3.5",
+          "result": 3.4963920810622553,
+          "provenance": "math",
+          "refs": [
+            "consensus: yfinance earnings_estimate avg [0q]"
+          ],
+          "note": "reconciler verdict: hold (LLM)"
+        }
+      ],
+      "worksheet": [
+        {
+          "provenance": "data",
+          "label": "anchor \u2014 FY2025Q3 actual",
+          "amount": 2.05,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "guidance \u00d7 beat history (+6.54%)",
+          "amount": 3.5157514703439317,
+          "is_final": false
+        },
+        {
+          "provenance": "llm",
+          "label": "+ judgment (raw +0.83, capped at +0.03)",
+          "amount": 3.542226001361866,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "blend: 78% ours / 22% consensus (3.33)",
+          "amount": 3.4963920810622553,
+          "is_final": true
+        }
+      ],
+      "final_value": 3.4963920810622553
+    },
+    {
+      "company": "Analog Devices",
+      "ticker": "ADI",
+      "label": "Adjusted gross margin",
+      "unit": "%",
+      "period": "FY2026Q3",
+      "anchor": {
+        "value": 69.2,
+        "period": "FY2025Q3",
+        "quote": "| Adjusted gross margin percentage    |         | 69.2 %         | 67.9 %         | 130 bps         |",
+        "source_doc": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md"
+      },
+      "baseline_candidates": [
+        {
+          "method": "seasonal_yoy",
+          "value": 69.85000000000001,
+          "backtest_mae": 1.908333333333329,
+          "backtest_bias": -1.908333333333329,
+          "backtest_n": 6
+        }
+      ],
+      "baseline_chosen": "seasonal_yoy",
+      "guidance": null,
+      "estimate": {
+        "method": "Center near the latest reported margin level, using the seasonal model\u2019s documented negative bias and the strong recent margin trend to adjust upward from the baseline.",
+        "growth_p10": 2.3,
+        "growth_p50": 3.4,
+        "growth_p90": 4.2,
+        "momentum": {
+          "explanation": "panel 2/3: Adjusted gross margin progressed from 69.4% in FY2025Q2 and 69.2% in FY2025Q3 to 73.0% by FY2026Q2, while year-over-year margin expansion accelerated. The trend is clearly improving, though the target call assumes stabilization near the latest level rather than another comparably large step-up.",
+          "label": "warming",
+          "citations": [
+            "analog-devices/filings/2025-05-22__adi-us-20250522-q2-8k__102679.md",
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md"
+          ]
+        },
+        "guidance_style": {
+          "explanation": "panel 2/3: No explicit gross-margin guidance was given for the target period; management's overall guidance style is inferred from its EPS record of consistently guiding low and beating (nine straight beats), which implies conservatively framed margin assumptions embedded in the EPS guide.",
+          "label": "sandbagger",
+          "citations": [
+            "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
+            "analog-devices/filings/2026-02-18__adi-us-20260218-q1-8k-2__602115.md",
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md"
+          ]
+        },
+        "surprise_skew": {
+          "explanation": "panel 3/3: The latest reported margin materially exceeds the seasonal baseline, the historical series is rising, and the baseline method has systematically underpredicted margins. These factors tilt the baseline-relative distribution to the upside.",
+          "label": "upside",
+          "citations": [
+            "analog-devices/filings/2025-05-22__adi-us-20250522-q2-8k__102679.md",
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q2-8k__155976.md",
+            "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md"
+          ]
+        },
+        "confidence": "medium",
+        "rationale": "panel 3 member(s): The 69.85% seasonal baseline is well below the latest 73.0% reported margin and the seasonal method has a documented negative bias. Continued revenue growth should support utilization, so the central adjustment keeps margin near the recent elevated level, with uncertainty reflecting the absence of explicit target-quarter margin guidance."
+      },
+      "nudges": {
+        "components": [
+          {
+            "name": "quantile_p50",
+            "label": null,
+            "raw": 3.4,
+            "applied": 0.9832813260120367,
+            "capped": false,
+            "note": "shrink 0.289 (spread 1.9000000000000004)"
+          },
+          {
+            "name": "momentum",
+            "label": "warming",
+            "raw": 0.19326148090087697,
+            "applied": 0.19326148090087697,
+            "capped": false,
+            "note": "fixed_fallback"
+          },
+          {
+            "name": "surprise_skew",
+            "label": "upside",
+            "raw": 0.11595688854052617,
+            "applied": 0.11595688854052617,
+            "capped": false,
+            "note": "fixed_fallback"
+          }
+        ],
+        "cap": 1.4312499999999968,
+        "adjustment": 1.2924996954534398,
+        "caps_applied": [],
+        "pre_reconcile_value": 71.14249969545345
+      },
+      "consensus": {
+        "value": null,
+        "source": "no comparable consensus series",
+        "fetched_at": null
+      },
+      "reconciliation": null,
+      "validation": [
+        {
+          "check": "magnitude",
+          "passed": true,
+          "detail": "71.14249969545345 within 15 pts of recent median 71.2"
+        },
+        {
+          "check": "pence_trap",
+          "passed": true,
+          "detail": "n/a (not a pence per-share metric)"
+        },
+        {
+          "check": "percent_trap",
+          "passed": true,
+          "detail": "71.14249969545345 points plausible"
+        },
+        {
+          "check": "guidance_sanity",
+          "passed": true,
+          "detail": "no guidance available"
+        }
+      ],
+      "fallback_used": null,
+      "candidates": [
+        {
+          "name": "estimator_nudged",
+          "value": 71.14249969545345,
+          "status": "chosen",
+          "reason": null
+        },
+        {
+          "name": "baseline:seasonal_yoy",
+          "value": 69.85000000000001,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "guidance_mid",
+          "value": null,
+          "status": "absent",
+          "reason": null
+        },
+        {
+          "name": "consensus",
+          "value": null,
+          "status": "absent",
+          "reason": null
+        },
+        {
+          "name": "anchor_last_year",
+          "value": 69.2,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "last_reported_actual",
+          "value": 73.0,
+          "status": "viable",
+          "reason": null
+        }
+      ],
+      "panel": {
+        "members": [
+          {
+            "member": "openai:gpt-5.6-sol",
+            "p50": 3.15,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:anthropic/claude-fable-5",
+            "p50": 3.4,
+            "momentum": "hot",
+            "guidance_style": "sandbagger",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:x-ai/grok-4.6",
+            "p50": 3.5,
+            "momentum": "warming",
+            "guidance_style": "sandbagger",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          }
+        ],
+        "failed": [],
+        "p50_spread": 0.3500000000000001
+      },
+      "derivation": [
+        {
+          "name": "anchor",
+          "formula": "A = actual[FY2025Q3]",
+          "substituted": "A = 69.2 %",
+          "result": 69.2,
+          "provenance": "data",
+          "refs": [
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md (tier 1)"
+          ],
+          "note": "same period last fiscal year, exact reported figure"
+        },
+        {
+          "name": "baseline",
+          "formula": "B = anchor \u00d7 (1 + mean(recent YoY))",
+          "substituted": "B = mean(FY2024Q3=67.9, FY2025Q3=69.2) + trend +1.30 = 69.85",
+          "result": 69.85000000000001,
+          "provenance": "math",
+          "refs": [
+            "chosen by walk-forward backtest: MAE 1.91 over n=6 periods"
+          ],
+          "note": null
+        },
+        {
+          "name": "judgment: quantile",
+          "formula": "\u0394q = p50 \u00d7 shrink",
+          "substituted": "\u0394q = +3.40pts(LLM) \u00d7 0.289 = +0.983pts",
+          "result": 0.9832813260120367,
+          "provenance": "llm",
+          "refs": [],
+          "note": "shrink = 1/(1+(p90\u2212p10)/\u03c3), \u03c3=0.77 \u2014 wide model uncertainty shrinks its own influence"
+        },
+        {
+          "name": "judgment: momentum",
+          "formula": "\u0394 = map(momentum label) \u00d7 \u03c3",
+          "substituted": "\u0394(warming(LLM)) = +0.193pts",
+          "result": 0.19326148090087697,
+          "provenance": "llm",
+          "refs": [
+            "analog-devices/filings/2025-05-22__adi-us-20250522-q2-8k__102679.md",
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "judgment: surprise skew",
+          "formula": "\u0394 = map(surprise_skew label) \u00d7 \u03c3",
+          "substituted": "\u0394(upside(LLM)) = +0.116pts",
+          "result": 0.11595688854052617,
+          "provenance": "llm",
+          "refs": [
+            "analog-devices/filings/2025-05-22__adi-us-20250522-q2-8k__102679.md",
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
+            "analog-devices/filings/2025-08-20__adi-us-20250820-q2-8k__155976.md",
+            "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "cap & apply",
+          "formula": "adj = clamp(\u0394q+\u0394m+\u0394s, \u00b10.75\u00d7MAE)",
+          "substituted": "adj = clamp(1.29, \u00b11.43) = 1.29",
+          "result": 1.2924996954534398,
+          "provenance": "math",
+          "refs": [],
+          "note": "within_cap"
+        },
+        {
+          "name": "pre-reconcile",
+          "formula": "V = B + adj",
+          "substituted": "V = 69.85 +1.29 = 71.14",
+          "result": 71.14249969545345,
+          "provenance": "math",
+          "refs": [],
+          "note": null
+        },
+        {
+          "name": "final",
+          "formula": "F = V",
+          "substituted": "F = 71.14",
+          "result": 71.14249969545345,
+          "provenance": "math",
+          "refs": [],
+          "note": "no consensus blend (pure-blind mode or no consensus)"
+        }
+      ],
+      "worksheet": [
+        {
+          "provenance": "data",
+          "label": "anchor \u2014 FY2025Q3 actual",
+          "amount": 69.2,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "seasonal level + trend (+1.30 pts)",
+          "amount": 69.85000000000001,
+          "is_final": false
+        },
+        {
+          "provenance": "llm",
+          "label": "+ judgment (+1.29 pts, within cap)",
+          "amount": 71.14249969545345,
+          "is_final": true
+        }
+      ],
+      "final_value": 71.14249969545345
+    },
+    {
+      "company": "Hays plc",
+      "ticker": "HAS",
+      "label": "Net fees",
+      "unit": "GBPm",
+      "period": "FY2026",
+      "anchor": {
+        "value": 972.4,
+        "period": "FY2025",
+        "quote": "| Net fees (1)         | 972.4   | 1,113.6 | (13)%         | (11)%        |",
+        "source_doc": "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md"
+      },
+      "baseline_candidates": [
+        {
+          "method": "h1_ratio",
+          "value": 876.8953009866888,
+          "backtest_mae": 25.46771815532327,
+          "backtest_bias": -25.46771815532327,
+          "backtest_n": 1
+        },
+        {
+          "method": "seasonal_yoy",
+          "value": 849.103591954023,
+          "backtest_mae": 141.19999999999993,
+          "backtest_bias": 141.19999999999993,
+          "backtest_n": 1
+        }
+      ],
+      "baseline_chosen": "h1_ratio",
+      "guidance": null,
+      "estimate": {
+        "method": "Baseline-relative H1 extrapolation, adjusted modestly for the slowing rate of contraction and the demonstrated accuracy of recent management guidance.",
+        "growth_p10": -2.5,
+        "growth_p50": 1.0,
+        "growth_p90": 4.0,
+        "momentum": {
+          "explanation": "panel 2/3: Net fee declines are moderating: -9% yoy in FY2026 H1 vs -13% for FY2025 and -15% in FY2025 H1. The business is still shrinking, so this is cooling, but the second derivative is improving, keeping it out of 'cold'.",
+          "label": "cooling",
+          "citations": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
+            "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md",
+            "hays/filings/2025-02-20__has-ln-20250220-q2-8k__119730.md"
+          ]
+        },
+        "guidance_style": {
+          "explanation": "panel 3/3: Management forecast circa \u00a320m of FY2026H1 pre-exceptional operating profit shortly before reporting \u00a320.1m. That single recent observation indicates close guidance accuracy, although the limited history prevents a strong conclusion.",
+          "label": "accurate",
+          "citations": [
+            "hays/filings/2026-01-14__has-ln-20260114-q2-8k__401006.md",
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md"
+          ]
+        },
+        "surprise_skew": {
+          "explanation": "panel 2/3: The baseline assumes continued weakness and a somewhat worse year-on-year decline in H2 than the 9% reported in H1. That creates modest upside if the improving rate of contraction holds, though the absence of full-year guidance keeps downside meaningful.",
+          "label": "upside",
+          "citations": [
+            "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md",
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
+            "hays/filings/2025-02-20__has-ln-20250220-q2-8k__119730.md"
+          ]
+        },
+        "confidence": "medium",
+        "rationale": "panel 3 member(s): H1 net fees of \u00a3453.3m were down 9%, versus a 13% FY2025 decline. The \u00a3876.9m baseline implies \u00a3423.6m in H2 and a slightly sharper H2 year-on-year decline than H1, leaving room for a modest beat if the moderation persists. With no explicit full-year fee guidance, the adjustment and confidence remain limited."
+      },
+      "nudges": {
+        "components": [
+          {
+            "name": "quantile_p50",
+            "label": null,
+            "raw": 1.0,
+            "applied": 0.30882721497259435,
+            "capped": false,
+            "note": "shrink 0.309 (spread 6.5)"
+          },
+          {
+            "name": "momentum",
+            "label": "cooling",
+            "raw": -0.7260763664335643,
+            "applied": -0.7260763664335643,
+            "capped": false,
+            "note": "fixed_fallback"
+          },
+          {
+            "name": "surprise_skew",
+            "label": "upside",
+            "raw": 0.43564581986013856,
+            "applied": 0.43564581986013856,
+            "capped": false,
+            "note": "fixed_fallback"
+          }
+        ],
+        "cap": 19.10078861649245,
+        "adjustment": 0.16131952073041247,
+        "caps_applied": [],
+        "pre_reconcile_value": 877.0566205074192
+      },
+      "consensus": {
+        "value": null,
+        "source": "no comparable consensus series",
+        "fetched_at": null
+      },
+      "reconciliation": null,
+      "validation": [
+        {
+          "check": "magnitude",
+          "passed": true,
+          "detail": "877.0566205074192 is 0.90x last reported 972.4 (band 0.50x-2.00x)"
+        },
+        {
+          "check": "pence_trap",
+          "passed": true,
+          "detail": "n/a (not a pence per-share metric)"
+        },
+        {
+          "check": "percent_trap",
+          "passed": true,
+          "detail": "n/a (not a percentage metric)"
+        },
+        {
+          "check": "guidance_sanity",
+          "passed": true,
+          "detail": "no guidance available"
+        }
+      ],
+      "fallback_used": null,
+      "candidates": [
+        {
+          "name": "estimator_nudged",
+          "value": 877.0566205074192,
+          "status": "chosen",
+          "reason": null
+        },
+        {
+          "name": "baseline:h1_ratio",
+          "value": 876.8953009866888,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "guidance_mid",
+          "value": null,
+          "status": "absent",
+          "reason": null
+        },
+        {
+          "name": "consensus",
+          "value": null,
+          "status": "absent",
+          "reason": null
+        },
+        {
+          "name": "anchor_last_year",
+          "value": 972.4,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "last_reported_actual",
+          "value": 972.4,
+          "status": "viable",
+          "reason": null
+        }
+      ],
+      "panel": {
+        "members": [
+          {
+            "member": "openai:gpt-5.6-sol",
+            "p50": 1.0,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:anthropic/claude-fable-5",
+            "p50": 1.0,
+            "momentum": "cooling",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "high"
+          },
+          {
+            "member": "openrouter:x-ai/grok-4.6",
+            "p50": 0.8,
+            "momentum": "cooling",
+            "guidance_style": "accurate",
+            "surprise_skew": "balanced",
+            "confidence": "medium"
+          }
+        ],
+        "failed": [],
+        "p50_spread": 0.19999999999999996
+      },
+      "derivation": [
+        {
+          "name": "anchor",
+          "formula": "A = actual[FY2025]",
+          "substituted": "A = 972.4 GBPm",
+          "result": 972.4,
+          "provenance": "data",
+          "refs": [
+            "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md (tier 1)"
+          ],
+          "note": "same period last fiscal year, exact reported figure"
+        },
+        {
+          "name": "baseline",
+          "formula": "B = h1_ratio",
+          "substituted": "B = 876.9",
+          "result": 876.8953009866888,
+          "provenance": "math",
+          "refs": [
+            "chosen by walk-forward backtest: MAE 25.47 over n=1 periods"
+          ],
+          "note": null
+        },
+        {
+          "name": "judgment: quantile",
+          "formula": "\u0394q = p50 \u00d7 shrink",
+          "substituted": "\u0394q = +1.00%(LLM) \u00d7 0.309 = +0.309%",
+          "result": 0.30882721497259435,
+          "provenance": "llm",
+          "refs": [],
+          "note": "shrink = 1/(1+(p90\u2212p10)/\u03c3), \u03c3=2.9 \u2014 wide model uncertainty shrinks its own influence"
+        },
+        {
+          "name": "judgment: momentum",
+          "formula": "\u0394 = map(momentum label) \u00d7 \u03c3",
+          "substituted": "\u0394(cooling(LLM)) = -0.726%",
+          "result": -0.7260763664335643,
+          "provenance": "llm",
+          "refs": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
+            "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md",
+            "hays/filings/2025-02-20__has-ln-20250220-q2-8k__119730.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "judgment: surprise skew",
+          "formula": "\u0394 = map(surprise_skew label) \u00d7 \u03c3",
+          "substituted": "\u0394(upside(LLM)) = +0.436%",
+          "result": 0.43564581986013856,
+          "provenance": "llm",
+          "refs": [
+            "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md",
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
+            "hays/filings/2025-02-20__has-ln-20250220-q2-8k__119730.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "cap & apply",
+          "formula": "adj = clamp(B \u00d7 (\u0394q+\u0394m+\u0394s)/100, \u00b10.75\u00d7MAE)",
+          "substituted": "adj = clamp(0.16, \u00b119.1) = 0.16",
+          "result": 0.16131952073041247,
+          "provenance": "math",
+          "refs": [],
+          "note": "within_cap"
+        },
+        {
+          "name": "pre-reconcile",
+          "formula": "V = B + adj",
+          "substituted": "V = 876.9 +0.16 = 877.06",
+          "result": 877.0566205074192,
+          "provenance": "math",
+          "refs": [],
+          "note": null
+        },
+        {
+          "name": "final",
+          "formula": "F = V",
+          "substituted": "F = 877.06",
+          "result": 877.0566205074192,
+          "provenance": "math",
+          "refs": [],
+          "note": "no consensus blend (pure-blind mode or no consensus)"
+        }
+      ],
+      "worksheet": [
+        {
+          "provenance": "data",
+          "label": "anchor \u2014 FY2025 actual",
+          "amount": 972.4,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "h1_ratio",
+          "amount": 876.8953009866888,
+          "is_final": false
+        },
+        {
+          "provenance": "llm",
+          "label": "+ judgment (+0.16, within cap)",
+          "amount": 877.0566205074192,
+          "is_final": true
+        }
+      ],
+      "final_value": 877.0566205074192
+    },
+    {
+      "company": "Hays plc",
+      "ticker": "HAS",
+      "label": "Pre-exceptional basic EPS",
+      "unit": "GBp",
+      "period": "FY2026",
+      "anchor": {
+        "value": 1.31,
+        "period": "FY2025",
+        "quote": "Basic earnings per share before exceptional items        | 0.46p         | 0.81p         | 1.31p",
+        "source_doc": "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md"
+      },
+      "baseline_candidates": [
+        {
+          "method": "h1_ratio",
+          "value": 0.7625931857434449,
+          "backtest_mae": 0.5661350041136679,
+          "backtest_bias": 0.5661350041136679,
+          "backtest_n": 2
+        },
+        {
+          "method": "growth_drift",
+          "value": -0.04102144934650963,
+          "backtest_mae": 1.2832808289919924,
+          "backtest_bias": -1.2832808289919924,
+          "backtest_n": 1
+        },
+        {
+          "method": "seasonal_yoy",
+          "value": 0.5202089971315251,
+          "backtest_mae": 2.038566980808874,
+          "backtest_bias": 2.038566980808874,
+          "backtest_n": 3
+        }
+      ],
+      "baseline_chosen": "h1_ratio",
+      "guidance": null,
+      "estimate": {
+        "method": "Baseline-relative H1 extrapolation aligned with the operating-profit estimate, with a wider interval for tax, finance-cost, and share-count uncertainty.",
+        "growth_p10": -12.0,
+        "growth_p50": 1.5,
+        "growth_p90": 14.0,
+        "momentum": {
+          "explanation": "panel 2/3: EPS fell 44% yoy in H1 FY2026 (0.46p vs 0.81p), following -67% in FY2025 and -53% in FY2024. Declines persist and per-share earnings are near breakeven levels; however, the operating decline is moderating (-21% op profit in H1), so the trajectory is cooling rather than in freefall.",
+          "label": "cooling",
+          "citations": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
+            "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md",
+            "hays/filings/2024-08-22__has-ln-20240822-h2-8k__119721.md"
+          ]
+        },
+        "guidance_style": {
+          "explanation": "panel 3/3: The available management forecast was for pre-exceptional operating profit rather than EPS, but it was highly accurate: circa \u00a320m guided versus \u00a320.1m delivered. This supports an accurate classification while providing only indirect evidence for EPS.",
+          "label": "accurate",
+          "citations": [
+            "hays/filings/2026-01-14__has-ln-20260114-q2-8k__401006.md",
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md"
+          ]
+        },
+        "surprise_skew": {
+          "explanation": "panel 2/3: At sub-1p EPS levels, small swings in tax rate or finance costs produce large percentage moves in either direction; the h1_ratio baseline's historical low bias (+0.57) offers mild upside tilt, but the leverage risk keeps the distribution roughly balanced.",
+          "label": "balanced",
+          "citations": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md"
+          ]
+        },
+        "confidence": "medium",
+        "rationale": "panel 3 member(s): H1 EPS of 0.46p represents most of the 0.76p baseline, which implies 0.30p for H2. A central 1.5% positive deviation is kept aligned with operating profit. The broad range reflects the very small absolute EPS base and the lack of direct EPS, tax-rate, finance-cost, or share-count guidance."
+      },
+      "nudges": {
+        "components": [
+          {
+            "name": "quantile_p50",
+            "label": null,
+            "raw": 1.5,
+            "applied": 0.7482225615163268,
+            "capped": false,
+            "note": "shrink 0.499 (spread 26.0)"
+          },
+          {
+            "name": "momentum",
+            "label": "cooling",
+            "raw": -6.4692639082992995,
+            "applied": -6.4692639082992995,
+            "capped": false,
+            "note": "fixed_fallback"
+          },
+          {
+            "name": "surprise_skew",
+            "label": "balanced",
+            "raw": 0.0,
+            "applied": 0.0,
+            "capped": false,
+            "note": "fixed_fallback"
+          }
+        ],
+        "cap": 0.11438897786151674,
+        "adjustment": -0.04362827146413196,
+        "caps_applied": [
+          "within_cap; cap_ceiling_50pct_baseline"
+        ],
+        "pre_reconcile_value": 0.718964914279313
+      },
+      "consensus": {
+        "value": null,
+        "source": "no comparable consensus series",
+        "fetched_at": null
+      },
+      "reconciliation": null,
+      "validation": [
+        {
+          "check": "magnitude",
+          "passed": true,
+          "detail": "0.718964914279313 is 0.55x last reported 1.31 (band 0.23x-2.00x)"
+        },
+        {
+          "check": "pence_trap",
+          "passed": true,
+          "detail": "0.718964914279313 pence is far below the historical median (6.31p) \u2014 check units"
+        },
+        {
+          "check": "percent_trap",
+          "passed": true,
+          "detail": "n/a (not a percentage metric)"
+        },
+        {
+          "check": "guidance_sanity",
+          "passed": true,
+          "detail": "no guidance available"
+        },
+        {
+          "check": "extraction_flags",
+          "passed": true,
+          "detail": "facts carried flags: magnitude_outlier"
+        },
+        {
+          "check": "sibling_coherence",
+          "passed": true,
+          "detail": "EPS 0.718965 vs implied 1.24 (= profit 43.2605 \u00d7 EPS/profit anchor ratio 1.31/45.6) \u2014 gap 42% > 35%; EPS and sibling profit forecast may be incoherent"
+        }
+      ],
+      "fallback_used": null,
+      "candidates": [
+        {
+          "name": "estimator_nudged",
+          "value": 0.718964914279313,
+          "status": "chosen",
+          "reason": null
+        },
+        {
+          "name": "baseline:h1_ratio",
+          "value": 0.7625931857434449,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "guidance_mid",
+          "value": null,
+          "status": "absent",
+          "reason": null
+        },
+        {
+          "name": "consensus",
+          "value": null,
+          "status": "absent",
+          "reason": null
+        },
+        {
+          "name": "anchor_last_year",
+          "value": 1.31,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "last_reported_actual",
+          "value": 1.31,
+          "status": "viable",
+          "reason": null
+        }
+      ],
+      "panel": {
+        "members": [
+          {
+            "member": "openai:gpt-5.6-sol",
+            "p50": 1.5,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "low"
+          },
+          {
+            "member": "openrouter:anthropic/claude-fable-5",
+            "p50": 2.0,
+            "momentum": "cooling",
+            "guidance_style": "accurate",
+            "surprise_skew": "balanced",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:x-ai/grok-4.6",
+            "p50": 1.0,
+            "momentum": "cooling",
+            "guidance_style": "accurate",
+            "surprise_skew": "balanced",
+            "confidence": "medium"
+          }
+        ],
+        "failed": [],
+        "p50_spread": 1.0
+      },
+      "derivation": [
+        {
+          "name": "anchor",
+          "formula": "A = actual[FY2025]",
+          "substituted": "A = 1.31 GBp",
+          "result": 1.31,
+          "provenance": "data",
+          "refs": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md (tier 1)"
+          ],
+          "note": "same period last fiscal year, exact reported figure"
+        },
+        {
+          "name": "baseline",
+          "formula": "B = h1_ratio",
+          "substituted": "B = 0.76",
+          "result": 0.7625931857434449,
+          "provenance": "math",
+          "refs": [
+            "chosen by walk-forward backtest: MAE 0.57 over n=2 periods"
+          ],
+          "note": null
+        },
+        {
+          "name": "judgment: quantile",
+          "formula": "\u0394q = p50 \u00d7 shrink",
+          "substituted": "\u0394q = +1.50%(LLM) \u00d7 0.499 = +0.748%",
+          "result": 0.7482225615163268,
+          "provenance": "llm",
+          "refs": [],
+          "note": "shrink = 1/(1+(p90\u2212p10)/\u03c3), \u03c3=25.88 \u2014 wide model uncertainty shrinks its own influence"
+        },
+        {
+          "name": "judgment: momentum",
+          "formula": "\u0394 = map(momentum label) \u00d7 \u03c3",
+          "substituted": "\u0394(cooling(LLM)) = -6.469%",
+          "result": -6.4692639082992995,
+          "provenance": "llm",
+          "refs": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
+            "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md",
+            "hays/filings/2024-08-22__has-ln-20240822-h2-8k__119721.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "judgment: surprise skew",
+          "formula": "\u0394 = map(surprise_skew label) \u00d7 \u03c3",
+          "substituted": "\u0394(balanced(LLM)) = +0.000%",
+          "result": 0.0,
+          "provenance": "llm",
+          "refs": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "cap & apply",
+          "formula": "adj = clamp(B \u00d7 (\u0394q+\u0394m+\u0394s)/100, \u00b10.75\u00d7MAE)",
+          "substituted": "adj = clamp(-0.04, \u00b10.11) = -0.04",
+          "result": -0.04362827146413196,
+          "provenance": "math",
+          "refs": [],
+          "note": "within_cap; cap_ceiling_50pct_baseline"
+        },
+        {
+          "name": "pre-reconcile",
+          "formula": "V = B + adj",
+          "substituted": "V = 0.76 -0.04 = 0.72",
+          "result": 0.718964914279313,
+          "provenance": "math",
+          "refs": [],
+          "note": null
+        },
+        {
+          "name": "final",
+          "formula": "F = V",
+          "substituted": "F = 0.72",
+          "result": 0.718964914279313,
+          "provenance": "math",
+          "refs": [],
+          "note": "no consensus blend (pure-blind mode or no consensus)"
+        }
+      ],
+      "worksheet": [
+        {
+          "provenance": "data",
+          "label": "anchor \u2014 FY2025 actual",
+          "amount": 1.31,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "h1_ratio",
+          "amount": 0.7625931857434449,
+          "is_final": false
+        },
+        {
+          "provenance": "llm",
+          "label": "+ judgment (-0.04, within cap)",
+          "amount": 0.718964914279313,
+          "is_final": true
+        }
+      ],
+      "final_value": 0.718964914279313
+    },
+    {
+      "company": "Hays plc",
+      "ticker": "HAS",
+      "label": "Pre-exceptional operating profit",
+      "unit": "GBPm",
+      "period": "FY2026",
+      "anchor": {
+        "value": 45.6,
+        "period": "FY2025",
+        "quote": "| Operating profit (before exceptional items) (2)         | 45.6    | 105.1   | (57)%         | (56)%        |",
+        "source_doc": "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md"
+      },
+      "baseline_candidates": [
+        {
+          "method": "h1_ratio",
+          "value": 35.54229357950489,
+          "backtest_mae": 1.0068219633943514,
+          "backtest_bias": -1.0068219633943514,
+          "backtest_n": 1
+        },
+        {
+          "method": "seasonal_yoy",
+          "value": 19.78458610846813,
+          "backtest_mae": 59.49999999999999,
+          "backtest_bias": 59.49999999999999,
+          "backtest_n": 1
+        }
+      ],
+      "baseline_chosen": "h1_ratio",
+      "guidance": null,
+      "estimate": {
+        "method": "Baseline-relative H1 seasonal extrapolation anchored to the reported result and tested against management's recent H1 guidance.",
+        "growth_p10": -10.0,
+        "growth_p50": 1.5,
+        "growth_p90": 12.0,
+        "momentum": {
+          "explanation": "panel 2/3: Operating profit fell 21% yoy in H1 FY2026 versus -57% in FY2025 and -58% in FY2025 H1 \u2014 a marked moderation in the rate of decline, consistent with net fee trends. Still declining, so cooling, but clearly improving trajectory.",
+          "label": "cooling",
+          "citations": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
+            "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md",
+            "hays/filings/2025-02-20__has-ln-20250220-q2-8k__119730.md"
+          ]
+        },
+        "guidance_style": {
+          "explanation": "panel 3/3: Management's recent circa \u00a320m FY2026H1 pre-exceptional operating-profit forecast was followed by an actual result of \u00a320.1m. The close match supports accurate rather than systematically conservative or promotional guidance.",
+          "label": "accurate",
+          "citations": [
+            "hays/filings/2026-01-14__has-ln-20260114-q2-8k__401006.md",
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md"
+          ]
+        },
+        "surprise_skew": {
+          "explanation": "panel 2/3: H1 landed fractionally above management's circa \u00a320m forecast, while the full-year baseline assumes continued and slightly intensifying year-on-year pressure in H2. This creates modest upside potential, tempered by operating leverage and the absence of full-year guidance.",
+          "label": "upside",
+          "citations": [
+            "hays/filings/2026-01-14__has-ln-20260114-q2-8k__401006.md",
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md"
+          ]
+        },
+        "confidence": "medium",
+        "rationale": "panel 3 member(s): The \u00a335.54m baseline implies \u00a315.44m in H2 after the reported \u00a320.1m H1 result, equivalent to a slightly steeper H2 decline than H1. Since H1 essentially matched the recent circa \u00a320m guidance, a large adjustment is unwarranted; the central call is a small beat, with a wide range because modest fee variation can produce amplified profit effects."
+      },
+      "nudges": {
+        "components": [
+          {
+            "name": "quantile_p50",
+            "label": null,
+            "raw": 1.5,
+            "applied": 0.17110936902893398,
+            "capped": false,
+            "note": "shrink 0.114 (spread 22.0)"
+          },
+          {
+            "name": "momentum",
+            "label": "cooling",
+            "raw": -0.7081858414273279,
+            "applied": -0.7081858414273279,
+            "capped": false,
+            "note": "fixed_fallback"
+          },
+          {
+            "name": "surprise_skew",
+            "label": "upside",
+            "raw": 0.4249115048563967,
+            "applied": 0.4249115048563967,
+            "capped": false,
+            "note": "fixed_fallback"
+          }
+        ],
+        "cap": 0.7551164725457635,
+        "adjustment": -0.03986600205713299,
+        "caps_applied": [],
+        "pre_reconcile_value": 35.50242757744776
+      },
+      "consensus": {
+        "value": 45.2,
+        "source": "corpus compiled consensus range 37.0-46.0 [hays/filings/2026-04-16__has-ln-20260416-q3-8k-2__955907.md] \u2014 company statement: \"- (2) As of  15  April 2026 , company complied consensus for FY26 pre -exceptional operating profit is \u00a345. 2m, based on 11 analysts .\"",
+        "fetched_at": null
+      },
+      "reconciliation": {
+        "verdict": "defer_to_consensus",
+        "weight_ours": 0.2,
+        "rationale": "Our \u00a335.5m estimate is 21% below the fresh company-compiled consensus of \u00a345.2m and even below its \u00a337.0m lower bound. The consensus is relatively strong: 11 analysts, compiled as of 15 April 2026, and associated with a more recent Q3 filing. Our cited case rests mainly on the \u00a320.1m H1 result and a historical H1-ratio baseline implying only \u00a315.4m of H2 profit; it provides no specific post-H1 evidence strong enough to justify such a large shortfall versus consensus. The baseline's good backtest supports retaining limited weight, but the material deviation should largely be deferred."
+      },
+      "validation": [
+        {
+          "check": "magnitude",
+          "passed": true,
+          "detail": "43.260485515489556 is 0.95x last reported 45.6 (band 0.30x-2.00x)"
+        },
+        {
+          "check": "pence_trap",
+          "passed": true,
+          "detail": "n/a (not a pence per-share metric)"
+        },
+        {
+          "check": "percent_trap",
+          "passed": true,
+          "detail": "n/a (not a percentage metric)"
+        },
+        {
+          "check": "guidance_sanity",
+          "passed": true,
+          "detail": "no guidance available"
+        },
+        {
+          "check": "extraction_flags",
+          "passed": true,
+          "detail": "facts carried flags: magnitude_outlier"
+        }
+      ],
+      "fallback_used": null,
+      "candidates": [
+        {
+          "name": "reconciled",
+          "value": 43.260485515489556,
+          "status": "chosen",
+          "reason": null
+        },
+        {
+          "name": "baseline:h1_ratio",
+          "value": 35.54229357950489,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "guidance_mid",
+          "value": null,
+          "status": "absent",
+          "reason": null
+        },
+        {
+          "name": "consensus",
+          "value": 45.2,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "anchor_last_year",
+          "value": 45.6,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "last_reported_actual",
+          "value": 45.6,
+          "status": "viable",
+          "reason": null
+        }
+      ],
+      "panel": {
+        "members": [
+          {
+            "member": "openai:gpt-5.6-sol",
+            "p50": 1.5,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:anthropic/claude-fable-5",
+            "p50": 1.5,
+            "momentum": "cooling",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:x-ai/grok-4.6",
+            "p50": 1.0,
+            "momentum": "cooling",
+            "guidance_style": "accurate",
+            "surprise_skew": "balanced",
+            "confidence": "medium"
+          }
+        ],
+        "failed": [],
+        "p50_spread": 0.5
+      },
+      "derivation": [
+        {
+          "name": "anchor",
+          "formula": "A = actual[FY2025]",
+          "substituted": "A = 45.6 GBPm",
+          "result": 45.6,
+          "provenance": "data",
+          "refs": [
+            "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md (tier 1)"
+          ],
+          "note": "same period last fiscal year, exact reported figure"
+        },
+        {
+          "name": "baseline",
+          "formula": "B = h1_ratio",
+          "substituted": "B = 35.54",
+          "result": 35.54229357950489,
+          "provenance": "math",
+          "refs": [
+            "chosen by walk-forward backtest: MAE 1.01 over n=1 periods"
+          ],
+          "note": null
+        },
+        {
+          "name": "judgment: quantile",
+          "formula": "\u0394q = p50 \u00d7 shrink",
+          "substituted": "\u0394q = +1.50%(LLM) \u00d7 0.114 = +0.171%",
+          "result": 0.17110936902893398,
+          "provenance": "llm",
+          "refs": [],
+          "note": "shrink = 1/(1+(p90\u2212p10)/\u03c3), \u03c3=2.83 \u2014 wide model uncertainty shrinks its own influence"
+        },
+        {
+          "name": "judgment: momentum",
+          "formula": "\u0394 = map(momentum label) \u00d7 \u03c3",
+          "substituted": "\u0394(cooling(LLM)) = -0.708%",
+          "result": -0.7081858414273279,
+          "provenance": "llm",
+          "refs": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
+            "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md",
+            "hays/filings/2025-02-20__has-ln-20250220-q2-8k__119730.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "judgment: surprise skew",
+          "formula": "\u0394 = map(surprise_skew label) \u00d7 \u03c3",
+          "substituted": "\u0394(upside(LLM)) = +0.425%",
+          "result": 0.4249115048563967,
+          "provenance": "llm",
+          "refs": [
+            "hays/filings/2026-01-14__has-ln-20260114-q2-8k__401006.md",
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "cap & apply",
+          "formula": "adj = clamp(B \u00d7 (\u0394q+\u0394m+\u0394s)/100, \u00b10.75\u00d7MAE)",
+          "substituted": "adj = clamp(-0.04, \u00b10.76) = -0.04",
+          "result": -0.03986600205713299,
+          "provenance": "math",
+          "refs": [],
+          "note": "within_cap"
+        },
+        {
+          "name": "pre-reconcile",
+          "formula": "V = B + adj",
+          "substituted": "V = 35.54 -0.04 = 35.5",
+          "result": 35.50242757744776,
+          "provenance": "math",
+          "refs": [],
+          "note": null
+        },
+        {
+          "name": "reconcile blend",
+          "formula": "F = w\u00b7V + (1\u2212w)\u00b7C",
+          "substituted": "F = 0.20(LLM)\u00b735.5 + 0.80\u00b745.2 = 43.26",
+          "result": 43.260485515489556,
+          "provenance": "math",
+          "refs": [
+            "consensus: corpus compiled consensus range 37.0-46.0 [hays/filings/2026-04-16__has-ln-20260416-q3-8k-2__955907.md] \u2014 company statement: \"- (2) As of  15  April 2026 , company complied consensus for FY26 pre -exceptional operating profit is \u00a345. 2m, based on 11 analysts .\""
+          ],
+          "note": "reconciler verdict: defer_to_consensus (LLM)"
+        }
+      ],
+      "worksheet": [
+        {
+          "provenance": "data",
+          "label": "anchor \u2014 FY2025 actual",
+          "amount": 45.6,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "h1_ratio",
+          "amount": 35.54229357950489,
+          "is_final": false
+        },
+        {
+          "provenance": "llm",
+          "label": "+ judgment (-0.04, within cap)",
+          "amount": 35.50242757744776,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "blend: 20% ours / 80% consensus (45.2)",
+          "amount": 43.260485515489556,
+          "is_final": true
+        }
+      ],
+      "final_value": 43.260485515489556
+    },
+    {
+      "company": "Deere & Company",
+      "ticker": "DE",
+      "label": "Worldwide net sales and revenues",
+      "unit": "USDm",
+      "period": "FY2026Q3",
+      "anchor": {
+        "value": 12018.0,
+        "period": "FY2025Q3",
+        "quote": "Worldwide net sales and revenues decreased 9 percent, to $12.018 billion, for the third quarter of 2025",
+        "source_doc": "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md"
+      },
+      "baseline_candidates": [
+        {
+          "method": "seasonal_yoy",
+          "value": 13082.336247192634,
+          "backtest_mae": 1318.933586725063,
+          "backtest_bias": -283.05772052013253,
+          "backtest_n": 4
+        },
+        {
+          "method": "growth_drift",
+          "value": 13885.761344853187,
+          "backtest_mae": 2176.1839593715013,
+          "backtest_bias": 2176.1839593715013,
+          "backtest_n": 2
+        }
+      ],
+      "baseline_chosen": "seasonal_yoy",
+      "guidance": null,
+      "estimate": {
+        "method": "Applied a modest downside adjustment to the seasonal-year-over-year baseline, using the latest reported growth rate and its deceleration while allowing for normal quarterly uncertainty.",
+        "growth_p10": -8.0,
+        "growth_p50": -3.0,
+        "growth_p90": 2.0,
+        "momentum": {
+          "explanation": "panel 2/3: Revenue has swung back to growth: Q1 FY2026 +13% YoY, Q2 +5%, H1 +8% versus -9% in FY2025Q3. The series is clearly warmer than the FY2025 declines, though the within-year trend is decelerating.",
+          "label": "warming",
+          "citations": [
+            "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md",
+            "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md"
+          ]
+        },
+        "guidance_style": {
+          "explanation": "panel 3/3: The evidence provides reported results but no target-period guidance or historical guide-versus-actual comparisons. With no support for either systematic sandbagging or promotional guidance, accurate is the least directional classification.",
+          "label": "accurate",
+          "citations": [
+            "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md",
+            "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md"
+          ]
+        },
+        "surprise_skew": {
+          "explanation": "panel 3/3: The baseline requires faster growth than the latest reported quarter despite sequential deceleration in year-over-year growth, making a modest shortfall more likely than a comparable upside surprise.",
+          "label": "downside",
+          "citations": [
+            "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md",
+            "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md"
+          ]
+        },
+        "confidence": "medium",
+        "rationale": "panel 3 member(s): The baseline implies roughly 9% growth from FY2025Q3, above the latest quarter's 5% increase. A central result about 1% below baseline preserves positive year-over-year growth while recognizing the latest deceleration. The absence of Q3 guidance warrants a moderately broad range."
+      },
+      "nudges": {
+        "components": [
+          {
+            "name": "quantile_p50",
+            "label": null,
+            "raw": -3.0,
+            "applied": -1.3768371689758399,
+            "capped": false,
+            "note": "shrink 0.459 (spread 10.0)"
+          },
+          {
+            "name": "momentum",
+            "label": "warming",
+            "raw": 2.1206085160709094,
+            "applied": 2.1206085160709094,
+            "capped": false,
+            "note": "fixed_fallback"
+          },
+          {
+            "name": "surprise_skew",
+            "label": "downside",
+            "raw": -1.2723651096425457,
+            "applied": -1.2723651096425457,
+            "capped": false,
+            "note": "fixed_fallback"
+          }
+        ],
+        "cap": 989.2001900437972,
+        "adjustment": -69.15241339814784,
+        "caps_applied": [],
+        "pre_reconcile_value": 13013.183833794486
+      },
+      "consensus": {
+        "value": null,
+        "source": "no comparable consensus series (yahoo tracks equipment-ops, not worldwide)",
+        "fetched_at": null
+      },
+      "reconciliation": null,
+      "validation": [
+        {
+          "check": "magnitude",
+          "passed": true,
+          "detail": "13013.183833794486 is 0.97x last reported 13369.0 (band 0.50x-2.10x)"
+        },
+        {
+          "check": "pence_trap",
+          "passed": true,
+          "detail": "n/a (not a pence per-share metric)"
+        },
+        {
+          "check": "percent_trap",
+          "passed": true,
+          "detail": "n/a (not a percentage metric)"
+        },
+        {
+          "check": "guidance_sanity",
+          "passed": true,
+          "detail": "no guidance available"
+        },
+        {
+          "check": "extraction_flags",
+          "passed": true,
+          "detail": "facts carried flags: magnitude_outlier, quote_not_in_excerpt"
+        }
+      ],
+      "fallback_used": null,
+      "candidates": [
+        {
+          "name": "estimator_nudged",
+          "value": 13013.183833794486,
+          "status": "chosen",
+          "reason": null
+        },
+        {
+          "name": "baseline:seasonal_yoy",
+          "value": 13082.336247192634,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "guidance_mid",
+          "value": null,
+          "status": "absent",
+          "reason": null
+        },
+        {
+          "name": "consensus",
+          "value": null,
+          "status": "absent",
+          "reason": null
+        },
+        {
+          "name": "anchor_last_year",
+          "value": 12018.0,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "last_reported_actual",
+          "value": 13369.0,
+          "status": "viable",
+          "reason": null
+        }
+      ],
+      "panel": {
+        "members": [
+          {
+            "member": "openai:gpt-5.6-sol",
+            "p50": -1.0,
+            "momentum": "cooling",
+            "guidance_style": "accurate",
+            "surprise_skew": "downside",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:anthropic/claude-fable-5",
+            "p50": -3.0,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "downside",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:x-ai/grok-4.6",
+            "p50": -4.0,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "downside",
+            "confidence": "medium"
+          }
+        ],
+        "failed": [],
+        "p50_spread": 3.0
+      },
+      "derivation": [
+        {
+          "name": "anchor",
+          "formula": "A = actual[FY2025Q3]",
+          "substituted": "A = 12,018 USDm",
+          "result": 12018.0,
+          "provenance": "data",
+          "refs": [
+            "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md (tier 1)"
+          ],
+          "note": "same period last fiscal year, exact reported figure"
+        },
+        {
+          "name": "baseline",
+          "formula": "B = anchor \u00d7 (1 + mean(recent YoY))",
+          "substituted": "B = 12,018 \u00d7 (1 +8.86%) = 13,082",
+          "result": 13082.336247192634,
+          "provenance": "math",
+          "refs": [
+            "chosen by walk-forward backtest: MAE 1,319 over n=4 periods"
+          ],
+          "note": null
+        },
+        {
+          "name": "judgment: quantile",
+          "formula": "\u0394q = p50 \u00d7 shrink",
+          "substituted": "\u0394q = -3.00%(LLM) \u00d7 0.459 = -1.377%",
+          "result": -1.3768371689758399,
+          "provenance": "llm",
+          "refs": [],
+          "note": "shrink = 1/(1+(p90\u2212p10)/\u03c3), \u03c3=8.48 \u2014 wide model uncertainty shrinks its own influence"
+        },
+        {
+          "name": "judgment: momentum",
+          "formula": "\u0394 = map(momentum label) \u00d7 \u03c3",
+          "substituted": "\u0394(warming(LLM)) = +2.121%",
+          "result": 2.1206085160709094,
+          "provenance": "llm",
+          "refs": [
+            "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md",
+            "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "judgment: surprise skew",
+          "formula": "\u0394 = map(surprise_skew label) \u00d7 \u03c3",
+          "substituted": "\u0394(downside(LLM)) = -1.272%",
+          "result": -1.2723651096425457,
+          "provenance": "llm",
+          "refs": [
+            "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md",
+            "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "cap & apply",
+          "formula": "adj = clamp(B \u00d7 (\u0394q+\u0394m+\u0394s)/100, \u00b10.75\u00d7MAE)",
+          "substituted": "adj = clamp(-69.15, \u00b1989.2) = -69.15",
+          "result": -69.15241339814784,
+          "provenance": "math",
+          "refs": [],
+          "note": "within_cap"
+        },
+        {
+          "name": "pre-reconcile",
+          "formula": "V = B + adj",
+          "substituted": "V = 13,082 -69.15 = 13,013",
+          "result": 13013.183833794486,
+          "provenance": "math",
+          "refs": [],
+          "note": null
+        },
+        {
+          "name": "final",
+          "formula": "F = V",
+          "substituted": "F = 13,013",
+          "result": 13013.183833794486,
+          "provenance": "math",
+          "refs": [],
+          "note": "no consensus blend (pure-blind mode or no consensus)"
+        }
+      ],
+      "worksheet": [
+        {
+          "provenance": "data",
+          "label": "anchor \u2014 FY2025Q3 actual",
+          "amount": 12018.0,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "\u00d7 seasonal growth (+8.86%)",
+          "amount": 13082.336247192634,
+          "is_final": false
+        },
+        {
+          "provenance": "llm",
+          "label": "+ judgment (-69.2, within cap)",
+          "amount": 13013.183833794486,
+          "is_final": true
+        }
+      ],
+      "final_value": 13013.183833794486
+    },
+    {
+      "company": "Deere & Company",
+      "ticker": "DE",
+      "label": "Diluted EPS (GAAP)",
+      "unit": "USD / share",
+      "period": "FY2026Q3",
+      "anchor": {
+        "value": 4.75,
+        "period": "FY2025Q3",
+        "quote": "| Fully diluted EPS         | $ 4.75         | $ 6.29         |         | $ 14.57        | $ 21.04        |",
+        "source_doc": "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md"
+      },
+      "baseline_candidates": [
+        {
+          "method": "seasonal_yoy",
+          "value": 4.144532872870793,
+          "backtest_mae": 0.8353452990855083,
+          "backtest_bias": -0.6323596011533994,
+          "backtest_n": 6
+        },
+        {
+          "method": "growth_drift",
+          "value": 4.693820145171443,
+          "backtest_mae": 1.1087006449635415,
+          "backtest_bias": -0.859745242119751,
+          "backtest_n": 6
+        }
+      ],
+      "baseline_chosen": "seasonal_yoy",
+      "guidance": null,
+      "estimate": {
+        "method": "Adjusted the seasonal EPS baseline slightly upward because the latest year-over-year EPS decline nearly stabilized, while constraining the call to remain consistent with weak segment profitability.",
+        "growth_p10": -8.0,
+        "growth_p50": 6.0,
+        "growth_p90": 18.0,
+        "momentum": {
+          "explanation": "panel 3/3: GAAP diluted EPS was $6.55 in FY2026Q2 versus $6.64 a year earlier, a decline of only about 1%, compared with the much larger year-over-year declines recorded through FY2026Q1. The earnings trend is therefore warming, though not yet clearly expanding.",
+          "label": "warming",
+          "citations": [
+            "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md"
+          ]
+        },
+        "guidance_style": {
+          "explanation": "panel 3/3: No target-period guidance or historical guide-versus-actual record is supplied. The available filings establish actual performance only, so there is no grounded evidence of persistent conservatism or promotion; accurate is the least directional label.",
+          "label": "accurate",
+          "citations": [
+            "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md",
+            "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md"
+          ]
+        },
+        "surprise_skew": {
+          "explanation": "panel 3/3: The baseline assumes another meaningful year-over-year EPS decline even though Q2 EPS was almost unchanged from the prior year. That recent stabilization creates modest upside skew, tempered by weak segment operating profit.",
+          "label": "upside",
+          "citations": [
+            "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md",
+            "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md"
+          ]
+        },
+        "confidence": "medium",
+        "rationale": "panel 3 member(s): The $4.14 baseline remains materially below FY2025Q3 EPS of $4.75, while the latest quarter was nearly flat year over year. A 3% positive deviation still produces an EPS outcome below the prior-year quarter and is coherent with ongoing Production & Precision Ag margin pressure. Uncertainty is elevated because no Q3 guidance or below-the-line detail is available."
+      },
+      "nudges": {
+        "components": [
+          {
+            "name": "quantile_p50",
+            "label": null,
+            "raw": 6.0,
+            "applied": 3.1743438591602153,
+            "capped": false,
+            "note": "shrink 0.529 (spread 26.0)"
+          },
+          {
+            "name": "momentum",
+            "label": "warming",
+            "raw": 7.302104026857708,
+            "applied": 7.302104026857708,
+            "capped": false,
+            "note": "fixed_fallback"
+          },
+          {
+            "name": "surprise_skew",
+            "label": "upside",
+            "raw": 4.381262416114625,
+            "applied": 4.381262416114625,
+            "capped": false,
+            "note": "fixed_fallback"
+          }
+        ],
+        "cap": 0.621679930930619,
+        "adjustment": 0.6157826876277939,
+        "caps_applied": [
+          "within_cap; cap_ceiling_50pct_baseline"
+        ],
+        "pre_reconcile_value": 4.760315560498587
+      },
+      "consensus": {
+        "value": 4.69639,
+        "source": "yfinance earnings_estimate avg [0q]",
+        "fetched_at": null
+      },
+      "reconciliation": {
+        "verdict": "hold",
+        "weight_ours": 0.85,
+        "rationale": "The estimates essentially agree: our $4.76 forecast is only $0.06, or 1.36%, above the $4.70 consensus and matches FY2025Q3 EPS of $4.75 closely. The cited evidence supports this neighborhood\u2014latest-quarter EPS was nearly flat year over year, while Production & Precision Ag margin pressure limits upside\u2014though the lack of Q3 guidance and below-the-line detail raises uncertainty. Because the gap is immaterial, retain most of our estimate."
+      },
+      "validation": [
+        {
+          "check": "magnitude",
+          "passed": true,
+          "detail": "4.7507267264238 is 0.73x last reported 6.55 (band 0.43x-3.79x)"
+        },
+        {
+          "check": "pence_trap",
+          "passed": true,
+          "detail": "n/a (not a pence per-share metric)"
+        },
+        {
+          "check": "percent_trap",
+          "passed": true,
+          "detail": "n/a (not a percentage metric)"
+        },
+        {
+          "check": "guidance_sanity",
+          "passed": true,
+          "detail": "no guidance available"
+        },
+        {
+          "check": "extraction_flags",
+          "passed": true,
+          "detail": "facts carried flags: magnitude_outlier"
+        }
+      ],
+      "fallback_used": null,
+      "candidates": [
+        {
+          "name": "reconciled",
+          "value": 4.7507267264238,
+          "status": "chosen",
+          "reason": null
+        },
+        {
+          "name": "baseline:seasonal_yoy",
+          "value": 4.144532872870793,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "guidance_mid",
+          "value": null,
+          "status": "absent",
+          "reason": null
+        },
+        {
+          "name": "consensus",
+          "value": 4.69639,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "anchor_last_year",
+          "value": 4.75,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "last_reported_actual",
+          "value": 6.55,
+          "status": "viable",
+          "reason": null
+        }
+      ],
+      "panel": {
+        "members": [
+          {
+            "member": "openai:gpt-5.6-sol",
+            "p50": 3.0,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:anthropic/claude-fable-5",
+            "p50": 6.0,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          },
+          {
+            "member": "openrouter:x-ai/grok-4.6",
+            "p50": 9.0,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "medium"
+          }
+        ],
+        "failed": [],
+        "p50_spread": 6.0
+      },
+      "derivation": [
+        {
+          "name": "anchor",
+          "formula": "A = actual[FY2025Q3]",
+          "substituted": "A = 4.75 USD / share",
+          "result": 4.75,
+          "provenance": "data",
+          "refs": [
+            "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md (tier 1)"
+          ],
+          "note": "same period last fiscal year, exact reported figure"
+        },
+        {
+          "name": "baseline",
+          "formula": "B = anchor \u00d7 (1 + mean(recent YoY))",
+          "substituted": "B = 4.75 \u00d7 (1 -12.75%) = 4.14",
+          "result": 4.144532872870793,
+          "provenance": "math",
+          "refs": [
+            "chosen by walk-forward backtest: MAE 0.84 over n=6 periods"
+          ],
+          "note": null
+        },
+        {
+          "name": "judgment: quantile",
+          "formula": "\u0394q = p50 \u00d7 shrink",
+          "substituted": "\u0394q = +6.00%(LLM) \u00d7 0.529 = +3.174%",
+          "result": 3.1743438591602153,
+          "provenance": "llm",
+          "refs": [],
+          "note": "shrink = 1/(1+(p90\u2212p10)/\u03c3), \u03c3=29.21 \u2014 wide model uncertainty shrinks its own influence"
+        },
+        {
+          "name": "judgment: momentum",
+          "formula": "\u0394 = map(momentum label) \u00d7 \u03c3",
+          "substituted": "\u0394(warming(LLM)) = +7.302%",
+          "result": 7.302104026857708,
+          "provenance": "llm",
+          "refs": [
+            "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "judgment: surprise skew",
+          "formula": "\u0394 = map(surprise_skew label) \u00d7 \u03c3",
+          "substituted": "\u0394(upside(LLM)) = +4.381%",
+          "result": 4.381262416114625,
+          "provenance": "llm",
+          "refs": [
+            "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md",
+            "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "cap & apply",
+          "formula": "adj = clamp(B \u00d7 (\u0394q+\u0394m+\u0394s)/100, \u00b10.75\u00d7MAE)",
+          "substituted": "adj = clamp(0.62, \u00b10.62) = 0.62",
+          "result": 0.6157826876277939,
+          "provenance": "math",
+          "refs": [],
+          "note": "within_cap; cap_ceiling_50pct_baseline"
+        },
+        {
+          "name": "pre-reconcile",
+          "formula": "V = B + adj",
+          "substituted": "V = 4.14 +0.62 = 4.76",
+          "result": 4.760315560498587,
+          "provenance": "math",
+          "refs": [],
+          "note": null
+        },
+        {
+          "name": "reconcile blend",
+          "formula": "F = w\u00b7V + (1\u2212w)\u00b7C",
+          "substituted": "F = 0.85(LLM)\u00b74.76 + 0.15\u00b74.7 = 4.75",
+          "result": 4.7507267264238,
+          "provenance": "math",
+          "refs": [
+            "consensus: yfinance earnings_estimate avg [0q]"
+          ],
+          "note": "reconciler verdict: hold (LLM)"
+        }
+      ],
+      "worksheet": [
+        {
+          "provenance": "data",
+          "label": "anchor \u2014 FY2025Q3 actual",
+          "amount": 4.75,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "\u00d7 seasonal growth (-12.75%)",
+          "amount": 4.144532872870793,
+          "is_final": false
+        },
+        {
+          "provenance": "llm",
+          "label": "+ judgment (+0.62, within cap)",
+          "amount": 4.760315560498587,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "blend: 85% ours / 15% consensus (4.7)",
+          "amount": 4.7507267264238,
+          "is_final": true
+        }
+      ],
+      "final_value": 4.7507267264238
+    },
+    {
+      "company": "Deere & Company",
+      "ticker": "DE",
+      "label": "Production & Precision Ag operating profit",
+      "unit": "USDm",
+      "period": "FY2026Q3",
+      "anchor": {
+        "value": 580.0,
+        "period": "FY2025Q3",
+        "quote": "| Production & precision ag         | $ 580         | $ 1,162         | -50         | $ 2,066         | $ 3,857         | -46         |",
+        "source_doc": "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md"
+      },
+      "baseline_candidates": [
+        {
+          "method": "seasonal_yoy",
+          "value": 297.60530276477743,
+          "backtest_mae": 137150466.83067656,
+          "backtest_bias": 137150337.7503435,
+          "backtest_n": 6
+        },
+        {
+          "method": "growth_drift",
+          "value": 331.19982020737007,
+          "backtest_mae": 251047008.71471524,
+          "backtest_bias": 85577763.25497748,
+          "backtest_n": 6
+        }
+      ],
+      "baseline_chosen": "seasonal_yoy",
+      "guidance": null,
+      "estimate": {
+        "method": "Anchored to the first-half 43% year-over-year contraction and applied a positive adjustment to a baseline that implies an even steeper Q3 decline; used a wide interval because the historical series contains unreliable zero observations.",
+        "growth_p10": -18.0,
+        "growth_p50": 18.0,
+        "growth_p90": 40.0,
+        "momentum": {
+          "explanation": "panel 1/3: PPA operating profit is still declining sharply (H1 FY2026 -43% YoY, 845 vs 1,486), but the rate of decline moderated from -59% in Q1 to -38.5% in Q2, suggesting the trough is forming rather than the trend heating up. Relative to the historical series of steep declines, this is roughly in line.",
+          "label": "neutral",
+          "citations": [
+            "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md"
+          ]
+        },
+        "guidance_style": {
+          "explanation": "panel 3/3: The supplied evidence contains operating-profit actuals but no target-period guidance or historical guidance accuracy record. It does not establish sandbagging or promotional behavior, making accurate the least directional classification.",
+          "label": "accurate",
+          "citations": [
+            "deere/filings/2024-08-15__de-us-20240815-q3-8k__105836.md",
+            "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md"
+          ]
+        },
+        "surprise_skew": {
+          "explanation": "panel 3/3: The baseline embeds a steeper contraction than the reported first-half decline, so continuation of the first-half run rate would put actual profit above baseline. Severe ongoing pressure and poor historical-series quality limit the strength of that upside tilt.",
+          "label": "upside",
+          "citations": [
+            "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md",
+            "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md"
+          ]
+        },
+        "confidence": "low",
+        "rationale": "panel 3 member(s): The $297.61 million baseline implies an approximately 49% decline from FY2025Q3's $580 million, somewhat worse than the reported 43% first-half decline. An 8% positive deviation places profit near a mid-40% year-over-year contraction, consistent with first-half evidence and with EPS remaining below last year. Confidence is low because zero-valued historical observations distort the backtest statistics."
+      },
+      "nudges": {
+        "components": [
+          {
+            "name": "quantile_p50",
+            "label": null,
+            "raw": 18.0,
+            "applied": 5.8153009996565395,
+            "capped": false,
+            "note": "shrink 0.323 (spread 58.0)"
+          },
+          {
+            "name": "momentum",
+            "label": "neutral",
+            "raw": 0.0,
+            "applied": 0.0,
+            "capped": false,
+            "note": "fixed_fallback"
+          },
+          {
+            "name": "surprise_skew",
+            "label": "upside",
+            "raw": 4.15218453041686,
+            "applied": 4.15218453041686,
+            "capped": false,
+            "note": "fixed_fallback"
+          }
+        ],
+        "cap": 44.640795414716614,
+        "adjustment": 29.663765489810327,
+        "caps_applied": [
+          "within_cap; cap_ceiling_50pct_baseline"
+        ],
+        "pre_reconcile_value": 327.26906825458775
+      },
+      "consensus": {
+        "value": null,
+        "source": "no comparable consensus series",
+        "fetched_at": null
+      },
+      "reconciliation": null,
+      "validation": [
+        {
+          "check": "magnitude",
+          "passed": true,
+          "detail": "327.26906825458775 is 0.46x last reported 706.0 (band 0.00x-7110791.37x)"
+        },
+        {
+          "check": "pence_trap",
+          "passed": true,
+          "detail": "n/a (not a pence per-share metric)"
+        },
+        {
+          "check": "percent_trap",
+          "passed": true,
+          "detail": "n/a (not a percentage metric)"
+        },
+        {
+          "check": "guidance_sanity",
+          "passed": true,
+          "detail": "no guidance available"
+        },
+        {
+          "check": "extraction_flags",
+          "passed": true,
+          "detail": "facts carried flags: auto_corrected_scale_x1e+06 (was 0.000604), auto_corrected_scale_x1e+06 (was 0.000657), magnitude_outlier"
+        }
+      ],
+      "fallback_used": null,
+      "candidates": [
+        {
+          "name": "estimator_nudged",
+          "value": 327.26906825458775,
+          "status": "chosen",
+          "reason": null
+        },
+        {
+          "name": "baseline:seasonal_yoy",
+          "value": 297.60530276477743,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "guidance_mid",
+          "value": null,
+          "status": "absent",
+          "reason": null
+        },
+        {
+          "name": "consensus",
+          "value": null,
+          "status": "absent",
+          "reason": null
+        },
+        {
+          "name": "anchor_last_year",
+          "value": 580.0,
+          "status": "viable",
+          "reason": null
+        },
+        {
+          "name": "last_reported_actual",
+          "value": 706.0,
+          "status": "viable",
+          "reason": null
+        }
+      ],
+      "panel": {
+        "members": [
+          {
+            "member": "openai:gpt-5.6-sol",
+            "p50": 8.0,
+            "momentum": "warming",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "low"
+          },
+          {
+            "member": "openrouter:anthropic/claude-fable-5",
+            "p50": 22.0,
+            "momentum": "neutral",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "low"
+          },
+          {
+            "member": "openrouter:x-ai/grok-4.6",
+            "p50": 18.0,
+            "momentum": "cooling",
+            "guidance_style": "accurate",
+            "surprise_skew": "upside",
+            "confidence": "low"
+          }
+        ],
+        "failed": [],
+        "p50_spread": 14.0
+      },
+      "derivation": [
+        {
+          "name": "anchor",
+          "formula": "A = actual[FY2025Q3]",
+          "substituted": "A = 580 USDm",
+          "result": 580.0,
+          "provenance": "data",
+          "refs": [
+            "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md (tier 1)"
+          ],
+          "note": "same period last fiscal year, exact reported figure"
+        },
+        {
+          "name": "baseline",
+          "formula": "B = anchor \u00d7 (1 + mean(recent YoY))",
+          "substituted": "B = 580 \u00d7 (1 -48.69%) = 297.61",
+          "result": 297.60530276477743,
+          "provenance": "math",
+          "refs": [
+            "chosen by walk-forward backtest: MAE 137,150,467 over n=6 periods"
+          ],
+          "note": null
+        },
+        {
+          "name": "judgment: quantile",
+          "formula": "\u0394q = p50 \u00d7 shrink",
+          "substituted": "\u0394q = +18.00%(LLM) \u00d7 0.323 = +5.815%",
+          "result": 5.8153009996565395,
+          "provenance": "llm",
+          "refs": [],
+          "note": "shrink = 1/(1+(p90\u2212p10)/\u03c3), \u03c3=27.68 \u2014 wide model uncertainty shrinks its own influence"
+        },
+        {
+          "name": "judgment: momentum",
+          "formula": "\u0394 = map(momentum label) \u00d7 \u03c3",
+          "substituted": "\u0394(neutral(LLM)) = +0.000%",
+          "result": 0.0,
+          "provenance": "llm",
+          "refs": [
+            "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "judgment: surprise skew",
+          "formula": "\u0394 = map(surprise_skew label) \u00d7 \u03c3",
+          "substituted": "\u0394(upside(LLM)) = +4.152%",
+          "result": 4.15218453041686,
+          "provenance": "llm",
+          "refs": [
+            "deere/filings/2026-05-21__de-us-20260521-q2-8k__1042167.md",
+            "deere/filings/2025-08-15__de-us-20250815-q3-8k__143410.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "cap & apply",
+          "formula": "adj = clamp(B \u00d7 (\u0394q+\u0394m+\u0394s)/100, \u00b10.75\u00d7MAE)",
+          "substituted": "adj = clamp(29.66, \u00b144.64) = 29.66",
+          "result": 29.663765489810327,
+          "provenance": "math",
+          "refs": [],
+          "note": "within_cap; cap_ceiling_50pct_baseline"
+        },
+        {
+          "name": "pre-reconcile",
+          "formula": "V = B + adj",
+          "substituted": "V = 297.61 +29.66 = 327.27",
+          "result": 327.26906825458775,
+          "provenance": "math",
+          "refs": [],
+          "note": null
+        },
+        {
+          "name": "final",
+          "formula": "F = V",
+          "substituted": "F = 327.27",
+          "result": 327.26906825458775,
+          "provenance": "math",
+          "refs": [],
+          "note": "no consensus blend (pure-blind mode or no consensus)"
+        }
+      ],
+      "worksheet": [
+        {
+          "provenance": "data",
+          "label": "anchor \u2014 FY2025Q3 actual",
+          "amount": 580.0,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "\u00d7 seasonal growth (-48.69%)",
+          "amount": 297.60530276477743,
+          "is_final": false
+        },
+        {
+          "provenance": "llm",
+          "label": "+ judgment (+29.7, within cap)",
+          "amount": 327.26906825458775,
+          "is_final": true
+        }
+      ],
+      "final_value": 327.26906825458775
+    }
+  ]
+}
