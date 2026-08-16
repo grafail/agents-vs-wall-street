@@ -405,6 +405,29 @@ def apply_magnitude_gate(facts: list[ExtractedFact]) -> None:
                 f.flags.append("magnitude_outlier")
 
 
+def drop_segment_rows(facts: list[ExtractedFact]) -> tuple[list[ExtractedFact], int]:
+    """Drop segment/division-table artifacts.
+
+    A segment table repeats one metric label across MANY columns (divisions,
+    regions) that sum to the group figure — e.g. Hays FY2025
+    "Pre-exceptional operating profit | £52.1m | £(5.8)m | £3.6m | £(4.3)m".
+    If those columns are all extracted as the same (period, fact_type), the
+    series gains several fake "actuals" (one of which poisoned a final number).
+    Deterministic rule: >=3 facts sharing (period, fact_type, quote) with
+    distinct values cannot all be one period's group figure — drop the whole
+    group (we cannot reliably tell which column, if any, is the group total).
+    Legitimate comparative columns (two periods from one line) have DIFFERENT
+    periods per fact, so they never match this signature.
+    """
+    groups: dict[tuple, set[float]] = {}
+    for f in facts:
+        groups.setdefault((f.metric_label, f.period, f.fact_type, f.quote), set()).add(f.value)
+    bad = {k for k, vals in groups.items() if len(vals) >= 3}
+    kept = [f for f in facts
+            if (f.metric_label, f.period, f.fact_type, f.quote) not in bad]
+    return kept, len(facts) - len(kept)
+
+
 # ---------------------------------------------------------------- LLM parse
 
 SYSTEM_PROMPT = """You are a precise financial-figure extraction engine.
@@ -443,6 +466,11 @@ actuals and company guidance. Rules:
   COMPARATIVE COLUMNS: in a quarterly 10-Q/8-K table, the second value column
   is the SAME quarter of the PRIOR year (a Q2 FY2026 filing shows Q2 FY2025),
   never the sequential prior quarter. Label comparative figures accordingly.
+  SEGMENT TABLES: a row whose columns are business divisions or regions
+  (e.g. "Operating profit | £52.1m | £(5.8)m | £3.6m | £(4.3)m" across four
+  divisions) is NOT a time series. Extract only a column clearly labeled
+  Group/Total/Consolidated; if no such column is identifiable, skip the row.
+  Never emit several segment columns as the same period's group figure.
   For growth-style guidance ("sales growth of approximately 2.8%",
   "EPS to decline approximately 2% from $15.24"): raw_unit = pct_growth,
   value_as_written = the growth percent (negative if a decline), and
@@ -646,6 +674,9 @@ def extract_company(ticker: str, log: RunLog | None = None,
             metric_facts += facts
             all_skipped += [{"metric": spec.label, **s} for s in skipped]
             metric_skipped += len(skipped)
+        metric_facts, n_segment_dropped = drop_segment_rows(metric_facts)
+        if n_segment_dropped:
+            log.event("segment_rows_dropped", metric=spec.label, n=n_segment_dropped)
         auto_correct_units(metric_facts)
         apply_magnitude_gate(metric_facts)
         n_corrected = sum(1 for f in metric_facts

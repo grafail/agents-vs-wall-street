@@ -260,14 +260,19 @@ def resolve_final_value(
 
     - Skips None / NaN / non-numeric / hard-gate-failing values, logging why.
     - Returns the first candidate that survives all hard gates.
-    - If every candidate fails gates, returns the LAST non-None numeric one
-      with a loud FAILSAFE flag — a written wrong-ish number scores better
-      than a blank (blank = worst-possible 5.0).
+    - If every candidate fails gates, returns the LEAST-BAD one with a loud
+      FAILSAFE flag — a written wrong-ish number scores better than a blank
+      (blank = worst-possible 5.0). Least-bad = fewest failed gates, with a
+      guidance_sanity failure counting double (disagreeing with the company's
+      own guidance is worse evidence than tripping the history yardstick,
+      which itself can be poisoned by a bad extracted actual); ties go to the
+      EARLIEST rung, because upper rungs (reconciled/estimator) carry the
+      full evidence chain while bottom rungs are missing-data stopgaps.
     - Raises only if there is no numeric candidate at all (caller bug: the
       cascade must always include at least consensus or guidance mid).
     """
     reasons: list[str] = []
-    last_numeric: tuple[str, float] | None = None
+    failed: list[tuple[str, float, list[str]]] = []  # (rung name, value, failed checks)
 
     for name, raw in candidates:
         if raw is None:
@@ -277,22 +282,27 @@ def resolve_final_value(
             reasons.append(f"{name}: skipped (non-finite/non-numeric: {raw!r})")
             continue
         value = float(raw)
-        last_numeric = (name, value)
         if spec is not None:
             results = run_all_gates(value, spec, history=history, guidance=guidance)
             fails = [r for r in results if not r["passed"]]
             if fails:
                 details = "; ".join(f"{r['check']}: {r['detail']}" for r in fails)
                 reasons.append(f"{name}: gate-failed ({details})")
+                failed.append((name, value, [r["check"] for r in fails]))
                 continue
         reasons.append(f"{name}: accepted")
         return value, name, reasons
 
-    if last_numeric is not None:
-        name, value = last_numeric
+    if failed:
+        def badness(entry: tuple[str, float, list[str]]) -> int:
+            return sum(2 if c == "guidance_sanity" else 1 for c in entry[2])
+
+        best = min(enumerate(failed), key=lambda ie: (badness(ie[1]), ie[0]))[1]
+        name, value, checks = best
         reasons.append(
-            f"FAILSAFE: every candidate failed gates; using last numeric candidate "
-            f"{name!r}={value} — NEEDS MANUAL REVIEW before upload")
+            f"FAILSAFE: every candidate failed gates; using least-bad candidate "
+            f"{name!r}={value} (failed: {checks}; guidance disagreement weighted double, "
+            f"ties to earliest rung) — NEEDS MANUAL REVIEW before upload")
         return value, f"{name} (FAILSAFE)", reasons
 
     raise ValueError(
