@@ -346,9 +346,16 @@ def auto_correct_units(facts: list[ExtractedFact]) -> None:
     comfortably inside (0.5x-2x median). Corrected in place with an
     `auto_corrected_scale_xN` flag; ambiguous cases stay flagged, never guessed.
     """
-    by_label: dict[str, list[ExtractedFact]] = {}
+    def _gran(period: str) -> str:
+        p = period.strip().upper()
+        return "annual" if re.fullmatch(r"FY\d{4}", p) else "subannual"
+
+    by_label: dict[tuple, list[ExtractedFact]] = {}
     for f in facts:
-        by_label.setdefault(f.metric_label, []).append(f)
+        # Group by (metric, granularity): annual and quarterly magnitudes differ
+        # ~4x, so a mixed median hides scale slips (DE micro-facts) and flags
+        # legitimate values.
+        by_label.setdefault((f.metric_label, _gran(f.period)), []).append(f)
     for group in by_label.values():
         if any(f.raw_unit in ("pct_points", "pct_decimal", "bps") for f in group):
             continue  # percent metrics have no scale families
@@ -433,6 +440,9 @@ actuals and company guidance. Rules:
   consensus range") remains guidance, valued at the level it points to.
   For "X, +/- Y" ranges: emit guidance_mid with spread_as_written = Y and
   spread_raw_unit = Y's own unit (mid may be billions while the spread is millions).
+  COMPARATIVE COLUMNS: in a quarterly 10-Q/8-K table, the second value column
+  is the SAME quarter of the PRIOR year (a Q2 FY2026 filing shows Q2 FY2025),
+  never the sequential prior quarter. Label comparative figures accordingly.
   For growth-style guidance ("sales growth of approximately 2.8%",
   "EPS to decline approximately 2% from $15.24"): raw_unit = pct_growth,
   value_as_written = the growth percent (negative if a decline), and

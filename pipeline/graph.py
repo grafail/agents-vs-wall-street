@@ -65,17 +65,22 @@ def _specs(ticker: str) -> list[MetricSpec]:
     return [s for s in metric_specs() if s.ticker == ticker]
 
 
-def _series_facts(facts: list[ExtractedFact], label: str) -> list[ExtractedFact]:
-    """Actuals for one metric with parseable quarterly/annual periods only
-    (extraction can emit FY2025H1 half-years — Series cannot order those)."""
+def _series_facts(facts: list[ExtractedFact], label: str,
+                  period_type: str = "quarter") -> list[ExtractedFact]:
+    """Actuals for one metric, GRANULARITY-MATCHED to the target: quarterly
+    targets get only quarterly facts, annual targets only annual facts.
+    Mixing them poisoned YoY stats (HD: annual/quarter pairs gave +6488%
+    growth => sigma 2400%). H1 half-years are excluded either way."""
     from pipeline.baselines import period_key
     out = []
     for f in facts:
         if f.metric_label != label or f.fact_type != "actual":
             continue
         try:
-            period_key(f.period)
+            _, q = period_key(f.period)
         except ValueError:
+            continue
+        if (period_type == "quarter") != (q > 0):
             continue
         out.append(f)
     return out
@@ -313,7 +318,7 @@ def _prep_one(spec: MetricSpec, facts: list, metrics: dict) -> str | None:
     Returns the metric's estimator context block, or None when no baseline
     candidates exist (the metric skips estimation; cascade covers it)."""
     blob: dict[str, Any] = metrics.get(spec.label, {})
-    sfacts = _series_facts(facts, spec.label)
+    sfacts = _series_facts(facts, spec.label, spec.period_type)
     gfacts = _guidance_facts(facts, spec.label)
     series = Series(sfacts)
     beat = beat_factor(gfacts, sfacts)
@@ -419,12 +424,15 @@ def node_consensus(state: CompanyState) -> dict:
         lows = [f for f in cfacts if f.fact_type == "consensus_low"]
         highs = [f for f in cfacts if f.fact_type == "consensus_high"]
         corpus_val, corpus_src = None, None
+        rng = (f" range {lows[-1].value}-{highs[-1].value}" if lows and highs else "")
         if mids:
             corpus_val = mids[-1].value
-            corpus_src = f"corpus compiled consensus [{mids[-1].source.doc_id}]"
+            corpus_src = (f"corpus compiled consensus{rng} [{mids[-1].source.doc_id}] "
+                          f"— company statement: \"{mids[-1].quote[:160]}\"")
         elif lows and highs:
             corpus_val = (lows[-1].value + highs[-1].value) / 2.0
-            corpus_src = f"corpus consensus range midpoint [{lows[-1].source.doc_id}]"
+            corpus_src = (f"corpus consensus range midpoint{rng} [{lows[-1].source.doc_id}] "
+                          f"— company statement: \"{lows[-1].quote[:160]}\"")
         if corpus_val is not None:
             blob["consensus"] = {"value": corpus_val, "source": corpus_src}
             metrics[spec.label] = blob

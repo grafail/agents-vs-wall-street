@@ -88,7 +88,7 @@ def apply_nudges(baseline_value: float, estimate: Estimate, backtest_mae: float 
     # Sanity ceiling on the dispersion scale itself: even a poisoned series
     # (garbage points => astronomic YoY std) cannot give the categoricals a
     # million-percent lever arm. 200% YoY std / 20pts is already extreme.
-    sig_ceiling = 20.0 if spec.kind == "ratio_pct" else 200.0
+    sig_ceiling = 10.0 if spec.kind == "ratio_pct" else 60.0
     if sig > sig_ceiling:
         sig = sig_ceiling
         sigma_source = "sigma_ceiling"
@@ -138,9 +138,9 @@ def apply_nudges(baseline_value: float, estimate: Estimate, backtest_mae: float 
                 eff_mae = floor
         # Structural ceiling: a poisoned backtest (garbage history => absurd MAE)
         # must never authorize an absurd adjustment. Judgment can move a number
-        # by at most 50% of the baseline itself (5pts for ratio metrics),
+        # by at most 15% of the baseline itself (3pts for ratio metrics),
         # whatever the MAE says.
-        ceiling = 5.0 if spec.kind == "ratio_pct" else abs(baseline_value) * 0.5
+        ceiling = 3.0 if spec.kind == "ratio_pct" else abs(baseline_value) * 0.15
         cap = min(K_CAP * eff_mae, ceiling)
         adjustment = max(-cap, min(cap, raw_adjustment))
         cap_reason = "capped_at_k_x_mae" if adjustment != raw_adjustment else "within_cap"

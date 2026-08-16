@@ -131,7 +131,11 @@ def yoy_sigma(series: Series, spec: MetricSpec) -> float | None:
     if spec.kind == "ratio_pct":
         obs = [c for _, c in series.yoy_point_changes()]
     else:
-        obs = [g * 100.0 for _, g in series.yoy_growth_series()]
+        # Unit-slip artifacts produce YoY "growth" of ±9,900%+ (a x100 scale
+        # error); genuine small-base swings top out around ±300% (Hays EPS grew
+        # a real +151% in FY2022). ±500% cleanly separates the two — exclude
+        # only what no real business does.
+        obs = [g * 100.0 for _, g in series.yoy_growth_series() if abs(g) <= 5.0]
     if len(obs) < 2:
         return None
     return statistics.pstdev(obs)
