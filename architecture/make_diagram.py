@@ -107,8 +107,8 @@ AGENT_PHASES = {"BLIND ESTIMATE", "STREET CHECK"}
 
 def render_concept(order: list[str]) -> str:
     assert [n for _, ns, _ in PHASES for n in ns] == order, "phase map drifted from compiled graph"
-    W2, H2 = 800, 150
-    bw, bh, gap, y = 176, 62, 26, 30
+    W2, H2 = 800, 172
+    bw, bh, gap, y = 176, 62, 26, 46
     xs = [14 + i * (bw + gap) for i in range(4)]
     svg = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W2} {H2}" role="img" aria-label="Concept diagram">',
            '<defs><marker id="ca" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto">'
@@ -136,8 +136,8 @@ def render_concept(order: list[str]) -> str:
         svg.append(f'<line x1="{x1}" y1="{y + bh/2}" x2="{x2 - 8}" y2="{y + bh/2}" stroke="#5a6472" stroke-width="1.6" marker-end="url(#ca)"/>')
     # the consensus firewall between BLIND ESTIMATE and STREET CHECK
     fx = xs[1] + bw + gap / 2
-    svg.append(f'<line x1="{fx}" y1="{y - 18}" x2="{fx}" y2="{y + bh + 6}" stroke="#8a2626" stroke-width="1.4" stroke-dasharray="5 4"/>')
-    svg.append(f'<text x="{fx}" y="{y - 24}" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#8a2626">consensus firewall — the street number cannot reach the estimator</text>')
+    svg.append(f'<line x1="{fx}" y1="{y - 22}" x2="{fx}" y2="{y + bh + 6}" stroke="#8a2626" stroke-width="1.4" stroke-dasharray="5 4"/>')
+    svg.append(f'<text x="{fx}" y="{y - 28}" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#8a2626">consensus firewall — the street number cannot reach the estimator</text>')
     svg.append("</svg>")
     return "".join(svg)
 
