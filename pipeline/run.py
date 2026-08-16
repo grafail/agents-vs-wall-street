@@ -184,14 +184,19 @@ def _worksheet_lines(spec: MetricSpec, blob: dict) -> list[report_mod.WorksheetL
         adj = nudges.get("adjustment") or 0.0
         raw = nudges.get("raw_adjustment") or 0.0
         reason = nudges.get("cap_reason")
+        def _amt(x: float) -> str:
+            # never mask small adjustments or their sign: 2 significant decimals
+            # for sub-unit values, thousands-grouped 1dp otherwise
+            return f"{x:+.2f}" if abs(x) < 10 else f"{x:+,.1f}"
+
         if reason == "no_backtest_mae_nudge_disabled":
             note = "disabled — no backtest error scale"
-        elif reason == "capped_at_k_x_mae":
-            note = f"raw {raw:+,.0f}, capped at {adj:+,.0f}" if spec.kind != "ratio_pct" \
-                else f"raw {raw:+.2f}, capped at {adj:+.2f}"
+        elif reason and reason.startswith("capped_at_k_x_mae"):
+            note = f"raw {_amt(raw)}, capped at {_amt(adj)}"
+        elif adj == 0:
+            note = "±0.00 — model saw no adjustment to make"
         else:
-            note = (f"{adj:+,.0f}, within cap" if spec.kind != "ratio_pct"
-                    else f"{adj:+.2f} pts, within cap")
+            note = f"{_amt(adj)}{' pts' if spec.kind == 'ratio_pct' else ''}, within cap"
         lines.append(W(provenance="llm", label=f"+ judgment ({note})",
                        amount=nudges.get("pre_reconcile")))
 
