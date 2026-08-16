@@ -83,7 +83,10 @@ def magnitude_gate(value: float, history_values: list[float] | None,
     hist = [h for h in (history_values or []) if _finite(h)]
     if not hist:
         return _result("magnitude", "warn", "no history to compare against")
-    med = statistics.median(hist)
+    # Recency-weighted reference: structurally trending series (e.g. Hays EPS
+    # 9.22p -> 1.31p) make the all-time median stale — compare against the
+    # median of the most recent 3 periods instead (history arrives ordered).
+    med = statistics.median(hist[-3:])
     if kind == "ratio_pct":
         delta = abs(value - med)
         if delta > 15.0:
