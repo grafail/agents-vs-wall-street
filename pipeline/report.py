@@ -477,11 +477,23 @@ def _guidance_html(g: GuidanceBlock | None) -> str:
 
 
 def _grounded_html(name: str, g) -> str:
+    """One opinion as a readable card: big label, explanation as prose, sources on
+    their own line. These are the AI's actual judgments — the heart of the run."""
     if g is None:
         return f"<p><b>{_e(name)}:</b> <span class='muted'>—</span></p>"
-    cites = (f' <span class="src">[{_e("; ".join(g.citations))}]</span>' if g.citations
-             else ' <span class="muted small">(no citations — treated as neutral)</span>')
-    return f"<p><b>{_e(name)}:</b> {_e(g.label)} — {_e(g.explanation)}{cites}</p>"
+    pretty = {"momentum": "Momentum", "guidance_style": "Guidance style",
+              "surprise_skew": "Surprise skew"}.get(name, name)
+    if g.citations:
+        src = ('<div style="font-size:.78rem;color:var(--muted);margin-top:.25rem">sources: '
+               + _e("; ".join(g.citations)) + "</div>")
+    else:
+        src = ('<div style="font-size:.78rem;color:#8a6d1a;margin-top:.25rem">'
+               "no sources — this opinion counts for nothing</div>")
+    return (f'<div style="border:1px solid var(--hair);border-left:3px solid var(--accent);'
+            f'border-radius:0 6px 6px 0;padding:.5rem .8rem;margin:.45rem 0;background:#fff">'
+            f'<div style="margin-bottom:.15rem"><span style="color:var(--muted)">{_e(pretty)}:</span> '
+            f'<strong style="font-size:1.02rem">{_e(g.label)}</strong></div>'
+            f'<div style="font-size:.9rem;line-height:1.5">{_e(g.explanation)}</div>{src}</div>')
 
 
 def _panel_inline(p: "PanelView | None") -> str:
@@ -532,14 +544,23 @@ def _panel_html(p: "PanelView | None") -> str:
 def _estimate_html(est: Estimate | None) -> str:
     if est is None:
         return '<p class="muted">No blind estimate (estimator skipped or failed).</p>'
+    rng = (f'<div style="display:flex;gap:1.6rem;flex-wrap:wrap;align-items:baseline;'
+           f'margin:.2rem 0 .5rem;font-variant-numeric:tabular-nums">'
+           f'<span><span style="color:var(--muted);font-size:.8rem">pessimistic</span> '
+           f'<strong>{_num(est.growth_p10, signed=True)}%</strong></span>'
+           f'<span style="font-size:1.15rem"><span style="color:var(--muted);font-size:.8rem">central</span> '
+           f'<strong>{_num(est.growth_p50, signed=True)}%</strong></span>'
+           f'<span><span style="color:var(--muted);font-size:.8rem">optimistic</span> '
+           f'<strong>{_num(est.growth_p90, signed=True)}%</strong></span>'
+           f'<span style="color:var(--muted);font-size:.85rem">adjustment vs the '
+           f'<code>{_e(est.method)}</code> baseline &middot; confidence <b>{_e(est.confidence)}</b></span></div>')
     return "".join([
-        f"<p>method <code>{_e(est.method)}</code> · growth p10 <b>{_num(est.growth_p10, signed=True)}</b>"
-        f" / p50 <b>{_num(est.growth_p50, signed=True)}</b> / p90 <b>{_num(est.growth_p90, signed=True)}</b>"
-        f" · confidence <b>{_e(est.confidence)}</b></p>",
+        rng,
         _grounded_html("momentum", est.momentum),
         _grounded_html("guidance_style", est.guidance_style),
         _grounded_html("surprise_skew", est.surprise_skew),
-        f"<p><b>Rationale:</b> {_e(est.rationale)}</p>",
+        f'<div style="font-size:.9rem;margin-top:.5rem"><span style="color:var(--muted)">'
+        f'Overall reasoning:</span> {_e(est.rationale)}</div>',
     ])
 
 
