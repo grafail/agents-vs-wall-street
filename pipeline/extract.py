@@ -245,7 +245,7 @@ def canonical_period(s: str) -> str:
 # ---------------------------------------------------------------- normalization
 
 _NUM_CLEAN_RE = re.compile(
-    r"[$£€\s,]|(?:p$)|%|\b(?:millions?|billions?|thousands?|bn)\b", re.I)
+    r"[$£€\s,]|(?:p$)|(?:[mk]\.?$)|%|\b(?:millions?|billions?|thousands?|bn)\b", re.I)
 
 
 def parse_number(s: str) -> float:

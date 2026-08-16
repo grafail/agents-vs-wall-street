@@ -3,7 +3,7 @@
  "company": "Analog Devices",
  "corpus_dir": "analog-devices",
  "target_period": "FY2026Q3",
- "generated_at": "2026-08-16T12:00:55.725556+00:00",
+ "generated_at": "2026-08-16T16:15:36.403185+00:00",
  "metrics": [
   "Revenue",
   "Adjusted diluted EPS",
@@ -20,7 +20,7 @@
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T11:55:26.752879Z",
+    "fetched_at": "2026-08-16T16:14:50.644493Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -33,11 +33,11 @@
    "value": 3623.0,
    "raw_text": "3,623",
    "raw_unit": "USD_millions",
-   "quote": "| Revenue | $ | 3,623 | | | $ | 2,640 | | | 37 | % |",
+   "quote": "Revenue | $ | 3,623",
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T11:55:26.753079Z",
+    "fetched_at": "2026-08-16T16:14:50.644689Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -50,11 +50,11 @@
    "value": 2640.0,
    "raw_text": "2,640",
    "raw_unit": "USD_millions",
-   "quote": "| Revenue | $ | 3,623 | | | $ | 2,640 | | | 37 | % |",
+   "quote": "Revenue | $ | 3,623 | | | $ | 2,640",
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T11:55:26.753205Z",
+    "fetched_at": "2026-08-16T16:14:50.644806Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -71,7 +71,7 @@
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T11:55:26.753350Z",
+    "fetched_at": "2026-08-16T16:14:50.644951Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -88,7 +88,7 @@
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T11:55:26.753381Z",
+    "fetched_at": "2026-08-16T16:14:50.644984Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -107,7 +107,7 @@
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T11:55:26.753397Z",
+    "fetched_at": "2026-08-16T16:14:50.645000Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -122,11 +122,11 @@
    "value": 3623.465,
    "raw_text": "3,623,465",
    "raw_unit": "USD_thousands",
-   "quote": "Revenue         | $ 3,623,465         | $ 2,640,068         | $ 6,783,728        | $ 5,063,242        |",
+   "quote": "| Revenue         | $ 3,623,465         | $ 2,640,068         | $ 6,783,728        | $ 5,063,242        |",
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-10q__1040607.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T11:55:26.753933Z",
+    "fetched_at": "2026-08-16T16:14:50.645538Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -139,45 +139,11 @@
    "value": 2640.068,
    "raw_text": "2,640,068",
    "raw_unit": "USD_thousands",
-   "quote": "Revenue         | $ 3,623,465         | $ 2,640,068         | $ 6,783,728        | $ 5,063,242        |",
+   "quote": "| Revenue         | $ 3,623,465         | $ 2,640,068         | $ 6,783,728        | $ 5,063,242        |",
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-10q__1040607.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T11:55:26.754026Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": []
-  },
-  {
-   "metric_label": "Revenue",
-   "period": "FY2026H1",
-   "value": 6783.728,
-   "raw_text": "6,783,728",
-   "raw_unit": "USD_thousands",
-   "quote": "Revenue         | $ 3,623,465         | $ 2,640,068         | $ 6,783,728        | $ 5,063,242        |",
-   "source": {
-    "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-10q__1040607.md",
-    "published": "2026-05-20",
-    "fetched_at": "2026-08-16T11:55:26.754117Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": []
-  },
-  {
-   "metric_label": "Revenue",
-   "period": "FY2025H1",
-   "value": 5063.242,
-   "raw_text": "5,063,242",
-   "raw_unit": "USD_thousands",
-   "quote": "Revenue         | $ 3,623,465         | $ 2,640,068         | $ 6,783,728        | $ 5,063,242        |",
-   "source": {
-    "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-10q__1040607.md",
-    "published": "2026-05-20",
-    "fetched_at": "2026-08-16T11:55:26.754206Z",
+    "fetched_at": "2026-08-16T16:14:50.645657Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -190,11 +156,11 @@
    "value": 3160.0,
    "raw_text": "3.16",
    "raw_unit": "USD_billions",
-   "quote": "Revenue of $3.16 billion, with year-over-year growth across all end markets, led by Industrial and Communications",
+   "quote": "\u2022 Revenue of $3.16 billion, with year-over-year growth across all end markets, led by Industrial and",
    "source": {
     "doc_id": "analog-devices/filings/2026-02-18__adi-us-20260218-q1-8k-2__602115.md",
     "published": "2026-02-18",
-    "fetched_at": "2026-08-16T11:55:26.754885Z",
+    "fetched_at": "2026-08-16T16:14:50.646164Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -207,11 +173,11 @@
    "value": 2423.0,
    "raw_text": "2,423",
    "raw_unit": "USD_millions",
-   "quote": "Revenue         | $         | 3,160         | $ 2,423         | 30 %         |",
+   "quote": "| Revenue         | $         | 3,160         | $ 2,423         | 30 %         |",
    "source": {
     "doc_id": "analog-devices/filings/2026-02-18__adi-us-20260218-q1-8k-2__602115.md",
     "published": "2026-02-18",
-    "fetched_at": "2026-08-16T11:55:26.755134Z",
+    "fetched_at": "2026-08-16T16:14:50.646471Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -222,13 +188,13 @@
    "metric_label": "Revenue",
    "period": "FY2026Q1",
    "value": 3160.263,
-   "raw_text": "3,160,263",
+   "raw_text": "$ 3,160,263",
    "raw_unit": "USD_thousands",
-   "quote": "$ 3,160,263",
+   "quote": "Revenue         | $ 3,160,263         | $ 2,423,174",
    "source": {
     "doc_id": "analog-devices/filings/2026-02-18__adi-us-20260218-q1-10q__602087.md",
     "published": "2026-02-18",
-    "fetched_at": "2026-08-16T11:55:26.755218Z",
+    "fetched_at": "2026-08-16T16:14:50.646569Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -239,13 +205,30 @@
    "metric_label": "Revenue",
    "period": "FY2025Q1",
    "value": 2423.174,
-   "raw_text": "2,423,174",
+   "raw_text": "$ 2,423,174",
    "raw_unit": "USD_thousands",
-   "quote": "$ 2,423,174",
+   "quote": "Revenue         | $ 3,160,263         | $ 2,423,174",
    "source": {
     "doc_id": "analog-devices/filings/2026-02-18__adi-us-20260218-q1-10q__602087.md",
     "published": "2026-02-18",
-    "fetched_at": "2026-08-16T11:55:26.755269Z",
+    "fetched_at": "2026-08-16T16:14:50.646640Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "actual",
+   "flags": []
+  },
+  {
+   "metric_label": "Revenue",
+   "period": "FY2025Q4",
+   "value": 3080.0,
+   "raw_text": "$3.08 billion",
+   "raw_unit": "USD_billions",
+   "quote": "Fourth quarter revenue of $3.08 billion",
+   "source": {
+    "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
+    "published": "2025-11-25",
+    "fetched_at": "2026-08-16T16:14:50.647055Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -256,13 +239,13 @@
    "metric_label": "Revenue",
    "period": "FY2025",
    "value": 11000.0,
-   "raw_text": "11.0",
+   "raw_text": "$11.0 billion",
    "raw_unit": "USD_billions",
-   "quote": "$11.0B Revenue",
+   "quote": "Fiscal 2025 revenue of $11.0 billion",
    "source": {
-    "doc_id": "analog-devices/filings/2026-01-23__adi-us-20260123-filing__403452.md",
-    "published": "2026-01-23",
-    "fetched_at": "2026-08-16T11:55:26.755593Z",
+    "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
+    "published": "2025-11-25",
+    "fetched_at": "2026-08-16T16:14:50.647125Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -274,31 +257,14 @@
   {
    "metric_label": "Revenue",
    "period": "FY2025Q4",
-   "value": 3080.0,
-   "raw_text": "3.08",
-   "raw_unit": "USD_billions",
-   "quote": "Fourth quarter revenue of $3.08 billion",
-   "source": {
-    "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
-    "published": "2025-11-25",
-    "fetched_at": "2026-08-16T11:55:26.755679Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": []
-  },
-  {
-   "metric_label": "Revenue",
-   "period": "FY2025Q4",
    "value": 3076.0,
-   "raw_text": "3,076",
+   "raw_text": "$ 3,076",
    "raw_unit": "USD_millions",
-   "quote": "Revenue         | $ 3,076         | $ 2,443         | 26%         | $ 11,020         | $ 9,427         | 17%",
+   "quote": "Revenue         | $ 3,076",
    "source": {
     "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
     "published": "2025-11-25",
-    "fetched_at": "2026-08-16T11:55:26.756011Z",
+    "fetched_at": "2026-08-16T16:14:50.647437Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -309,176 +275,13 @@
    "metric_label": "Revenue",
    "period": "FY2024Q4",
    "value": 2443.0,
-   "raw_text": "2,443",
+   "raw_text": "$ 2,443",
    "raw_unit": "USD_millions",
-   "quote": "Revenue         | $ 3,076         | $ 2,443         | 26%         | $ 11,020         | $ 9,427         | 17%",
+   "quote": "Revenue         | $ 2,443",
    "source": {
     "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
     "published": "2025-11-25",
-    "fetched_at": "2026-08-16T11:55:26.756090Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": []
-  },
-  {
-   "metric_label": "Revenue",
-   "period": "FY2025",
-   "value": 11020.0,
-   "raw_text": "11,020",
-   "raw_unit": "USD_millions",
-   "quote": "Revenue         | $ 3,076         | $ 2,443         | 26%         | $ 11,020         | $ 9,427         | 17%",
-   "source": {
-    "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
-    "published": "2025-11-25",
-    "fetched_at": "2026-08-16T11:55:26.756169Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": [
-    "magnitude_outlier"
-   ]
-  },
-  {
-   "metric_label": "Revenue",
-   "period": "FY2024",
-   "value": 9427.0,
-   "raw_text": "9,427",
-   "raw_unit": "USD_millions",
-   "quote": "Revenue         | $ 3,076         | $ 2,443         | 26%         | $ 11,020         | $ 9,427         | 17%",
-   "source": {
-    "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
-    "published": "2025-11-25",
-    "fetched_at": "2026-08-16T11:55:26.756250Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": [
-    "magnitude_outlier"
-   ]
-  },
-  {
-   "metric_label": "Revenue",
-   "period": "FY2025",
-   "value": 11019.707,
-   "raw_text": "11,019,707",
-   "raw_unit": "USD_thousands",
-   "quote": "Revenue         | $ 11,019,707  | $ 9,427,157   | $ 1,592,550 | 17%",
-   "source": {
-    "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-10k__361135.md",
-    "published": "2025-11-25",
-    "fetched_at": "2026-08-16T11:55:26.756331Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": [
-    "magnitude_outlier"
-   ]
-  },
-  {
-   "metric_label": "Revenue",
-   "period": "FY2024",
-   "value": 9427.157,
-   "raw_text": "9,427,157",
-   "raw_unit": "USD_thousands",
-   "quote": "Revenue         | $ 11,019,707  | $ 9,427,157   | $ 1,592,550 | 17%",
-   "source": {
-    "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-10k__361135.md",
-    "published": "2025-11-25",
-    "fetched_at": "2026-08-16T11:55:26.756432Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": [
-    "magnitude_outlier"
-   ]
-  },
-  {
-   "metric_label": "Revenue",
-   "period": "FY2025Q3",
-   "value": 2880.348,
-   "raw_text": "2,880,348",
-   "raw_unit": "USD_thousands",
-   "quote": "Revenue         | $ 2,880,348         | $ 2,312,209         | $ 7,943,590         | $ 6,983,952",
-   "source": {
-    "doc_id": "analog-devices/filings/2025-08-21__adi-us-20250821-q3-10q__143765.md",
-    "published": "2025-08-21",
-    "fetched_at": "2026-08-16T11:55:26.756976Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": []
-  },
-  {
-   "metric_label": "Revenue",
-   "period": "FY2024Q3",
-   "value": 2312.209,
-   "raw_text": "2,312,209",
-   "raw_unit": "USD_thousands",
-   "quote": "Revenue         | $ 2,880,348         | $ 2,312,209         | $ 7,943,590         | $ 6,983,952",
-   "source": {
-    "doc_id": "analog-devices/filings/2025-08-21__adi-us-20250821-q3-10q__143765.md",
-    "published": "2025-08-21",
-    "fetched_at": "2026-08-16T11:55:26.757098Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": []
-  },
-  {
-   "metric_label": "Revenue",
-   "period": "FY2025NineMonths",
-   "value": 7943.59,
-   "raw_text": "7,943,590",
-   "raw_unit": "USD_thousands",
-   "quote": "Revenue         | $ 2,880,348         | $ 2,312,209         | $ 7,943,590         | $ 6,983,952",
-   "source": {
-    "doc_id": "analog-devices/filings/2025-08-21__adi-us-20250821-q3-10q__143765.md",
-    "published": "2025-08-21",
-    "fetched_at": "2026-08-16T11:55:26.757226Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": [
-    "magnitude_outlier"
-   ]
-  },
-  {
-   "metric_label": "Revenue",
-   "period": "FY2024NineMonths",
-   "value": 6983.952,
-   "raw_text": "6,983,952",
-   "raw_unit": "USD_thousands",
-   "quote": "Revenue         | $ 2,880,348         | $ 2,312,209         | $ 7,943,590         | $ 6,983,952",
-   "source": {
-    "doc_id": "analog-devices/filings/2025-08-21__adi-us-20250821-q3-10q__143765.md",
-    "published": "2025-08-21",
-    "fetched_at": "2026-08-16T11:55:26.757341Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": []
-  },
-  {
-   "metric_label": "Revenue",
-   "period": "FY2025Q3",
-   "value": 2880.0,
-   "raw_text": "2.88",
-   "raw_unit": "USD_billions",
-   "quote": "- Revenue of $2.88 billion, with double-digit year-over-year growth across all end markets",
-   "source": {
-    "doc_id": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
-    "published": "2025-08-20",
-    "fetched_at": "2026-08-16T11:55:26.757860Z",
+    "fetched_at": "2026-08-16T16:14:50.647520Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -489,15 +292,96 @@
   },
   {
    "metric_label": "Revenue",
-   "period": "FY2024Q3",
-   "value": 2312.0,
-   "raw_text": "2,312",
+   "period": "FY2025",
+   "value": 11020.0,
+   "raw_text": "$ 11,020",
    "raw_unit": "USD_millions",
-   "quote": "Revenue         | $         | 2,880         | $ 2,312         | 25 %",
+   "quote": "Revenue         | $ 11,020",
    "source": {
-    "doc_id": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
-    "published": "2025-08-20",
-    "fetched_at": "2026-08-16T11:55:26.758120Z",
+    "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
+    "published": "2025-11-25",
+    "fetched_at": "2026-08-16T16:14:50.647608Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "actual",
+   "flags": [
+    "quote_not_in_excerpt",
+    "magnitude_outlier"
+   ]
+  },
+  {
+   "metric_label": "Revenue",
+   "period": "FY2024",
+   "value": 9427.0,
+   "raw_text": "$ 9,427",
+   "raw_unit": "USD_millions",
+   "quote": "Revenue         | $ 9,427",
+   "source": {
+    "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
+    "published": "2025-11-25",
+    "fetched_at": "2026-08-16T16:14:50.647689Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "actual",
+   "flags": [
+    "quote_not_in_excerpt",
+    "magnitude_outlier"
+   ]
+  },
+  {
+   "metric_label": "Revenue",
+   "period": "FY2025",
+   "value": 11019.707,
+   "raw_text": "$ 11,019,707",
+   "raw_unit": "USD",
+   "quote": "Revenue         | $ 11,019,707",
+   "source": {
+    "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-10k__361135.md",
+    "published": "2025-11-25",
+    "fetched_at": "2026-08-16T16:14:50.647771Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "actual",
+   "flags": [
+    "auto_corrected_scale_x1000 (was 11.019707)",
+    "magnitude_outlier"
+   ]
+  },
+  {
+   "metric_label": "Revenue",
+   "period": "FY2024",
+   "value": 9427.157,
+   "raw_text": "$ 9,427,157",
+   "raw_unit": "USD",
+   "quote": "Revenue         | $ 9,427,157",
+   "source": {
+    "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-10k__361135.md",
+    "published": "2025-11-25",
+    "fetched_at": "2026-08-16T16:14:50.647849Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "actual",
+   "flags": [
+    "quote_not_in_excerpt",
+    "auto_corrected_scale_x1000 (was 9.427157)",
+    "magnitude_outlier"
+   ]
+  },
+  {
+   "metric_label": "Revenue",
+   "period": "FY2025Q3",
+   "value": 2880.348,
+   "raw_text": "$ 2,880,348",
+   "raw_unit": "USD_thousands",
+   "quote": "Revenue         | $ 2,880,348         | $ 2,312,209",
+   "source": {
+    "doc_id": "analog-devices/filings/2025-08-21__adi-us-20250821-q3-10q__143765.md",
+    "published": "2025-08-21",
+    "fetched_at": "2026-08-16T16:14:50.648128Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -506,34 +390,49 @@
   },
   {
    "metric_label": "Revenue",
-   "period": "FY2025YTD9M",
-   "value": 7943.59,
-   "raw_text": "7,943,590",
+   "period": "FY2024Q3",
+   "value": 2312.209,
+   "raw_text": "$ 2,312,209",
    "raw_unit": "USD_thousands",
-   "quote": "Revenue | $ | 2,880,348 | | | $ | 2,312,209 | | | $ | 7,943,590 | | | $ | 6,983,952 |",
+   "quote": "Revenue         | $ 2,880,348         | $ 2,312,209",
    "source": {
-    "doc_id": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-10q__143734.md",
-    "published": "2025-08-20",
-    "fetched_at": "2026-08-16T11:55:26.758396Z",
+    "doc_id": "analog-devices/filings/2025-08-21__adi-us-20250821-q3-10q__143765.md",
+    "published": "2025-08-21",
+    "fetched_at": "2026-08-16T16:14:50.648195Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": [
-    "magnitude_outlier"
-   ]
+   "flags": []
   },
   {
    "metric_label": "Revenue",
-   "period": "FY2024YTD9M",
-   "value": 6983.952,
-   "raw_text": "6,983,952",
-   "raw_unit": "USD_thousands",
-   "quote": "Revenue | $ | 2,880,348 | | | $ | 2,312,209 | | | $ | 7,943,590 | | | $ | 6,983,952 |",
+   "period": "FY2025Q3",
+   "value": 2880.0,
+   "raw_text": "$2.88 billion",
+   "raw_unit": "USD_billions",
+   "quote": "Revenue of $2.88 billion, with double-digit year-over-year growth across all end markets",
    "source": {
-    "doc_id": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-10q__143734.md",
+    "doc_id": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
     "published": "2025-08-20",
-    "fetched_at": "2026-08-16T11:55:26.758486Z",
+    "fetched_at": "2026-08-16T16:14:50.648415Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "actual",
+   "flags": []
+  },
+  {
+   "metric_label": "Revenue",
+   "period": "FY2024Q3",
+   "value": 2312.0,
+   "raw_text": "2,312",
+   "raw_unit": "USD_millions",
+   "quote": "| Revenue         | $         | 2,880         | $ 2,312         | 25 %         |",
+   "source": {
+    "doc_id": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
+    "published": "2025-08-20",
+    "fetched_at": "2026-08-16T16:14:50.648653Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -546,11 +445,11 @@
    "value": 2159.0,
    "raw_text": "2,159",
    "raw_unit": "USD_millions",
-   "quote": "Revenue         | $         | 2,640         | $ 2,159         | 22 %",
+   "quote": "| Revenue         | $         | 2,640         | $ 2,159         | 22 %         |",
    "source": {
     "doc_id": "analog-devices/filings/2025-05-22__adi-us-20250522-q2-8k__102679.md",
     "published": "2025-05-22",
-    "fetched_at": "2026-08-16T11:55:26.759471Z",
+    "fetched_at": "2026-08-16T16:14:50.649467Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -563,11 +462,11 @@
    "value": 3.09,
    "raw_text": "3.09",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted earnings per share | $ | 3.09",
+   "quote": "| Adjusted diluted earnings per share | $ | 3.09 | | | $ | 1.85 | | | 67 | % |",
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T11:59:21.539780Z",
+    "fetched_at": "2026-08-16T16:15:17.236201Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -580,11 +479,11 @@
    "value": 1.85,
    "raw_text": "1.85",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted earnings per share | $ | 3.09 | | | $ | 1.85",
+   "quote": "| Adjusted diluted earnings per share | $ | 3.09 | | | $ | 1.85 | | | 67 | % |",
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T11:59:21.539907Z",
+    "fetched_at": "2026-08-16T16:15:17.236358Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -595,13 +494,13 @@
    "metric_label": "Adjusted diluted EPS",
    "period": "FY2026Q3",
    "value": 3.3,
-   "raw_text": "3.30",
+   "raw_text": "$3.30",
    "raw_unit": "USD_per_share",
-   "quote": "adjusted EPS to be $3.30, +/-$0.15.",
+   "quote": "We are planning for reported EPS to be $2.60, +/-$0.15, and adjusted EPS to be $3.30, +/-$0.15.",
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T11:59:21.540010Z",
+    "fetched_at": "2026-08-16T16:15:17.236492Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -612,13 +511,13 @@
    "metric_label": "Adjusted diluted EPS",
    "period": "FY2026Q3",
    "value": 3.15,
-   "raw_text": "3.30",
+   "raw_text": "$3.30",
    "raw_unit": "USD_per_share",
-   "quote": "adjusted EPS to be $3.30, +/-$0.15.",
+   "quote": "We are planning for reported EPS to be $2.60, +/-$0.15, and adjusted EPS to be $3.30, +/-$0.15.",
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T11:59:21.540030Z",
+    "fetched_at": "2026-08-16T16:15:17.236520Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -631,13 +530,13 @@
    "metric_label": "Adjusted diluted EPS",
    "period": "FY2026Q3",
    "value": 3.45,
-   "raw_text": "3.30",
+   "raw_text": "$3.30",
    "raw_unit": "USD_per_share",
-   "quote": "adjusted EPS to be $3.30, +/-$0.15.",
+   "quote": "We are planning for reported EPS to be $2.60, +/-$0.15, and adjusted EPS to be $3.30, +/-$0.15.",
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T11:59:21.540040Z",
+    "fetched_at": "2026-08-16T16:15:17.236532Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -652,11 +551,11 @@
    "value": 2.46,
    "raw_text": "2.46",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted earnings per share | $         | 2.46         | $ 1.63         | 51 %",
+   "quote": "| Adjusted diluted earnings per share | $         | 2.46         | $ 1.63         | 51 %         |",
    "source": {
     "doc_id": "analog-devices/filings/2026-02-18__adi-us-20260218-q1-8k-2__602115.md",
     "published": "2026-02-18",
-    "fetched_at": "2026-08-16T11:59:21.540616Z",
+    "fetched_at": "2026-08-16T16:15:17.237262Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -667,13 +566,13 @@
    "metric_label": "Adjusted diluted EPS",
    "period": "FY2025Q1",
    "value": 1.63,
-   "raw_text": "1.63",
+   "raw_text": "$ 1.63",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted earnings per share | $         | 2.46         | $ 1.63         | 51 %",
+   "quote": "| Adjusted diluted earnings per share | $         | 2.46         | $ 1.63         | 51 %         |",
    "source": {
     "doc_id": "analog-devices/filings/2026-02-18__adi-us-20260218-q1-8k-2__602115.md",
     "published": "2026-02-18",
-    "fetched_at": "2026-08-16T11:59:21.540677Z",
+    "fetched_at": "2026-08-16T16:15:17.237347Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -684,13 +583,13 @@
    "metric_label": "Adjusted diluted EPS",
    "period": "FY2026Q2",
    "value": 2.88,
-   "raw_text": "2.88",
+   "raw_text": "$2.88",
    "raw_unit": "USD_per_share",
    "quote": "adjusted EPS to be $2.88, +/-$0.15.",
    "source": {
     "doc_id": "analog-devices/filings/2026-02-18__adi-us-20260218-q1-8k-2__602115.md",
     "published": "2026-02-18",
-    "fetched_at": "2026-08-16T11:59:21.540762Z",
+    "fetched_at": "2026-08-16T16:15:17.237467Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -701,13 +600,13 @@
    "metric_label": "Adjusted diluted EPS",
    "period": "FY2026Q2",
    "value": 2.73,
-   "raw_text": "2.88",
+   "raw_text": "$2.88",
    "raw_unit": "USD_per_share",
    "quote": "adjusted EPS to be $2.88, +/-$0.15.",
    "source": {
     "doc_id": "analog-devices/filings/2026-02-18__adi-us-20260218-q1-8k-2__602115.md",
     "published": "2026-02-18",
-    "fetched_at": "2026-08-16T11:59:21.540772Z",
+    "fetched_at": "2026-08-16T16:15:17.237482Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -720,13 +619,13 @@
    "metric_label": "Adjusted diluted EPS",
    "period": "FY2026Q2",
    "value": 3.03,
-   "raw_text": "2.88",
+   "raw_text": "$2.88",
    "raw_unit": "USD_per_share",
    "quote": "adjusted EPS to be $2.88, +/-$0.15.",
    "source": {
     "doc_id": "analog-devices/filings/2026-02-18__adi-us-20260218-q1-8k-2__602115.md",
     "published": "2026-02-18",
-    "fetched_at": "2026-08-16T11:59:21.540780Z",
+    "fetched_at": "2026-08-16T16:15:17.237492Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -739,13 +638,13 @@
    "metric_label": "Adjusted diluted EPS",
    "period": "FY2025",
    "value": 7.79,
-   "raw_text": "7.79",
+   "raw_text": "$ 7.79",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted EPS         | $ 7.79         |",
+   "quote": "| Adjusted diluted EPS         | $ 7.79         |",
    "source": {
     "doc_id": "analog-devices/filings/2026-01-23__adi-us-20260123-filing__403452.md",
     "published": "2026-01-23",
-    "fetched_at": "2026-08-16T11:59:21.540929Z",
+    "fetched_at": "2026-08-16T16:15:17.237710Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -758,13 +657,13 @@
    "metric_label": "Adjusted diluted EPS",
    "period": "FY2025Q4",
    "value": 2.26,
-   "raw_text": "2.26",
+   "raw_text": "$ 2.26",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted earnings per share       | $ 2.26         | $ 1.67         | 35%         | $ 7.79         | $ 6.38         | 22%",
+   "quote": "| Adjusted diluted earnings per share       | $ 2.26         | $ 1.67         | 35%         | $ 7.79         | $ 6.38         | 22%         |",
    "source": {
     "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
     "published": "2025-11-25",
-    "fetched_at": "2026-08-16T11:59:21.541022Z",
+    "fetched_at": "2026-08-16T16:15:17.237831Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -775,13 +674,13 @@
    "metric_label": "Adjusted diluted EPS",
    "period": "FY2024Q4",
    "value": 1.67,
-   "raw_text": "1.67",
+   "raw_text": "$ 1.67",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted earnings per share       | $ 2.26         | $ 1.67         | 35%         | $ 7.79         | $ 6.38         | 22%",
+   "quote": "| Adjusted diluted earnings per share       | $ 2.26         | $ 1.67         | 35%         | $ 7.79         | $ 6.38         | 22%         |",
    "source": {
     "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
     "published": "2025-11-25",
-    "fetched_at": "2026-08-16T11:59:21.541104Z",
+    "fetched_at": "2026-08-16T16:15:17.237946Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -792,13 +691,13 @@
    "metric_label": "Adjusted diluted EPS",
    "period": "FY2024",
    "value": 6.38,
-   "raw_text": "6.38",
+   "raw_text": "$ 6.38",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted earnings per share       | $ 2.26         | $ 1.67         | 35%         | $ 7.79         | $ 6.38         | 22%",
+   "quote": "| Adjusted diluted earnings per share       | $ 2.26         | $ 1.67         | 35%         | $ 7.79         | $ 6.38         | 22%         |",
    "source": {
     "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
     "published": "2025-11-25",
-    "fetched_at": "2026-08-16T11:59:21.541284Z",
+    "fetched_at": "2026-08-16T16:15:17.238175Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -811,13 +710,13 @@
    "metric_label": "Adjusted diluted EPS",
    "period": "FY2026Q1",
    "value": 2.29,
-   "raw_text": "2.29",
+   "raw_text": "$2.29",
    "raw_unit": "USD_per_share",
    "quote": "adjusted EPS to be $2.29, +/- $0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
     "published": "2025-11-25",
-    "fetched_at": "2026-08-16T11:59:21.541377Z",
+    "fetched_at": "2026-08-16T16:15:17.238293Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -828,13 +727,13 @@
    "metric_label": "Adjusted diluted EPS",
    "period": "FY2026Q1",
    "value": 2.19,
-   "raw_text": "2.29",
+   "raw_text": "$2.29",
    "raw_unit": "USD_per_share",
    "quote": "adjusted EPS to be $2.29, +/- $0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
     "published": "2025-11-25",
-    "fetched_at": "2026-08-16T11:59:21.541390Z",
+    "fetched_at": "2026-08-16T16:15:17.238310Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -847,13 +746,13 @@
    "metric_label": "Adjusted diluted EPS",
    "period": "FY2026Q1",
    "value": 2.39,
-   "raw_text": "2.29",
+   "raw_text": "$2.29",
    "raw_unit": "USD_per_share",
    "quote": "adjusted EPS to be $2.29, +/- $0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
     "published": "2025-11-25",
-    "fetched_at": "2026-08-16T11:59:21.541399Z",
+    "fetched_at": "2026-08-16T16:15:17.238321Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -868,11 +767,11 @@
    "value": 2.05,
    "raw_text": "2.05",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted earnings per share | $         | 2.05         | $ 1.58         | 30 %",
+   "quote": "| Adjusted diluted earnings per share | $         | 2.05         | $ 1.58         | 30 %         |",
    "source": {
     "doc_id": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
     "published": "2025-08-20",
-    "fetched_at": "2026-08-16T11:59:21.541744Z",
+    "fetched_at": "2026-08-16T16:15:17.238858Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -885,11 +784,11 @@
    "value": 1.58,
    "raw_text": "$ 1.58",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted earnings per share | $         | 2.05         | $ 1.58         | 30 %",
+   "quote": "| Adjusted diluted earnings per share | $         | 2.05         | $ 1.58         | 30 %         |",
    "source": {
     "doc_id": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
     "published": "2025-08-20",
-    "fetched_at": "2026-08-16T11:59:21.541807Z",
+    "fetched_at": "2026-08-16T16:15:17.238951Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -902,11 +801,11 @@
    "value": 2.22,
    "raw_text": "$2.22",
    "raw_unit": "USD_per_share",
-   "quote": "We are planning for reported EPS to be $1.53, +/-$0.10, and adjusted EPS to be $2.22, +/-$0.10.",
+   "quote": "adjusted EPS to be $2.22, +/-$0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
     "published": "2025-08-20",
-    "fetched_at": "2026-08-16T11:59:21.541902Z",
+    "fetched_at": "2026-08-16T16:15:17.239072Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -919,11 +818,11 @@
    "value": 2.12,
    "raw_text": "$2.22",
    "raw_unit": "USD_per_share",
-   "quote": "We are planning for reported EPS to be $1.53, +/-$0.10, and adjusted EPS to be $2.22, +/-$0.10.",
+   "quote": "adjusted EPS to be $2.22, +/-$0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
     "published": "2025-08-20",
-    "fetched_at": "2026-08-16T11:59:21.541916Z",
+    "fetched_at": "2026-08-16T16:15:17.239091Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -938,11 +837,11 @@
    "value": 2.32,
    "raw_text": "$2.22",
    "raw_unit": "USD_per_share",
-   "quote": "We are planning for reported EPS to be $1.53, +/-$0.10, and adjusted EPS to be $2.22, +/-$0.10.",
+   "quote": "adjusted EPS to be $2.22, +/-$0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
     "published": "2025-08-20",
-    "fetched_at": "2026-08-16T11:59:21.541924Z",
+    "fetched_at": "2026-08-16T16:15:17.239103Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -957,11 +856,11 @@
    "value": 1.4,
    "raw_text": "$ 1.40",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted earnings per share | $         | 1.85         | $ 1.40         | 32 %",
+   "quote": "| Adjusted diluted earnings per share | $         | 1.85         | $ 1.40         | 32 %         |",
    "source": {
     "doc_id": "analog-devices/filings/2025-05-22__adi-us-20250522-q2-8k__102679.md",
     "published": "2025-05-22",
-    "fetched_at": "2026-08-16T11:59:21.542165Z",
+    "fetched_at": "2026-08-16T16:15:17.239418Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -974,11 +873,11 @@
    "value": 1.92,
    "raw_text": "$1.92",
    "raw_unit": "USD_per_share",
-   "quote": "We are planning for reported EPS to be $1.23, +/-$0.10, and adjusted EPS to be $1.92, +/-$0.10.",
+   "quote": "adjusted EPS to be $1.92, +/-$0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2025-05-22__adi-us-20250522-q2-8k__102679.md",
     "published": "2025-05-22",
-    "fetched_at": "2026-08-16T11:59:21.542258Z",
+    "fetched_at": "2026-08-16T16:15:17.239531Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -991,11 +890,11 @@
    "value": 1.82,
    "raw_text": "$1.92",
    "raw_unit": "USD_per_share",
-   "quote": "We are planning for reported EPS to be $1.23, +/-$0.10, and adjusted EPS to be $1.92, +/-$0.10.",
+   "quote": "adjusted EPS to be $1.92, +/-$0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2025-05-22__adi-us-20250522-q2-8k__102679.md",
     "published": "2025-05-22",
-    "fetched_at": "2026-08-16T11:59:21.542271Z",
+    "fetched_at": "2026-08-16T16:15:17.239547Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1010,11 +909,11 @@
    "value": 2.02,
    "raw_text": "$1.92",
    "raw_unit": "USD_per_share",
-   "quote": "We are planning for reported EPS to be $1.23, +/-$0.10, and adjusted EPS to be $1.92, +/-$0.10.",
+   "quote": "adjusted EPS to be $1.92, +/-$0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2025-05-22__adi-us-20250522-q2-8k__102679.md",
     "published": "2025-05-22",
-    "fetched_at": "2026-08-16T11:59:21.542279Z",
+    "fetched_at": "2026-08-16T16:15:17.239558Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1025,15 +924,108 @@
   },
   {
    "metric_label": "Adjusted diluted EPS",
-   "period": "FY2024Q4",
+   "period": "FY2024Q1",
+   "value": 1.73,
+   "raw_text": "$ 1.73",
+   "raw_unit": "USD_per_share",
+   "quote": "Adjusted diluted earnings per share $ 1.73",
+   "source": {
+    "doc_id": "analog-devices/filings/2025-02-19__adi-us-20250219-q1-8k__102670.md",
+    "published": "2025-02-19",
+    "fetched_at": "2026-08-16T16:15:17.239837Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "actual",
+   "flags": [
+    "quote_not_in_excerpt"
+   ]
+  },
+  {
+   "metric_label": "Adjusted diluted EPS",
+   "period": "FY2025Q2",
+   "value": 1.68,
+   "raw_text": "$1.68",
+   "raw_unit": "USD_per_share",
+   "quote": "adjusted EPS to be $1.68, +/-$0.10",
+   "source": {
+    "doc_id": "analog-devices/filings/2025-02-19__adi-us-20250219-q1-8k__102670.md",
+    "published": "2025-02-19",
+    "fetched_at": "2026-08-16T16:15:17.240075Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "guidance_mid",
+   "flags": []
+  },
+  {
+   "metric_label": "Adjusted diluted EPS",
+   "period": "FY2025Q2",
+   "value": 1.58,
+   "raw_text": "$1.68",
+   "raw_unit": "USD_per_share",
+   "quote": "adjusted EPS to be $1.68, +/-$0.10",
+   "source": {
+    "doc_id": "analog-devices/filings/2025-02-19__adi-us-20250219-q1-8k__102670.md",
+    "published": "2025-02-19",
+    "fetched_at": "2026-08-16T16:15:17.240089Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "guidance_low",
+   "flags": [
+    "derived_from_spread"
+   ]
+  },
+  {
+   "metric_label": "Adjusted diluted EPS",
+   "period": "FY2025Q2",
+   "value": 1.78,
+   "raw_text": "$1.68",
+   "raw_unit": "USD_per_share",
+   "quote": "adjusted EPS to be $1.68, +/-$0.10",
+   "source": {
+    "doc_id": "analog-devices/filings/2025-02-19__adi-us-20250219-q1-8k__102670.md",
+    "published": "2025-02-19",
+    "fetched_at": "2026-08-16T16:15:17.240099Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "guidance_high",
+   "flags": [
+    "derived_from_spread"
+   ]
+  },
+  {
+   "metric_label": "Adjusted diluted EPS",
+   "period": "FY2025",
+   "value": 6.38,
+   "raw_text": "$ 6.38",
+   "raw_unit": "USD_per_share",
+   "quote": "| Adjusted diluted EPS         | $ 6.38         |",
+   "source": {
+    "doc_id": "analog-devices/filings/2025-01-27__adi-us-20250127-filing__486291.md",
+    "published": "2025-01-27",
+    "fetched_at": "2026-08-16T16:15:17.240151Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "actual",
+   "flags": [
+    "magnitude_outlier"
+   ]
+  },
+  {
+   "metric_label": "Adjusted diluted EPS",
+   "period": "FY2023Q4",
    "value": 2.01,
    "raw_text": "$ 2.01",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted earnings per share | $ 1.67         | $ 2.01         | (17)%         | $ 6.38         | $ 10.09         | (37)%",
+   "quote": "| Adjusted diluted earnings per share | $ 1.67         | $ 2.01         | (17)%         | $ 6.38         | $ 10.09         | (37)%         |",
    "source": {
     "doc_id": "analog-devices/filings/2024-11-26__adi-us-20241126-q4-8k__102666.md",
     "published": "2024-11-26",
-    "fetched_at": "2026-08-16T11:59:21.542480Z",
+    "fetched_at": "2026-08-16T16:15:17.240343Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1042,15 +1034,15 @@
   },
   {
    "metric_label": "Adjusted diluted EPS",
-   "period": "FY2024",
+   "period": "FY2023",
    "value": 10.09,
    "raw_text": "$ 10.09",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted earnings per share | $ 1.67         | $ 2.01         | (17)%         | $ 6.38         | $ 10.09         | (37)%",
+   "quote": "| Adjusted diluted earnings per share | $ 1.67         | $ 2.01         | (17)%         | $ 6.38         | $ 10.09         | (37)%         |",
    "source": {
     "doc_id": "analog-devices/filings/2024-11-26__adi-us-20241126-q4-8k__102666.md",
     "published": "2024-11-26",
-    "fetched_at": "2026-08-16T11:59:21.542591Z",
+    "fetched_at": "2026-08-16T16:15:17.240452Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1065,11 +1057,11 @@
    "value": 1.53,
    "raw_text": "$1.53",
    "raw_unit": "USD_per_share",
-   "quote": "We are planning for reported EPS to be $0.80, +/- $0.10, and adjusted EPS to be $1.53, +/- $0.10.",
+   "quote": "adjusted EPS to be $1.53, +/- $0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2024-11-26__adi-us-20241126-q4-8k__102666.md",
     "published": "2024-11-26",
-    "fetched_at": "2026-08-16T11:59:21.542685Z",
+    "fetched_at": "2026-08-16T16:15:17.240540Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1082,11 +1074,11 @@
    "value": 1.43,
    "raw_text": "$1.53",
    "raw_unit": "USD_per_share",
-   "quote": "We are planning for reported EPS to be $0.80, +/- $0.10, and adjusted EPS to be $1.53, +/- $0.10.",
+   "quote": "adjusted EPS to be $1.53, +/- $0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2024-11-26__adi-us-20241126-q4-8k__102666.md",
     "published": "2024-11-26",
-    "fetched_at": "2026-08-16T11:59:21.542698Z",
+    "fetched_at": "2026-08-16T16:15:17.240553Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1101,11 +1093,11 @@
    "value": 1.63,
    "raw_text": "$1.53",
    "raw_unit": "USD_per_share",
-   "quote": "We are planning for reported EPS to be $0.80, +/- $0.10, and adjusted EPS to be $1.53, +/- $0.10.",
+   "quote": "adjusted EPS to be $1.53, +/- $0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2024-11-26__adi-us-20241126-q4-8k__102666.md",
     "published": "2024-11-26",
-    "fetched_at": "2026-08-16T11:59:21.542706Z",
+    "fetched_at": "2026-08-16T16:15:17.240562Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1116,15 +1108,15 @@
   },
   {
    "metric_label": "Adjusted diluted EPS",
-   "period": "FY2024Q3",
+   "period": "FY2023Q3",
    "value": 2.49,
    "raw_text": "$ 2.49",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted earnings per share | $         | 1.58         | $ 2.49         | (37)%",
+   "quote": "| Adjusted diluted earnings per share | $         | 1.58         | $ 2.49         | (37)%         |",
    "source": {
     "doc_id": "analog-devices/filings/2024-08-21__adi-us-20240821-q3-8k__102648.md",
     "published": "2024-08-21",
-    "fetched_at": "2026-08-16T11:59:21.543024Z",
+    "fetched_at": "2026-08-16T16:15:17.240913Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1137,11 +1129,11 @@
    "value": 1.63,
    "raw_text": "$1.63",
    "raw_unit": "USD_per_share",
-   "quote": "We are planning for reported EPS to be $0.85, +/-$0.10, and adjusted EPS to be $1.63, +/-$0.10.",
+   "quote": "adjusted EPS to be $1.63, +/-$0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2024-08-21__adi-us-20240821-q3-8k__102648.md",
     "published": "2024-08-21",
-    "fetched_at": "2026-08-16T11:59:21.543112Z",
+    "fetched_at": "2026-08-16T16:15:17.241002Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1154,11 +1146,11 @@
    "value": 1.53,
    "raw_text": "$1.63",
    "raw_unit": "USD_per_share",
-   "quote": "We are planning for reported EPS to be $0.85, +/-$0.10, and adjusted EPS to be $1.63, +/-$0.10.",
+   "quote": "adjusted EPS to be $1.63, +/-$0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2024-08-21__adi-us-20240821-q3-8k__102648.md",
     "published": "2024-08-21",
-    "fetched_at": "2026-08-16T11:59:21.543124Z",
+    "fetched_at": "2026-08-16T16:15:17.241015Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1173,11 +1165,11 @@
    "value": 1.73,
    "raw_text": "$1.63",
    "raw_unit": "USD_per_share",
-   "quote": "We are planning for reported EPS to be $0.85, +/-$0.10, and adjusted EPS to be $1.63, +/-$0.10.",
+   "quote": "adjusted EPS to be $1.63, +/-$0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2024-08-21__adi-us-20240821-q3-8k__102648.md",
     "published": "2024-08-21",
-    "fetched_at": "2026-08-16T11:59:21.543133Z",
+    "fetched_at": "2026-08-16T16:15:17.241024Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1188,41 +1180,20 @@
   },
   {
    "metric_label": "Adjusted diluted EPS",
-   "period": "FY2024",
-   "value": 4.71,
-   "raw_text": "$ 4.71",
+   "period": "TTMFY2024Q2",
+   "value": 2.83,
+   "raw_text": "2.83",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted EPS*         | $ 1.58         | $ 2.49         | $ 4.71         | $ 8.07",
+   "quote": "Adjusted diluted earnings per share $ 1.40$ 2.83 (51) %",
    "source": {
-    "doc_id": "analog-devices/filings/2024-08-21__adi-us-20240821-q3-8k__102648.md",
-    "published": "2024-08-21",
-    "fetched_at": "2026-08-16T11:59:21.543282Z",
+    "doc_id": "analog-devices/filings/2024-05-22__adi-us-20240522-q2-8k__102675.md",
+    "published": "2024-05-22",
+    "fetched_at": "2026-08-16T16:15:17.241230Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": [
-    "magnitude_outlier"
-   ]
-  },
-  {
-   "metric_label": "Adjusted diluted EPS",
-   "period": "FY2024",
-   "value": 8.07,
-   "raw_text": "$ 8.07",
-   "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted EPS*         | $ 1.58         | $ 2.49         | $ 4.71         | $ 8.07",
-   "source": {
-    "doc_id": "analog-devices/filings/2024-08-21__adi-us-20240821-q3-8k__102648.md",
-    "published": "2024-08-21",
-    "fetched_at": "2026-08-16T11:59:21.543330Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": [
-    "magnitude_outlier"
-   ]
+   "flags": []
   },
   {
    "metric_label": "Adjusted diluted EPS",
@@ -1230,11 +1201,11 @@
    "value": 1.5,
    "raw_text": "1.50",
    "raw_unit": "USD_per_share",
-   "quote": "adjusted EPS to be $1.50, +/-$0.10",
+   "quote": "adjusted EPS to be $1.50, +/-$0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2024-05-22__adi-us-20240522-q2-8k__102675.md",
     "published": "2024-05-22",
-    "fetched_at": "2026-08-16T11:59:21.543535Z",
+    "fetched_at": "2026-08-16T16:15:17.241415Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1247,11 +1218,11 @@
    "value": 1.4,
    "raw_text": "1.50",
    "raw_unit": "USD_per_share",
-   "quote": "adjusted EPS to be $1.50, +/-$0.10",
+   "quote": "adjusted EPS to be $1.50, +/-$0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2024-05-22__adi-us-20240522-q2-8k__102675.md",
     "published": "2024-05-22",
-    "fetched_at": "2026-08-16T11:59:21.543546Z",
+    "fetched_at": "2026-08-16T16:15:17.241427Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1266,11 +1237,11 @@
    "value": 1.6,
    "raw_text": "1.50",
    "raw_unit": "USD_per_share",
-   "quote": "adjusted EPS to be $1.50, +/-$0.10",
+   "quote": "adjusted EPS to be $1.50, +/-$0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2024-05-22__adi-us-20240522-q2-8k__102675.md",
     "published": "2024-05-22",
-    "fetched_at": "2026-08-16T11:59:21.543554Z",
+    "fetched_at": "2026-08-16T16:15:17.241434Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1281,15 +1252,15 @@
   },
   {
    "metric_label": "Adjusted diluted EPS",
-   "period": "FY2024Q1",
-   "value": 1.73,
-   "raw_text": "1.73",
+   "period": "FY2023Q1",
+   "value": 2.75,
+   "raw_text": "2.75",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted earnings per share | $ 1.73         | $ 2.75         | (37)%         |",
+   "quote": "| Adjusted diluted earnings per share | $ 1.73         | $ 2.75         | (37)%         |",
    "source": {
     "doc_id": "analog-devices/filings/2024-02-21__adi-us-20240221-q1-8k__102673.md",
     "published": "2024-02-21",
-    "fetched_at": "2026-08-16T11:59:21.543614Z",
+    "fetched_at": "2026-08-16T16:15:17.241553Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1302,11 +1273,11 @@
    "value": 1.26,
    "raw_text": "1.26",
    "raw_unit": "USD_per_share",
-   "quote": "adjusted EPS to be $1.26, +/-$0.10",
+   "quote": "adjusted EPS to be $1.26, +/-$0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2024-02-21__adi-us-20240221-q1-8k__102673.md",
     "published": "2024-02-21",
-    "fetched_at": "2026-08-16T11:59:21.543694Z",
+    "fetched_at": "2026-08-16T16:15:17.241649Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1319,11 +1290,11 @@
    "value": 1.16,
    "raw_text": "1.26",
    "raw_unit": "USD_per_share",
-   "quote": "adjusted EPS to be $1.26, +/-$0.10",
+   "quote": "adjusted EPS to be $1.26, +/-$0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2024-02-21__adi-us-20240221-q1-8k__102673.md",
     "published": "2024-02-21",
-    "fetched_at": "2026-08-16T11:59:21.543704Z",
+    "fetched_at": "2026-08-16T16:15:17.241662Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1338,11 +1309,11 @@
    "value": 1.36,
    "raw_text": "1.26",
    "raw_unit": "USD_per_share",
-   "quote": "adjusted EPS to be $1.26, +/-$0.10",
+   "quote": "adjusted EPS to be $1.26, +/-$0.10.",
    "source": {
     "doc_id": "analog-devices/filings/2024-02-21__adi-us-20240221-q1-8k__102673.md",
     "published": "2024-02-21",
-    "fetched_at": "2026-08-16T11:59:21.543712Z",
+    "fetched_at": "2026-08-16T16:15:17.241670Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1357,11 +1328,11 @@
    "value": 73.0,
    "raw_text": "73.0",
    "raw_unit": "pct_points",
-   "quote": "| Adjusted gross margin percentage | 73.0 | % | | 69.4 | % | | 360 bps |",
+   "quote": "Adjusted gross margin percentage | 73.0 | % | | 69.4 | % | | 360 bps",
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T12:00:55.722457Z",
+    "fetched_at": "2026-08-16T16:15:36.399829Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1374,11 +1345,11 @@
    "value": 69.4,
    "raw_text": "69.4",
    "raw_unit": "pct_points",
-   "quote": "| Adjusted gross margin percentage | 73.0 | % | | 69.4 | % | | 360 bps |",
+   "quote": "Adjusted gross margin percentage | 73.0 | % | | 69.4 | % | | 360 bps",
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T12:00:55.722582Z",
+    "fetched_at": "2026-08-16T16:15:36.399952Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1391,11 +1362,11 @@
    "value": 72.2,
    "raw_text": "72.2",
    "raw_unit": "pct_points",
-   "quote": "| Adjusted gross margin percentage | 73.0 | % | | 69.4 | % | | 72.2 | % | | 69.1 | % |",
+   "quote": "Adjusted gross margin percentage | 73.0 | % | | 69.4 | % | | 72.2 | % | | 69.1 | % |",
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T12:00:55.722884Z",
+    "fetched_at": "2026-08-16T16:15:36.400278Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1408,11 +1379,11 @@
    "value": 69.1,
    "raw_text": "69.1",
    "raw_unit": "pct_points",
-   "quote": "| Adjusted gross margin percentage | 73.0 | % | | 69.4 | % | | 72.2 | % | | 69.1 | % |",
+   "quote": "Adjusted gross margin percentage | 73.0 | % | | 69.4 | % | | 72.2 | % | | 69.1 | % |",
    "source": {
     "doc_id": "analog-devices/filings/2026-05-20__adi-us-20260520-q2-8k__1040581.md",
     "published": "2026-05-20",
-    "fetched_at": "2026-08-16T12:00:55.722972Z",
+    "fetched_at": "2026-08-16T16:15:36.400395Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1429,7 +1400,7 @@
    "source": {
     "doc_id": "analog-devices/filings/2026-02-18__adi-us-20260218-q1-8k-2__602115.md",
     "published": "2026-02-18",
-    "fetched_at": "2026-08-16T12:00:55.723382Z",
+    "fetched_at": "2026-08-16T16:15:36.401056Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1446,24 +1417,7 @@
    "source": {
     "doc_id": "analog-devices/filings/2026-02-18__adi-us-20260218-q1-8k-2__602115.md",
     "published": "2026-02-18",
-    "fetched_at": "2026-08-16T12:00:55.723452Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": []
-  },
-  {
-   "metric_label": "Adjusted gross margin",
-   "period": "FY2026Q1",
-   "value": 64.7,
-   "raw_text": "64.7%",
-   "raw_unit": "pct_points",
-   "quote": "Gross margin%         | 64.7%         | 59.0%",
-   "source": {
-    "doc_id": "analog-devices/filings/2026-02-18__adi-us-20260218-q1-10q__602087.md",
-    "published": "2026-02-18",
-    "fetched_at": "2026-08-16T12:00:55.723679Z",
+    "fetched_at": "2026-08-16T16:15:36.401130Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1476,11 +1430,11 @@
    "value": 69.3,
    "raw_text": "69.3%",
    "raw_unit": "pct_points",
-   "quote": "Adjusted gross margin percentage | 69.3%",
+   "quote": "| ~87%         | 69.3%         | 41.9%         | $7.79         | $4.3B         |",
    "source": {
     "doc_id": "analog-devices/filings/2026-01-23__adi-us-20260123-filing__403452.md",
     "published": "2026-01-23",
-    "fetched_at": "2026-08-16T12:00:55.723793Z",
+    "fetched_at": "2026-08-16T16:15:36.401322Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1493,11 +1447,11 @@
    "value": 69.8,
    "raw_text": "69.8%",
    "raw_unit": "pct_points",
-   "quote": "Adjusted gross margin percentage         | 69.8%         | 67.9%         | 190 bps",
+   "quote": "Adjusted gross margin percentage         | 69.8%",
    "source": {
     "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
     "published": "2025-11-25",
-    "fetched_at": "2026-08-16T12:00:55.723879Z",
+    "fetched_at": "2026-08-16T16:15:36.401472Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1510,11 +1464,11 @@
    "value": 67.9,
    "raw_text": "67.9%",
    "raw_unit": "pct_points",
-   "quote": "Adjusted gross margin percentage       | 69.8%         | 67.9%         | 69.3%         | 67.9%         |",
+   "quote": "Adjusted gross margin percentage         | 69.8%         | 67.9%",
    "source": {
     "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
     "published": "2025-11-25",
-    "fetched_at": "2026-08-16T12:00:55.724111Z",
+    "fetched_at": "2026-08-16T16:15:36.401569Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1527,11 +1481,11 @@
    "value": 67.9,
    "raw_text": "67.9%",
    "raw_unit": "pct_points",
-   "quote": "Adjusted gross margin percentage       | 69.8%         | 67.9%         | 69.3%         | 67.9%         |",
+   "quote": "Adjusted gross margin percentage         | 69.8%         | 67.9%         | 190 bps         | 69.3%         | 67.9%",
    "source": {
     "doc_id": "analog-devices/filings/2025-11-25__adi-us-20251125-q4-8k__361005.md",
     "published": "2025-11-25",
-    "fetched_at": "2026-08-16T12:00:55.724242Z",
+    "fetched_at": "2026-08-16T16:15:36.401768Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1544,16 +1498,18 @@
    "value": 69.2,
    "raw_text": "69.2 %",
    "raw_unit": "pct_points",
-   "quote": "Adjusted gross margin percentage    |         | 69.2 %         | 67.9 %         | 130 bps         |",
+   "quote": "Adjusted gross margin percentage         |         69.2 %         | 67.9 %         | 130 bps",
    "source": {
     "doc_id": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
     "published": "2025-08-20",
-    "fetched_at": "2026-08-16T12:00:55.724318Z",
+    "fetched_at": "2026-08-16T16:15:36.402173Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": []
+   "flags": [
+    "quote_not_in_excerpt"
+   ]
   },
   {
    "metric_label": "Adjusted gross margin",
@@ -1561,50 +1517,18 @@
    "value": 67.9,
    "raw_text": "67.9 %",
    "raw_unit": "pct_points",
-   "quote": "Adjusted gross margin percentage    |         | 69.2 %         | 67.9 %         | 130 bps         |",
+   "quote": "Adjusted gross margin percentage         |         69.2 %         | 67.9 %         | 130 bps",
    "source": {
     "doc_id": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
     "published": "2025-08-20",
-    "fetched_at": "2026-08-16T12:00:55.724381Z",
+    "fetched_at": "2026-08-16T16:15:36.402243Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": []
-  },
-  {
-   "metric_label": "Adjusted gross margin",
-   "period": "FY2025_9M",
-   "value": 69.2,
-   "raw_text": "69.2 %",
-   "raw_unit": "pct_points",
-   "quote": "Adjusted gross margin percentage       | 69.2 %         | 67.9 %         | 69.2 %         | 67.9 %         |",
-   "source": {
-    "doc_id": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
-    "published": "2025-08-20",
-    "fetched_at": "2026-08-16T12:00:55.724678Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": []
-  },
-  {
-   "metric_label": "Adjusted gross margin",
-   "period": "FY2024_9M",
-   "value": 67.9,
-   "raw_text": "67.9 %",
-   "raw_unit": "pct_points",
-   "quote": "Adjusted gross margin percentage       | 69.2 %         | 67.9 %         | 69.2 %         | 67.9 %         |",
-   "source": {
-    "doc_id": "analog-devices/filings/2025-08-20__adi-us-20250820-q3-8k__155976.md",
-    "published": "2025-08-20",
-    "fetched_at": "2026-08-16T12:00:55.724754Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": []
+   "flags": [
+    "quote_not_in_excerpt"
+   ]
   },
   {
    "metric_label": "Adjusted gross margin",
@@ -1612,11 +1536,11 @@
    "value": 66.7,
    "raw_text": "66.7 %",
    "raw_unit": "pct_points",
-   "quote": "| Adjusted gross margin percentage    |         | 69.4 %         | 66.7 %         | 270 bps         |",
+   "quote": "Adjusted gross margin percentage         |         | 69.4 %         | 66.7 %         | 270 bps",
    "source": {
     "doc_id": "analog-devices/filings/2025-05-22__adi-us-20250522-q2-8k__102679.md",
     "published": "2025-05-22",
-    "fetched_at": "2026-08-16T12:00:55.724934Z",
+    "fetched_at": "2026-08-16T16:15:36.402548Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1629,11 +1553,11 @@
    "value": 67.9,
    "raw_text": "67.9 %",
    "raw_unit": "pct_points",
-   "quote": "| Adjusted gross margin percentage       | 69.4 %         | 66.7 %         | 69.1 %         | 67.9 %         |",
+   "quote": "Adjusted gross margin percentage       | 69.4 %         | 66.7 %         | 69.1 %         | 67.9 %",
    "source": {
     "doc_id": "analog-devices/filings/2025-05-22__adi-us-20250522-q2-8k__102679.md",
     "published": "2025-05-22",
-    "fetched_at": "2026-08-16T12:00:55.725259Z",
+    "fetched_at": "2026-08-16T16:15:36.402846Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -1643,191 +1567,121 @@
  ],
  "skipped": [
   {
-   "metric": "Adjusted diluted EPS",
-   "reason": "raw_unit USD incompatible with per-share metric",
-   "period": "FY2025Q2",
-   "value_as_written": "$ 1.85",
-   "quote": "Adjusted diluted EPS*         | $ 1.85         | $ 1.40         | $ 3.48         | $ 3.13         |"
-  },
-  {
-   "metric": "Adjusted diluted EPS",
-   "reason": "raw_unit USD incompatible with per-share metric",
-   "period": "FY2024Q2",
-   "value_as_written": "$ 1.40",
-   "quote": "Adjusted diluted EPS*         | $ 1.85         | $ 1.40         | $ 3.48         | $ 3.13         |"
-  },
-  {
-   "metric": "Adjusted diluted EPS",
-   "reason": "raw_unit USD incompatible with per-share metric",
-   "period": "FY2025H1",
-   "value_as_written": "$ 3.48",
-   "quote": "Adjusted diluted EPS*         | $ 1.85         | $ 1.40         | $ 3.48         | $ 3.13         |"
-  },
-  {
-   "metric": "Adjusted diluted EPS",
-   "reason": "raw_unit USD incompatible with per-share metric",
-   "period": "FY2024H1",
-   "value_as_written": "$ 3.13",
-   "quote": "Adjusted diluted EPS*         | $ 1.85         | $ 1.40         | $ 3.48         | $ 3.13         |"
-  },
-  {
-   "metric": "Adjusted diluted EPS",
-   "reason": "raw_unit USD incompatible with per-share metric",
-   "period": "FY2025Q1",
-   "value_as_written": "$ 1.63",
-   "quote": "Adjusted diluted earnings per share $ 1.63$ 1.73 (6) %"
-  },
-  {
-   "metric": "Adjusted diluted EPS",
-   "reason": "raw_unit USD incompatible with per-share metric",
-   "period": "FY2024Q1",
-   "value_as_written": "$ 1.73",
-   "quote": "Adjusted diluted earnings per share $ 1.63$ 1.73 (6) %"
-  },
-  {
-   "metric": "Adjusted diluted EPS",
-   "reason": "raw_unit USD incompatible with per-share metric",
-   "period": "FY2025Q1",
-   "value_as_written": "$1.63",
-   "quote": "Adjusted diluted earnings per share | $         | $1.63         | 1.73 (6) %         |"
-  },
-  {
-   "metric": "Adjusted diluted EPS",
-   "reason": "raw_unit USD incompatible with per-share metric",
-   "period": "FY2024Q1",
-   "value_as_written": "1.73",
-   "quote": "Adjusted diluted earnings per share | $         | $1.63         | 1.73 (6) %         |"
-  },
-  {
-   "metric": "Adjusted diluted EPS",
-   "reason": "raw_unit USD incompatible with per-share metric",
-   "period": "FY2025Q2",
-   "value_as_written": "$1.68",
-   "quote": "adjusted EPS to be $1.68, +/-$0.10"
-  },
-  {
-   "metric": "Adjusted diluted EPS",
-   "reason": "raw_unit USD incompatible with per-share metric",
-   "period": "FY2024",
-   "value_as_written": "$ 6.38",
-   "quote": "Adjusted diluted EPS         | $ 6.38         |"
-  },
-  {
-   "metric": "Adjusted diluted EPS",
-   "reason": "raw_unit USD incompatible with per-share metric",
-   "period": "FY2024",
-   "value_as_written": "$ 6.38",
-   "quote": "Adjusted diluted EPS         | $ 6.38         |"
+   "metric": "Revenue",
+   "reason": "unparseable value '$11.0B'",
+   "period": "FY2025",
+   "value_as_written": "$11.0B",
+   "quote": "| $11.0B Revenue   | 61.5% Gross Margin  | 26.6% Operating Margin"
   }
  ],
  "llm_usage": [
   {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 2638,
-   "completion_tokens": 4413,
-   "cached_prompt_tokens": 512
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3232,
+   "completion_tokens": 854,
+   "cached_prompt_tokens": 1175
   },
   {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 3178,
-   "completion_tokens": 1887,
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3788,
+   "completion_tokens": 1475,
+   "cached_prompt_tokens": 1175
+  },
+  {
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3340,
+   "completion_tokens": 1151,
+   "cached_prompt_tokens": 1175
+  },
+  {
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3873,
+   "completion_tokens": 1283,
+   "cached_prompt_tokens": 1175
+  },
+  {
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3704,
+   "completion_tokens": 1188,
+   "cached_prompt_tokens": 1175
+  },
+  {
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3730,
+   "completion_tokens": 1366,
+   "cached_prompt_tokens": 1175
+  },
+  {
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3312,
+   "completion_tokens": 1411,
+   "cached_prompt_tokens": 1175
+  },
+  {
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3455,
+   "completion_tokens": 1884,
+   "cached_prompt_tokens": 1175
+  },
+  {
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3443,
+   "completion_tokens": 2158,
    "cached_prompt_tokens": 0
   },
   {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 3465,
-   "completion_tokens": 6108,
-   "cached_prompt_tokens": 0
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 2957,
+   "completion_tokens": 1226,
+   "cached_prompt_tokens": 1175
   },
   {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 3976,
-   "completion_tokens": 6429,
-   "cached_prompt_tokens": 0
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3275,
+   "completion_tokens": 2262,
+   "cached_prompt_tokens": 1175
   },
   {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 3810,
-   "completion_tokens": 6710,
-   "cached_prompt_tokens": 0
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 2978,
+   "completion_tokens": 1778,
+   "cached_prompt_tokens": 1175
   },
   {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 3131,
-   "completion_tokens": 2188,
-   "cached_prompt_tokens": 0
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3890,
+   "completion_tokens": 1398,
+   "cached_prompt_tokens": 1175
   },
   {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 2705,
-   "completion_tokens": 13484,
-   "cached_prompt_tokens": 512
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3730,
+   "completion_tokens": 764,
+   "cached_prompt_tokens": 1175
   },
   {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 2840,
-   "completion_tokens": 7521,
-   "cached_prompt_tokens": 512
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3357,
+   "completion_tokens": 1023,
+   "cached_prompt_tokens": 1175
   },
   {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 2839,
-   "completion_tokens": 9624,
-   "cached_prompt_tokens": 512
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3861,
+   "completion_tokens": 638,
+   "cached_prompt_tokens": 1175
   },
   {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 2361,
-   "completion_tokens": 7478,
-   "cached_prompt_tokens": 0
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 4130,
+   "completion_tokens": 1402,
+   "cached_prompt_tokens": 1175
   },
   {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 2674,
-   "completion_tokens": 2167,
-   "cached_prompt_tokens": 0
-  },
-  {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 2387,
-   "completion_tokens": 743,
-   "cached_prompt_tokens": 0
-  },
-  {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 3973,
-   "completion_tokens": 3497,
-   "cached_prompt_tokens": 0
-  },
-  {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 3798,
-   "completion_tokens": 1792,
-   "cached_prompt_tokens": 0
-  },
-  {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 2739,
-   "completion_tokens": 615,
-   "cached_prompt_tokens": 0
-  },
-  {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 3257,
-   "completion_tokens": 2353,
-   "cached_prompt_tokens": 512
-  },
-  {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 4201,
-   "completion_tokens": 4859,
-   "cached_prompt_tokens": 0
-  },
-  {
-   "model": "deepseek/deepseek-v4-pro-0813",
-   "prompt_tokens": 3392,
-   "completion_tokens": 3837,
-   "cached_prompt_tokens": 512
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 4017,
+   "completion_tokens": 961,
+   "cached_prompt_tokens": 1175
   }
  ]
 }
