@@ -376,6 +376,12 @@ def _consensus_for(spec: MetricSpec, est_data: dict) -> tuple[float | None, str]
     'Net fees' is not revenue, and LSE currency/units are ambiguous on yahoo."""
     if spec.ticker == "HAS" or spec.kind == "ratio_pct" or spec.scope == "segment":
         return None, "no comparable consensus series"
+    if spec.ticker == "DE" and spec.kind == "flow_absolute":
+        # Basis mismatch: Yahoo tracks Deere's equipment-operations net sales
+        # (~10.7B); the contest metric is WORLDWIDE net sales and revenues incl.
+        # financial services (~12B+). Blending toward the wrong basis moved the
+        # submitted number ~$370M in the first full run — skip instead.
+        return None, "no comparable consensus series (yahoo tracks equipment-ops, not worldwide)"
     horizon = "0y" if spec.period_type == "fiscal_year" else "0q"
     try:
         if spec.kind == "flow_absolute":
