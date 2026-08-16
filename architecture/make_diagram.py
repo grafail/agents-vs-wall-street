@@ -96,31 +96,34 @@ def render(order: list[str]) -> str:
 # ---- concept view: the same compiled nodes, grouped into 4 phases ----------
 # The grouping below MUST cover the compiled graph's nodes exactly (asserted),
 # so even the coarse diagram is verifiably derived from the code.
+# (phase title, compiled nodes covered, mode line shown in the box, note under the box)
 PHASES = [
-    ("READ & RESEARCH", ["load", "research"], "1,139 filings + live tools — every fact cited & trust-tiered"),
-    ("BLIND ESTIMATE", ["estimate"], "LLM judgment, capped at 0.75× backtested error"),
-    ("STREET CHECK", ["consensus", "reconcile"], "defend the gap vs consensus, or revise (config-gated)"),
-    ("VERIFY & SHIP", ["finalize", "write"], "unit gates · never-blank ladder · full audit trail"),
+    ("READ & RESEARCH", ["load", "research"], "code + a roaming agent", "the agent picks its own searches; every fact cited"),
+    ("BLIND ESTIMATE", ["estimate"], "one structured AI call", "opinion capped at 0.75x its measured error"),
+    ("STREET CHECK", ["consensus", "reconcile"], "one structured AI call", "justify the gap vs Wall St, or move closer"),
+    ("VERIFY & SHIP", ["finalize", "write"], "code only", "safety checks + backup ladder + audit trail"),
 ]
-AGENT_PHASES = {"BLIND ESTIMATE", "STREET CHECK"}
+STRUCTURED_PHASES = {"BLIND ESTIMATE", "STREET CHECK"}
+ROAMING_PHASES = {"READ & RESEARCH"}
 
 
 def render_concept(order: list[str]) -> str:
-    assert [n for _, ns, _ in PHASES for n in ns] == order, "phase map drifted from compiled graph"
+    assert [n for _, ns, _, _ in PHASES for n in ns] == order, "phase map drifted from compiled graph"
     W2, H2 = 800, 172
     bw, bh, gap, y = 176, 62, 26, 46
     xs = [14 + i * (bw + gap) for i in range(4)]
     svg = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W2} {H2}" role="img" aria-label="Concept diagram">',
            '<defs><marker id="ca" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto">'
            '<path d="M0 0 L8 4 L0 8 z" fill="#5a6472"/></marker></defs>']
-    for x, (title, nodes, note) in zip(xs, PHASES):
-        agent = title in AGENT_PHASES
-        fill = "#1f3a5f" if agent else "#ffffff"
-        tcol = "#ffffff" if agent else "#1f3a5f"
-        svg.append(f'<rect x="{x}" y="{y}" width="{bw}" height="{bh}" rx="10" fill="{fill}" stroke="#1f3a5f" stroke-width="1.8"/>')
+    for x, (title, nodes, mode, note) in zip(xs, PHASES):
+        structured = title in STRUCTURED_PHASES
+        roaming = title in ROAMING_PHASES
+        fill = "#1f3a5f" if structured else "#ffffff"
+        tcol = "#ffffff" if structured else "#1f3a5f"
+        dash = ' stroke-dasharray="6 3"' if roaming else ""
+        svg.append(f'<rect x="{x}" y="{y}" width="{bw}" height="{bh}" rx="10" fill="{fill}" stroke="#1f3a5f" stroke-width="1.8"{dash}/>')
         svg.append(f'<text x="{x + bw/2}" y="{y + 26}" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="{tcol}">{title}</text>')
-        sub = " + ".join(nodes)
-        svg.append(f'<text x="{x + bw/2}" y="{y + 44}" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="{"#b8c4d8" if agent else "#5a6472"}">{sub}</text>')
+        svg.append(f'<text x="{x + bw/2}" y="{y + 44}" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="{"#b8c4d8" if structured else "#5a6472"}">{mode}</text>')
         # wrap note under box (2 lines max, naive split)
         words, lines, cur = note.split(), [], ""
         for w in words:
