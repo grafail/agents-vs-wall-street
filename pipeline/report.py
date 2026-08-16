@@ -52,6 +52,7 @@ class RunMeta(_Model):
     llm_provider: str | None = None
     model_big: str | None = None
     model_small: str | None = None
+    panel_members: list[str] = Field(default_factory=list)   # estimator panel, if multi-member
     git_commit: str | None = None
     totals: RunTotals | None = None
 
@@ -149,6 +150,23 @@ class DerivationStep(_Model):
     note: str | None = None
 
 
+class PanelMemberRow(_Model):
+    member: str                      # "provider:model"
+    p50: float | None = None
+    momentum: str | None = None
+    guidance_style: str | None = None
+    surprise_skew: str | None = None
+    confidence: str | None = None
+
+
+class PanelView(_Model):
+    """Per-model results for one metric (only present when a multi-member
+    panel ran). Aggregation is deterministic; disagreement widens uncertainty."""
+    members: list[PanelMemberRow] = Field(default_factory=list)
+    failed: list[str] = Field(default_factory=list)   # "provider:model: error"
+    p50_spread: float | None = None                    # max(p50) - min(p50)
+
+
 class MetricReport(_Model):
     """One of the 12 contest records, full audit chain in pipeline order."""
     company: str
@@ -167,6 +185,7 @@ class MetricReport(_Model):
     validation: list[ValidationCheck] = Field(default_factory=list)
     fallback_used: FallbackUsed | None = None
     candidates: list[CandidateRung] | None = None  # failsafe ladder, cascade order
+    panel: "PanelView | None" = None               # per-model panel results for THIS metric
     derivation: list[DerivationStep] | None = None
     worksheet: list["WorksheetLine"] | None = None
     final_value: float | None = None
@@ -465,6 +484,28 @@ def _grounded_html(name: str, g) -> str:
     return f"<p><b>{_e(name)}:</b> {_e(g.label)} — {_e(g.explanation)}{cites}</p>"
 
 
+def _panel_html(p: "PanelView | None") -> str:
+    """Per-model panel table: one row per member, aggregated row context above."""
+    if p is None or (not p.members and not p.failed):
+        return ""
+    rows = []
+    for mm in p.members:
+        rows.append(
+            f"<tr><td>{_e(mm.member)}</td><td class=\"num\">{_num(mm.p50)}%</td>"
+            f"<td>{_e(mm.momentum or '—')}</td><td>{_e(mm.guidance_style or '—')}</td>"
+            f"<td>{_e(mm.surprise_skew or '—')}</td><td>{_e(mm.confidence or '—')}</td></tr>")
+    failed = "".join(f'<p class="muted" style="font-size:.8rem">member failed: {_e(f)}</p>'
+                     for f in p.failed)
+    spread = (f'<p class="muted" style="font-size:.82rem">p50 disagreement (spread): '
+              f'{_num(p.p50_spread)}% — larger disagreement automatically widens the '
+              f'uncertainty band and shrinks the panel\'s influence.</p>'
+              if p.p50_spread is not None else "")
+    return ('<h4 style="margin:.7rem 0 .2rem">Model panel (per-member answers)</h4>'
+            '<div style="overflow-x:auto"><table><tr><th>model</th><th>p50</th>'
+            '<th>momentum</th><th>guidance style</th><th>surprise skew</th>'
+            '<th>confidence</th></tr>' + "".join(rows) + "</table></div>" + spread + failed)
+
+
 def _estimate_html(est: Estimate | None) -> str:
     if est is None:
         return '<p class="muted">No blind estimate (estimator skipped or failed).</p>'
@@ -590,7 +631,7 @@ def _metric_section(m: MetricReport) -> str:
         _stage("2 · Baselines (backtested)",
                _baseline_html(m.baseline_candidates, m.baseline_chosen), _STAGE_HELP[2]),
         _stage("3 · Guidance & beat factor", _guidance_html(m.guidance), _STAGE_HELP[3]),
-        _stage("4 · Blind estimate", _estimate_html(m.estimate), _STAGE_HELP[4]),
+        _stage("4 · Blind estimate", _estimate_html(m.estimate) + _panel_html(m.panel), _STAGE_HELP[4]),
         _stage("5 · Nudge audit", _nudges_html(m.nudges), _STAGE_HELP[5]),
         _stage("6 · Consensus & reconciliation",
                _reconcile_html(m.consensus, m.reconciliation), _STAGE_HELP[6]),
@@ -849,8 +890,11 @@ def _header_html(meta: RunMeta, subtitle: str | None = None) -> str:
         ("run", meta.run_id or "—"),
         ("started", _dt(meta.started)),
         ("finished", _dt(meta.finished)),
-        ("model (big)", meta.model_big or "—"),
-        ("model (small)", meta.model_small or "—"),
+        ("estimator panel" if meta.panel_members else "model (big)",
+         " + ".join(meta.panel_members) if meta.panel_members else (meta.model_big or "—")),
+        ("reconciler" if meta.panel_members else "model (small)",
+         (meta.model_big or "—") if meta.panel_members else (meta.model_small or "—")),
+        *((("reader (small)", meta.model_small or "—"),) if meta.panel_members else ()),
         ("commit", (meta.git_commit or "—")[:12]),
     ]
     t = meta.totals

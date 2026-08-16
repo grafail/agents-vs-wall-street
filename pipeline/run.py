@@ -112,6 +112,26 @@ def _nudge_audit_to_report(audit: dict | None) -> report_mod.NudgeAudit | None:
         caps_applied=caps, pre_reconcile_value=audit.get("pre_reconcile"))
 
 
+def _panel_view(blob: dict, spec: MetricSpec) -> report_mod.PanelView | None:
+    """Per-metric slice of the company panel summary (multi-member panels only)."""
+    p = blob.get("panel")
+    if not p or len(p.get("members_ok", [])) + len(p.get("members_failed", [])) < 2:
+        return None  # single-member/legacy path: nothing worth a table
+    key = spec.label.casefold()
+    members = []
+    for mid, per_label in (p.get("per_member") or {}).items():
+        row = next((v for k, v in per_label.items() if k.casefold() == key), None)
+        members.append(report_mod.PanelMemberRow(
+            member=mid, p50=(row or {}).get("p50"), momentum=(row or {}).get("momentum"),
+            guidance_style=(row or {}).get("guidance_style"),
+            surprise_skew=(row or {}).get("surprise_skew"),
+            confidence=(row or {}).get("confidence")))
+    spread = next((v for k, v in (p.get("p50_spread") or {}).items()
+                   if k.casefold() == key), None)
+    failed = [f"{f.get('member')}: {f.get('error')}" for f in p.get("members_failed", [])]
+    return report_mod.PanelView(members=members, failed=failed, p50_spread=spread)
+
+
 def _candidate_rungs(blob: dict) -> list[report_mod.CandidateRung] | None:
     """Failsafe-ladder audit from the finalize node's blob: the full ordered
     rung list (graph records it as blob['candidates'], absent rungs included)
@@ -414,6 +434,7 @@ def _metric_report(spec: MetricSpec, blob: dict) -> report_mod.MetricReport:
         validation=validation,
         fallback_used=fallback,
         candidates=_candidate_rungs(blob),
+        panel=_panel_view(blob, spec),
         derivation=_derivation_steps(spec, blob),
         worksheet=_worksheet_lines(spec, blob),
         final_value=blob.get("final"),
@@ -468,7 +489,10 @@ def cmd_forecast(tickers: list[str], out_dir: Path | None = None,
     started = datetime.now(timezone.utc)
     log.event("forecast_start", tickers=tickers,
               enable_reconcile=s.enable_reconcile, enable_research=s.enable_research,
-              model_big=s.model_big, model_small=s.model_small, provider=s.llm_provider)
+              model_big=s.model_big, model_small=s.model_small,
+            panel_members=[m.strip() for m in s.estimator_panel.split(",") if m.strip()]
+            if s.estimator_panel and "," in s.estimator_panel else
+            ([s.estimator_panel.strip()] if s.estimator_panel.strip() else []), provider=s.llm_provider)
 
     metric_reports: list[report_mod.MetricReport] = []
     written: dict[str, str] = {}
