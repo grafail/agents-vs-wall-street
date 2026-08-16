@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Run report — run-2026-08-16T12_01_28</title>
+<style>
+:root { --ink:#191a1c; --muted:#71747a; --line:#e4e4e6; --hair:#eeeeef;
+        --accent:#1a4d8f; --paper:#fdfdfc; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { margin:0; background:var(--paper); color:var(--ink);
+       font:15px/1.6 -apple-system,"Segoe UI",system-ui,Roboto,Helvetica,Arial,sans-serif;
+       font-variant-numeric:tabular-nums; }
+.layout { display:grid; grid-template-columns:15rem minmax(0,46rem); gap:3rem;
+          max-width:66rem; margin:0 auto; padding:2.75rem clamp(1rem,4vw,3rem) 5rem; }
+main { min-width:0; }
+h1, h2, h3, .m-final { font-family:Georgia,"Times New Roman",serif; }
+h1 { font-size:1.7rem; margin:0 0 .35rem; font-weight:700; letter-spacing:-.01em; }
+.subtitle { margin:.1rem 0 .4rem; color:var(--muted); font-size:1rem; }
+h2.sec { font-size:.8rem; margin:2.6rem 0 .8rem; text-transform:uppercase; letter-spacing:.12em;
+     color:var(--muted); font-weight:600; font-family:inherit; }
+.co-name { font-size:1.35rem; margin:0 0 .2rem; font-weight:700; }
+.co-tick { font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:.8rem;
+           color:var(--muted); font-weight:400; letter-spacing:.04em; margin-left:.4rem; }
+h3 { font-size:1.12rem; margin:0; font-weight:700; }
+a { color:var(--accent); text-decoration:none; } a:hover { text-decoration:underline; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.85em; }
+.muted { color:var(--muted); } .small { font-size:.85em; } .accent { color:var(--accent); }
+.mode { color:var(--muted); margin:.1rem 0 1rem; font-size:.88rem; letter-spacing:.03em; }
+header { border-bottom:2px solid var(--ink); padding-bottom:1.2rem; }
+.meta-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:.15rem 2rem; }
+.kv { display:flex; justify-content:space-between; gap:1rem; padding:.1rem 0; font-size:.88rem; }
+.kv .k { color:var(--muted); } .kv .v { text-align:right; }
+/* ---- TOC ---- */
+#toc { position:sticky; top:1.5rem; align-self:start; font-size:.85rem;
+       max-height:calc(100vh - 3rem); overflow-y:auto; padding-right:.5rem; }
+.toc-title { font-family:Georgia,serif; font-weight:700; font-size:.95rem; margin-bottom:.6rem; }
+.toc-co { margin:.7rem 0; }
+.toc-c { display:block; font-weight:700; color:var(--ink); padding:.15rem 0; }
+.toc-m { display:flex; justify-content:space-between; gap:.6rem; color:var(--muted);
+         padding:.14rem 0 .14rem .8rem; border-left:1px solid var(--hair); }
+.toc-m:hover { color:var(--accent); text-decoration:none; }
+.toc-m.active { color:var(--accent); border-left:2px solid var(--accent); padding-left:calc(.8rem - 1px); }
+.toc-v { font-family:ui-monospace,Menlo,monospace; font-size:.9em; }
+.toolbar { margin:.4rem 0 .9rem; }
+#filter { width:100%; padding:.35rem .55rem; border:1px solid var(--line); border-radius:5px;
+          font:inherit; background:#fff; }
+#filter:focus { outline:none; border-color:var(--accent); }
+.tb-btns { display:flex; gap:.5rem; margin-top:.45rem; }
+.tb-btns button { flex:1; font:inherit; font-size:.78rem; padding:.25rem 0; background:#fff;
+                  border:1px solid var(--line); border-radius:5px; color:var(--muted); cursor:pointer; }
+.tb-btns button:hover { color:var(--accent); border-color:var(--accent); }
+.jsonly { display:none; } .js .jsonly { display:block; }
+/* ---- summary ---- */
+table.sum { border-collapse:collapse; width:100%; font-size:.92rem; }
+table.sum th, table.sum td { text-align:left; padding:.34rem .6rem .34rem 0; border-bottom:1px solid var(--hair); }
+table.sum th { font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:600; }
+td.num, th.num { text-align:right; font-family:ui-monospace,Menlo,monospace; font-size:.92em; }
+/* ---- metric ---- */
+.company { margin-top:3rem; border-top:2px solid var(--ink); padding-top:1.2rem; }
+.metric { border-top:1px solid var(--line); margin-top:1.6rem; padding-top:1.3rem; }
+.metric:first-of-type { border-top:none; margin-top:.6rem; }
+.m-head { display:flex; justify-content:space-between; align-items:flex-start; gap:1.5rem;
+          flex-wrap:wrap; margin-bottom:.9rem; }
+.m-sub { color:var(--muted); font-size:.83rem; margin-top:.2rem; }
+.m-status { text-transform:uppercase; letter-spacing:.07em; font-size:.75rem; }
+.m-status-bad { color:var(--accent); font-weight:700; }
+.m-final { font-size:2.1rem; font-weight:700; white-space:nowrap; line-height:1.1; }
+.m-unit { font-size:.5em; color:var(--muted); font-weight:400;
+          font-family:-apple-system,"Segoe UI",system-ui,sans-serif; }
+/* ---- worksheet ---- */
+.ws { margin:.5rem 0 .6rem; padding:.75rem 1rem .6rem; background:#fff;
+      border:1px solid var(--line); border-radius:4px;
+      box-shadow:0 1px 0 rgba(0,0,0,.02); }
+.ws-legend { font-size:.7rem; color:var(--muted); letter-spacing:.06em; margin-bottom:.55rem;
+             font-family:ui-monospace,Menlo,monospace; }
+.ws-row { display:grid; grid-template-columns:2.4rem 1fr minmax(9.5rem,auto); gap:.7rem;
+          padding:.26rem 0; align-items:baseline; }
+.ws-row + .ws-row { border-top:1px solid var(--hair); }
+.ws-p { font-family:ui-monospace,Menlo,monospace; color:var(--muted); font-size:.82em; }
+.ws-amt { text-align:right; font-family:ui-monospace,Menlo,monospace; font-size:.98em;
+          font-weight:600; white-space:nowrap; }
+.ws-final { border-top:1px solid var(--ink) !important; }
+.ws-final .ws-label, .ws-final .ws-amt { font-weight:700; }
+.ws-flag { color:var(--accent); font-size:.75em; font-weight:700; margin-left:.45rem;
+           font-family:-apple-system,"Segoe UI",system-ui,sans-serif; letter-spacing:.03em; }
+.cons { margin:.2rem 0 1rem; font-size:.9rem; }
+.cons-k { font-size:.7rem; text-transform:uppercase; letter-spacing:.09em; color:var(--muted);
+          font-weight:700; margin-right:.5rem; }
+/* ---- stages ---- */
+details.stage { border-top:1px solid var(--hair); }
+details.stage summary { cursor:pointer; padding:.42rem 0; color:var(--muted); font-size:.86rem;
+                        list-style-position:inside; }
+details.stage summary:hover { color:var(--accent); }
+details.stage[open] summary { color:var(--ink); font-weight:600; }
+.stage-body { padding:.25rem 0 1rem 1.1rem; }
+.stage-body p { margin:.3rem 0; }
+blockquote { margin:.4rem 0; padding:.25rem .85rem; border-left:2px solid var(--line);
+             color:var(--muted); font-style:italic; }
+.src { font-size:.83em; color:var(--muted); }
+.scroll { overflow-x:auto; }
+table { border-collapse:collapse; font-size:.88rem; }
+th, td { text-align:left; padding:.28rem .7rem .28rem 0; border-bottom:1px solid var(--hair); white-space:nowrap; }
+th { font-size:.7rem; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); font-weight:600; }
+tr.chosen td { font-weight:700; }
+.checks { list-style:none; margin:0; padding:0; } .checks li { margin:.3rem 0; }
+.checks .ok { color:var(--ink); } .checks .bad { color:var(--accent); font-weight:700; }
+.fallback { margin:.5rem 0 .9rem; padding:.55rem .85rem; border:1px solid var(--accent);
+            border-radius:4px; font-size:.9rem; }
+.fallback ul { margin:.3rem 0 0; }
+.d-step { margin:.55rem 0; }
+.d-head { display:flex; gap:.55rem; align-items:baseline; flex-wrap:wrap; }
+.d-name { font-size:.73rem; text-transform:uppercase; letter-spacing:.07em;
+          color:var(--muted); min-width:9em; }
+.d-formula { color:var(--muted); }
+.d-sub { display:block; margin:.1rem 0 0 3rem; font-weight:600; }
+.d-refs { margin-left:3rem; font-size:.8em; color:var(--muted); }
+footer { margin-top:3.5rem; color:var(--muted); font-size:.8rem; border-top:1px solid var(--line);
+         padding-top:.8rem; }
+abbr[title] { text-decoration:underline dotted; text-underline-offset:2px; cursor:help; }
+.stage-help { color:var(--muted); font-size:.85rem; margin:.1rem 0 .6rem; max-width:44rem; }
+.sum-legend { color:var(--muted); font-size:.78rem; margin:.5rem 0 0; }
+.sum-legend b { font-weight:600; color:var(--ink); }
+.howto { margin:1.4rem 0 .2rem; border:1px solid var(--line); border-radius:4px;
+         background:#fff; }
+.howto summary { cursor:pointer; padding:.55rem .9rem; font-weight:600; font-size:.9rem; }
+.howto summary:hover { color:var(--accent); }
+.howto-body { padding:0 1rem 1rem; font-size:.9rem; max-width:46rem; }
+.howto-body dl { margin:.6rem 0 0; }
+.howto-body dt { font-weight:700; margin-top:.55rem; }
+.howto-body dd { margin:0.1rem 0 0 0; color:var(--muted); }
+[title] { cursor:help; }
+@media (max-width:900px){ .layout { grid-template-columns:1fr; gap:0; } #toc { position:static;
+  max-height:none; border-bottom:1px solid var(--line); padding-bottom:1rem; } }
+@media (max-width:640px){ .d-sub,.d-refs{ margin-left:0; } .m-final{ font-size:1.6rem; } }
+@media print { #toc { display:none; } .layout { display:block; } .metric { break-inside:avoid; } }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<main>
+<header><h1>Forecast run report</h1><p class="mode">reconcile ON · openrouter</p><div class='meta-grid'><div class="kv"><span class="k">run</span><span class="v">run-2026-08-16T12_01_28</span></div><div class="kv"><span class="k">started</span><span class="v">2026-08-16 12:01 UTC</span></div><div class="kv"><span class="k">finished</span><span class="v">2026-08-16 12:08 UTC</span></div><div class="kv"><span class="k">model (big)</span><span class="v">deepseek/deepseek-v4-pro-0813</span></div><div class="kv"><span class="k">model (small)</span><span class="v">deepseek/deepseek-v4-pro-0813</span></div><div class="kv"><span class="k">commit</span><span class="v">973ddd193c62</span></div><div class="kv"><span class="k">LLM calls</span><span class="v">2</span></div><div class="kv"><span class="k">tokens</span><span class="v">6,281 prompt / 8,723 completion</span></div><div class="kv"><span class="k">cached tokens</span><span class="v">0</span></div><div class="kv"><span class="k">tool cache</span><span class="v">0 hit / 33 live</span></div><div class="kv"><span class="k">est. cost</span><span class="v">—</span></div></div></header>
+
+<details class="howto"><summary>How to read this report</summary>
+<div class="howto-body">
+<p>Each forecast below is built in visible layers: start from what the company actually
+reported last year (<i>data</i>), grow it with a simple statistical method chosen by its
+historical accuracy (<i>math</i>), let an AI model adjust it within strict, evidence-cited
+limits (<i>model judgment</i>), then sanity-check the result against Wall Street's average
+estimate. The worksheet under each metric shows this as a running ledger; every claim
+links back to its source. Nothing is rounded away for simplicity — the layers are
+explained instead.</p>
+<dl><dt>baseline</dt><dd>a simple statistical starting forecast computed purely from the company's own reported history — for example, last year's quarter grown at the recent growth rate, or the midpoint of the company's own guidance. No AI involved.</dd><dt>backtest</dt><dd>a rehearsal on the past: each baseline method is replayed on earlier quarters using only the data that was available at the time, and its forecasts are compared with what the company actually reported. The average miss (MAE) decides which method to trust — and limits how much the AI may change its answer.</dd><dt>judgment</dt><dd>the AI model's adjustment, produced without seeing Wall Street's numbers. Every claim must cite a source document, and the total adjustment is capped at 0.75× the chosen method's average historical miss.</dd><dt>guidance</dt><dd>the company's own published forecast for the period.</dd><dt>consensus & blend</dt><dd>consensus is the average of Wall Street analysts' estimates; a blend is a weighted average of our value and consensus, used when the model judges the street partly right.</dd><dt>fallback</dt><dd>if a preferred step fails, the pipeline falls back to the next safest value — baseline, guidance, consensus, or last year's actual — rather than ever leaving a blank.</dd><dt>[D] / [M] / [L]</dt><dd>every worksheet line is tagged by where its number comes from: D extracted data, M deterministic math, L model judgment.</dd><dt>statuses</dt><dd><b>ok</b>: the final number passed every sanity check · <b>warnings</b>: at least one sanity check flagged this number — review before trusting · <b>fallback</b>: the preferred forecasting path failed, so a simpler safe value was used · <b>unvalidated</b>: no sanity checks were recorded for this number · <b>no value</b>: the pipeline produced no number for this metric</dd></dl>
+</div></details>
+<h2 class="sec">Final forecasts</h2>
+<p class="muted">No metrics in report.</p>
+
+<footer>Rendered from report.json · Agents vs Wall Street</footer>
+</main>
+</div>
+<script>
+(function () {
+  document.documentElement.classList.add('js');
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  // expand / collapse all
+  var setAll = function (open) {
+    $$('details').forEach(function (d) { d.open = open; });
+  };
+  var be = $('#expand'), bc = $('#collapse');
+  if (be) be.addEventListener('click', function () { setAll(true); });
+  if (bc) bc.addEventListener('click', function () { setAll(false); });
+
+  // quick filter over metric sections
+  var filter = $('#filter');
+  if (filter) filter.addEventListener('input', function () {
+    var q = filter.value.trim().toLowerCase();
+    $$('.metric').forEach(function (sec) {
+      sec.style.display = (!q || (sec.getAttribute('data-filter') || '').indexOf(q) !== -1) ? '' : 'none';
+    });
+    $$('.company').forEach(function (co) {
+      var any = $$('.metric', co).some(function (m) { return m.style.display !== 'none'; });
+      co.style.display = any ? '' : 'none';
+    });
+  });
+
+  // scrollspy: highlight the TOC link of the metric in view
+  var links = {};
+  $$('.toc-m').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
+  if ('IntersectionObserver' in window) {
+    var active = null;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          if (active) active.classList.remove('active');
+          active = links[en.target.id];
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-10% 0px -70% 0px' });
+    $$('.metric').forEach(function (sec) { io.observe(sec); });
+  }
+
+  // open the parent details chain when a hash link targets something inside one
+  var openHash = function () {
+    var el = location.hash && document.getElementById(location.hash.slice(1));
+    var p = el;
+    while (p) { if (p.tagName === 'DETAILS') p.open = true; p = p.parentElement; }
+  };
+  window.addEventListener('hashchange', openHash);
+  openHash();
+})();
+</script>
+</body>
+</html>

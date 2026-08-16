@@ -1,0 +1,44 @@
+{"ts": "2026-08-16T16:22:20.424260+00:00", "kind": "extract_start", "ticker": "HAS", "metrics": 3, "workers": 4}
+{"ts": "2026-08-16T16:22:20.502746+00:00", "kind": "narrowing_done", "metric": "Net fees", "candidates": 36, "docs": 14, "batches": 6}
+{"ts": "2026-08-16T16:22:20.502881+00:00", "kind": "llm_batch_start", "metric": "Net fees", "batch_i": 0, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:20.502922+00:00", "kind": "llm_batch_start", "metric": "Net fees", "batch_i": 1, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:20.502951+00:00", "kind": "llm_batch_start", "metric": "Net fees", "batch_i": 2, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:20.502977+00:00", "kind": "llm_batch_start", "metric": "Net fees", "batch_i": 3, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:20.502999+00:00", "kind": "llm_batch_start", "metric": "Net fees", "batch_i": 4, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:20.503023+00:00", "kind": "llm_batch_start", "metric": "Net fees", "batch_i": 5, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:22.441713+00:00", "kind": "llm_batch_done", "metric": "Net fees", "batch_i": 0, "seconds": 1.94, "facts_parsed": 0, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 3741, "completion_tokens": 70, "cached_prompt_tokens": 3738}}
+{"ts": "2026-08-16T16:22:24.358281+00:00", "kind": "llm_batch_done", "metric": "Net fees", "batch_i": 2, "seconds": 3.85, "facts_parsed": 2, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 3834, "completion_tokens": 335, "cached_prompt_tokens": 3831}}
+{"ts": "2026-08-16T16:22:24.638715+00:00", "kind": "llm_batch_done", "metric": "Net fees", "batch_i": 3, "seconds": 4.13, "facts_parsed": 2, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 3681, "completion_tokens": 366, "cached_prompt_tokens": 3678}}
+{"ts": "2026-08-16T16:22:24.689115+00:00", "kind": "llm_batch_done", "metric": "Net fees", "batch_i": 1, "seconds": 4.18, "facts_parsed": 1, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 3687, "completion_tokens": 370, "cached_prompt_tokens": 3684}}
+{"ts": "2026-08-16T16:22:30.104302+00:00", "kind": "llm_batch_done", "metric": "Net fees", "batch_i": 4, "seconds": 7.66, "facts_parsed": 4, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 3311, "completion_tokens": 846, "cached_prompt_tokens": 3308}}
+{"ts": "2026-08-16T16:22:42.794675+00:00", "kind": "llm_batch_done", "metric": "Net fees", "batch_i": 5, "seconds": 18.44, "facts_parsed": 14, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 3663, "completion_tokens": 2455, "cached_prompt_tokens": 3660}}
+{"ts": "2026-08-16T16:22:42.796838+00:00", "kind": "metric_done", "metric": "Net fees", "facts_accepted": 8, "flagged": 0, "skipped": 13}
+{"ts": "2026-08-16T16:22:42.959150+00:00", "kind": "narrowing_done", "metric": "Pre-exceptional basic EPS", "candidates": 36, "docs": 13, "batches": 6}
+{"ts": "2026-08-16T16:22:42.959285+00:00", "kind": "llm_batch_start", "metric": "Pre-exceptional basic EPS", "batch_i": 0, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:42.959323+00:00", "kind": "llm_batch_start", "metric": "Pre-exceptional basic EPS", "batch_i": 1, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:42.959348+00:00", "kind": "llm_batch_start", "metric": "Pre-exceptional basic EPS", "batch_i": 2, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:42.959372+00:00", "kind": "llm_batch_start", "metric": "Pre-exceptional basic EPS", "batch_i": 3, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:42.959399+00:00", "kind": "llm_batch_start", "metric": "Pre-exceptional basic EPS", "batch_i": 4, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:42.959424+00:00", "kind": "llm_batch_start", "metric": "Pre-exceptional basic EPS", "batch_i": 5, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:50.675526+00:00", "kind": "llm_batch_done", "metric": "Pre-exceptional basic EPS", "batch_i": 1, "seconds": 7.71, "facts_parsed": 8, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 3588, "completion_tokens": 1070, "cached_prompt_tokens": 3585}}
+{"ts": "2026-08-16T16:22:52.008782+00:00", "kind": "llm_batch_done", "metric": "Pre-exceptional basic EPS", "batch_i": 2, "seconds": 9.05, "facts_parsed": 10, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 4173, "completion_tokens": 1473, "cached_prompt_tokens": 4170}}
+{"ts": "2026-08-16T16:22:52.416529+00:00", "kind": "llm_batch_done", "metric": "Pre-exceptional basic EPS", "batch_i": 3, "seconds": 9.44, "facts_parsed": 9, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 3809, "completion_tokens": 1291, "cached_prompt_tokens": 3806}}
+{"ts": "2026-08-16T16:22:52.461541+00:00", "kind": "llm_batch_done", "metric": "Pre-exceptional basic EPS", "batch_i": 4, "seconds": 1.79, "facts_parsed": 0, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 3795, "completion_tokens": 114, "cached_prompt_tokens": 3792}}
+{"ts": "2026-08-16T16:22:55.671354+00:00", "kind": "llm_batch_done", "metric": "Pre-exceptional basic EPS", "batch_i": 0, "seconds": 12.71, "facts_parsed": 4, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 3806, "completion_tokens": 1433, "cached_prompt_tokens": 3803}}
+{"ts": "2026-08-16T16:22:58.344756+00:00", "kind": "llm_batch_done", "metric": "Pre-exceptional basic EPS", "batch_i": 5, "seconds": 6.34, "facts_parsed": 1, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 3846, "completion_tokens": 618, "cached_prompt_tokens": 3843}}
+{"ts": "2026-08-16T16:22:58.349640+00:00", "kind": "metric_done", "metric": "Pre-exceptional basic EPS", "facts_accepted": 15, "flagged": 9, "skipped": 1}
+{"ts": "2026-08-16T16:22:58.441637+00:00", "kind": "narrowing_done", "metric": "Pre-exceptional operating profit", "candidates": 36, "docs": 15, "batches": 6}
+{"ts": "2026-08-16T16:22:58.441769+00:00", "kind": "llm_batch_start", "metric": "Pre-exceptional operating profit", "batch_i": 0, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:58.441808+00:00", "kind": "llm_batch_start", "metric": "Pre-exceptional operating profit", "batch_i": 1, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:58.441836+00:00", "kind": "llm_batch_start", "metric": "Pre-exceptional operating profit", "batch_i": 2, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:58.441862+00:00", "kind": "llm_batch_start", "metric": "Pre-exceptional operating profit", "batch_i": 3, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:58.441887+00:00", "kind": "llm_batch_start", "metric": "Pre-exceptional operating profit", "batch_i": 4, "n_excerpts": 6}
+{"ts": "2026-08-16T16:22:58.441912+00:00", "kind": "llm_batch_start", "metric": "Pre-exceptional operating profit", "batch_i": 5, "n_excerpts": 6}
+{"ts": "2026-08-16T16:23:05.506675+00:00", "kind": "llm_batch_done", "metric": "Pre-exceptional operating profit", "batch_i": 3, "seconds": 7.06, "facts_parsed": 9, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 3994, "completion_tokens": 1038, "cached_prompt_tokens": 3991}}
+{"ts": "2026-08-16T16:23:05.604018+00:00", "kind": "llm_batch_done", "metric": "Pre-exceptional operating profit", "batch_i": 1, "seconds": 7.16, "facts_parsed": 6, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 3961, "completion_tokens": 926, "cached_prompt_tokens": 3958}}
+{"ts": "2026-08-16T16:23:10.033171+00:00", "kind": "llm_batch_done", "metric": "Pre-exceptional operating profit", "batch_i": 4, "seconds": 4.53, "facts_parsed": 5, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 3519, "completion_tokens": 624, "cached_prompt_tokens": 3516}}
+{"ts": "2026-08-16T16:23:10.847515+00:00", "kind": "llm_batch_done", "metric": "Pre-exceptional operating profit", "batch_i": 2, "seconds": 12.4, "facts_parsed": 6, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 3688, "completion_tokens": 1576, "cached_prompt_tokens": 3685}}
+{"ts": "2026-08-16T16:23:12.596528+00:00", "kind": "llm_batch_done", "metric": "Pre-exceptional operating profit", "batch_i": 0, "seconds": 14.15, "facts_parsed": 10, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 4175, "completion_tokens": 1880, "cached_prompt_tokens": 4172}}
+{"ts": "2026-08-16T16:23:27.961272+00:00", "kind": "llm_batch_done", "metric": "Pre-exceptional operating profit", "batch_i": 5, "seconds": 22.36, "facts_parsed": 10, "usage": {"model": "gpt-5.6-luna", "prompt_tokens": 4008, "completion_tokens": 2851, "cached_prompt_tokens": 4005}}
+{"ts": "2026-08-16T16:23:27.967794+00:00", "kind": "metric_done", "metric": "Pre-exceptional operating profit", "facts_accepted": 28, "flagged": 9, "skipped": 3}
+{"ts": "2026-08-16T16:23:27.969457+00:00", "kind": "extract_done", "ticker": "HAS", "total_facts": 37, "total_skipped": 17, "total_seconds": 67.5, "total_usage": {"prompt_tokens": 68279, "completion_tokens": 19336, "cached_prompt_tokens": 68225}, "path": "/home/raf/Documents/GitHub/hackathon-agents-wall-street/starter-repo/artifacts/facts/HAS.json"}

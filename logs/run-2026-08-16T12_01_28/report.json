@@ -1,0 +1,22 @@
+{
+  "meta": {
+    "run_id": "run-2026-08-16T12_01_28",
+    "started": "2026-08-16T12:01:28.796728Z",
+    "finished": "2026-08-16T12:08:32.497272Z",
+    "enable_reconcile": true,
+    "llm_provider": "openrouter",
+    "model_big": "deepseek/deepseek-v4-pro-0813",
+    "model_small": "deepseek/deepseek-v4-pro-0813",
+    "git_commit": "973ddd193c6271f0c899e94f508ac3807db0c381",
+    "totals": {
+      "llm_calls": 2,
+      "prompt_tokens": 6281,
+      "completion_tokens": 8723,
+      "cached_prompt_tokens": 0,
+      "tool_cache_hits": 0,
+      "tool_cache_live": 33,
+      "est_cost_usd": null
+    }
+  },
+  "metrics": []
+}

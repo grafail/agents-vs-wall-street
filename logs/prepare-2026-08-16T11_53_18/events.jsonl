@@ -1,0 +1,44 @@
+{"ts": "2026-08-16T11:53:18.625856+00:00", "kind": "extract_start", "ticker": "HD", "metrics": 3, "workers": 4}
+{"ts": "2026-08-16T11:53:18.710325+00:00", "kind": "narrowing_done", "metric": "Net sales", "candidates": 36, "docs": 13, "batches": 6}
+{"ts": "2026-08-16T11:53:18.710461+00:00", "kind": "llm_batch_start", "metric": "Net sales", "batch_i": 0, "n_excerpts": 6}
+{"ts": "2026-08-16T11:53:18.710500+00:00", "kind": "llm_batch_start", "metric": "Net sales", "batch_i": 1, "n_excerpts": 6}
+{"ts": "2026-08-16T11:53:18.710529+00:00", "kind": "llm_batch_start", "metric": "Net sales", "batch_i": 2, "n_excerpts": 6}
+{"ts": "2026-08-16T11:53:18.710554+00:00", "kind": "llm_batch_start", "metric": "Net sales", "batch_i": 3, "n_excerpts": 6}
+{"ts": "2026-08-16T11:53:18.710579+00:00", "kind": "llm_batch_start", "metric": "Net sales", "batch_i": 4, "n_excerpts": 6}
+{"ts": "2026-08-16T11:53:18.710600+00:00", "kind": "llm_batch_start", "metric": "Net sales", "batch_i": 5, "n_excerpts": 6}
+{"ts": "2026-08-16T11:53:35.381312+00:00", "kind": "llm_batch_done", "metric": "Net sales", "batch_i": 0, "seconds": 16.67, "facts_parsed": 8, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 2585, "completion_tokens": 917, "cached_prompt_tokens": 0}}
+{"ts": "2026-08-16T11:53:37.118995+00:00", "kind": "llm_batch_done", "metric": "Net sales", "batch_i": 3, "seconds": 18.4, "facts_parsed": 8, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 3597, "completion_tokens": 987, "cached_prompt_tokens": 0}}
+{"ts": "2026-08-16T11:53:40.086176+00:00", "kind": "llm_batch_done", "metric": "Net sales", "batch_i": 2, "seconds": 21.37, "facts_parsed": 11, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 3472, "completion_tokens": 1310, "cached_prompt_tokens": 0}}
+{"ts": "2026-08-16T11:55:57.787807+00:00", "kind": "llm_batch_done", "metric": "Net sales", "batch_i": 4, "seconds": 142.41, "facts_parsed": 7, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 3025, "completion_tokens": 7458, "cached_prompt_tokens": 512}}
+{"ts": "2026-08-16T11:56:13.238534+00:00", "kind": "llm_batch_done", "metric": "Net sales", "batch_i": 1, "seconds": 174.53, "facts_parsed": 7, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 3051, "completion_tokens": 9265, "cached_prompt_tokens": 512}}
+{"ts": "2026-08-16T11:56:31.615724+00:00", "kind": "llm_batch_done", "metric": "Net sales", "batch_i": 5, "seconds": 174.5, "facts_parsed": 7, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 2952, "completion_tokens": 9978, "cached_prompt_tokens": 0}}
+{"ts": "2026-08-16T11:56:31.621360+00:00", "kind": "metric_done", "metric": "Net sales", "facts_accepted": 25, "flagged": 14, "skipped": 8}
+{"ts": "2026-08-16T11:56:31.830768+00:00", "kind": "narrowing_done", "metric": "Adjusted diluted EPS", "candidates": 36, "docs": 12, "batches": 6}
+{"ts": "2026-08-16T11:56:31.830892+00:00", "kind": "llm_batch_start", "metric": "Adjusted diluted EPS", "batch_i": 0, "n_excerpts": 6}
+{"ts": "2026-08-16T11:56:31.830929+00:00", "kind": "llm_batch_start", "metric": "Adjusted diluted EPS", "batch_i": 1, "n_excerpts": 6}
+{"ts": "2026-08-16T11:56:31.830955+00:00", "kind": "llm_batch_start", "metric": "Adjusted diluted EPS", "batch_i": 2, "n_excerpts": 6}
+{"ts": "2026-08-16T11:56:31.830981+00:00", "kind": "llm_batch_start", "metric": "Adjusted diluted EPS", "batch_i": 3, "n_excerpts": 6}
+{"ts": "2026-08-16T11:56:31.831006+00:00", "kind": "llm_batch_start", "metric": "Adjusted diluted EPS", "batch_i": 4, "n_excerpts": 6}
+{"ts": "2026-08-16T11:56:31.831031+00:00", "kind": "llm_batch_start", "metric": "Adjusted diluted EPS", "batch_i": 5, "n_excerpts": 6}
+{"ts": "2026-08-16T11:56:37.021922+00:00", "kind": "llm_batch_done", "metric": "Adjusted diluted EPS", "batch_i": 1, "seconds": 5.19, "facts_parsed": 8, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 3062, "completion_tokens": 999, "cached_prompt_tokens": 0}}
+{"ts": "2026-08-16T11:56:38.309298+00:00", "kind": "llm_batch_done", "metric": "Adjusted diluted EPS", "batch_i": 0, "seconds": 6.48, "facts_parsed": 10, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 2836, "completion_tokens": 1414, "cached_prompt_tokens": 0}}
+{"ts": "2026-08-16T11:56:42.375647+00:00", "kind": "llm_batch_done", "metric": "Adjusted diluted EPS", "batch_i": 4, "seconds": 5.35, "facts_parsed": 9, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 2951, "completion_tokens": 1199, "cached_prompt_tokens": 0}}
+{"ts": "2026-08-16T11:57:33.059221+00:00", "kind": "llm_batch_done", "metric": "Adjusted diluted EPS", "batch_i": 5, "seconds": 54.75, "facts_parsed": 14, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 3508, "completion_tokens": 5671, "cached_prompt_tokens": 0}}
+{"ts": "2026-08-16T11:58:14.014442+00:00", "kind": "llm_batch_done", "metric": "Adjusted diluted EPS", "batch_i": 3, "seconds": 102.17, "facts_parsed": 10, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 3475, "completion_tokens": 9296, "cached_prompt_tokens": 0}}
+{"ts": "2026-08-16T11:59:11.098265+00:00", "kind": "llm_batch_done", "metric": "Adjusted diluted EPS", "batch_i": 2, "seconds": 159.26, "facts_parsed": 5, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 2971, "completion_tokens": 9031, "cached_prompt_tokens": 512}}
+{"ts": "2026-08-16T11:59:11.103940+00:00", "kind": "metric_done", "metric": "Adjusted diluted EPS", "facts_accepted": 23, "flagged": 16, "skipped": 3}
+{"ts": "2026-08-16T11:59:11.197733+00:00", "kind": "narrowing_done", "metric": "Comparable sales, total company", "candidates": 36, "docs": 13, "batches": 6}
+{"ts": "2026-08-16T11:59:11.197829+00:00", "kind": "llm_batch_start", "metric": "Comparable sales, total company", "batch_i": 0, "n_excerpts": 6}
+{"ts": "2026-08-16T11:59:11.197866+00:00", "kind": "llm_batch_start", "metric": "Comparable sales, total company", "batch_i": 1, "n_excerpts": 6}
+{"ts": "2026-08-16T11:59:11.197892+00:00", "kind": "llm_batch_start", "metric": "Comparable sales, total company", "batch_i": 2, "n_excerpts": 6}
+{"ts": "2026-08-16T11:59:11.197917+00:00", "kind": "llm_batch_start", "metric": "Comparable sales, total company", "batch_i": 3, "n_excerpts": 6}
+{"ts": "2026-08-16T11:59:11.197941+00:00", "kind": "llm_batch_start", "metric": "Comparable sales, total company", "batch_i": 4, "n_excerpts": 6}
+{"ts": "2026-08-16T11:59:11.197964+00:00", "kind": "llm_batch_start", "metric": "Comparable sales, total company", "batch_i": 5, "n_excerpts": 6}
+{"ts": "2026-08-16T11:59:14.454264+00:00", "kind": "llm_batch_done", "metric": "Comparable sales, total company", "batch_i": 1, "seconds": 3.25, "facts_parsed": 7, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 2979, "completion_tokens": 875, "cached_prompt_tokens": 0}}
+{"ts": "2026-08-16T11:59:14.827770+00:00", "kind": "llm_batch_done", "metric": "Comparable sales, total company", "batch_i": 3, "seconds": 3.62, "facts_parsed": 5, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 3186, "completion_tokens": 665, "cached_prompt_tokens": 0}}
+{"ts": "2026-08-16T11:59:56.946553+00:00", "kind": "llm_batch_done", "metric": "Comparable sales, total company", "batch_i": 2, "seconds": 45.74, "facts_parsed": 6, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 3126, "completion_tokens": 2853, "cached_prompt_tokens": 512}}
+{"ts": "2026-08-16T12:00:03.887936+00:00", "kind": "llm_batch_done", "metric": "Comparable sales, total company", "batch_i": 5, "seconds": 49.06, "facts_parsed": 6, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 3711, "completion_tokens": 4316, "cached_prompt_tokens": 0}}
+{"ts": "2026-08-16T12:00:18.315984+00:00", "kind": "llm_batch_done", "metric": "Comparable sales, total company", "batch_i": 4, "seconds": 63.86, "facts_parsed": 9, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 3832, "completion_tokens": 5640, "cached_prompt_tokens": 0}}
+{"ts": "2026-08-16T12:00:31.056482+00:00", "kind": "llm_batch_done", "metric": "Comparable sales, total company", "batch_i": 0, "seconds": 79.86, "facts_parsed": 9, "usage": {"model": "deepseek/deepseek-v4-pro-0813", "prompt_tokens": 3325, "completion_tokens": 6713, "cached_prompt_tokens": 0}}
+{"ts": "2026-08-16T12:00:31.059828+00:00", "kind": "metric_done", "metric": "Comparable sales, total company", "facts_accepted": 14, "flagged": 0, "skipped": 18}
+{"ts": "2026-08-16T12:00:31.061918+00:00", "kind": "extract_done", "ticker": "HD", "total_facts": 45, "total_skipped": 29, "total_seconds": 432.4, "total_usage": {"prompt_tokens": 57644, "completion_tokens": 78587, "cached_prompt_tokens": 2048}, "path": "/home/raf/Documents/GitHub/hackathon-agents-wall-street/starter-repo/artifacts/facts/HD.json"}

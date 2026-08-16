@@ -1,0 +1,739 @@
+{
+  "meta": {
+    "run_id": "run-2026-08-16T12_37_44",
+    "started": "2026-08-16T12:37:44.163551Z",
+    "finished": "2026-08-16T12:43:07.007307Z",
+    "enable_reconcile": true,
+    "llm_provider": "openrouter",
+    "model_big": "deepseek/deepseek-v4-pro-0813",
+    "model_small": "deepseek/deepseek-v4-pro-0813",
+    "git_commit": "c2b1a6306eb02370d763cfb2179082eaae4026f9",
+    "totals": {
+      "llm_calls": 5,
+      "prompt_tokens": 137286,
+      "completion_tokens": 17026,
+      "cached_prompt_tokens": 0,
+      "tool_cache_hits": 3,
+      "tool_cache_live": 24,
+      "est_cost_usd": 0.113
+    }
+  },
+  "metrics": [
+    {
+      "company": "Hays plc",
+      "ticker": "HAS",
+      "label": "Net fees",
+      "unit": "GBPm",
+      "period": "FY2026",
+      "anchor": {
+        "value": 972.4,
+        "period": "FY2025",
+        "quote": "Net fees (1)         | 972.4   | 1,113.6 | (13)%         | (11)%        |",
+        "source_doc": "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md"
+      },
+      "baseline_candidates": [
+        {
+          "method": "seasonal_yoy",
+          "value": 849.103591954023,
+          "backtest_mae": 141.19999999999993,
+          "backtest_bias": 141.19999999999993,
+          "backtest_n": 1
+        }
+      ],
+      "baseline_chosen": "seasonal_yoy",
+      "guidance": null,
+      "estimate": {
+        "method": "evidence_processing",
+        "growth_p10": -2.5,
+        "growth_p50": 0.0,
+        "growth_p90": 2.5,
+        "momentum": {
+          "explanation": "FY2026H1 net fees of 453.3 are down 9% YoY from FY2025H1's 496.0, but the rate of decline has improved from the 15% YoY drop seen in FY2025H1 (496.0 vs 583.3). This suggests the business is still contracting but the deterioration is decelerating, which is a mild cooling-to-stabilizing trend relative to the historical series.",
+          "label": "cooling",
+          "citations": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
+            "hays/filings/2025-02-20__has-ln-20250220-q2-8k__119730.md"
+          ]
+        },
+        "guidance_style": {
+          "explanation": "No company guidance was found for the target period, so there is no evidence to assess whether management historically sandbags, guides accurately, or guides promotionally. Without guidance history or statements, the style cannot be determined.",
+          "label": "accurate",
+          "citations": []
+        },
+        "surprise_skew": {
+          "explanation": "The baseline of 849.1 GBPm implies a full-year decline of about 12.7% from FY2025's 972.4. The H1 actual of 453.3 is already known and represents roughly 53% of the baseline. If H2 follows the same seasonal pattern as FY2025 (where H2 was 476.4, i.e., 972.4 - 496.0), the full year would be around 929.7, which is 9.5% above the baseline. However, the H1 decline of 9% is better than the baseline's implied full-year decline, suggesting upside risk to the baseline. The risk is tilted to the upside because the known H1 result is tracking ahead of the baseline's implied pace.",
+          "label": "upside",
+          "citations": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md"
+          ]
+        },
+        "confidence": "medium",
+        "rationale": "The baseline of 849.1 GBPm is derived from a seasonal_yoy model with only one backtest observation (MAE 141.2, bias 141.2), making it highly uncertain. The fresh evidence provides an actual H1 figure of 453.3, which is down 9% YoY but better than the 15% decline in the prior-year H1. This suggests the full-year outcome is likely to be above the baseline, but the lack of company guidance and the limited historical data for the baseline model temper confidence. I set p50 at 0.0% to reflect a neutral central call given the baseline's uncertainty, with a wide p10-p90 spread to acknowledge the high model error and the possibility that H2 could weaken again."
+      },
+      "nudges": {
+        "components": [
+          {
+            "name": "quantile_p50",
+            "label": null,
+            "raw": 0.0,
+            "applied": 0.0,
+            "capped": false,
+            "note": "shrink 0.769 (spread 5.0)"
+          },
+          {
+            "name": "momentum",
+            "label": "cooling",
+            "raw": -4.15732548236722,
+            "applied": -4.15732548236722,
+            "capped": false,
+            "note": "fixed_fallback"
+          },
+          {
+            "name": "surprise_skew",
+            "label": "upside",
+            "raw": 2.494395289420332,
+            "applied": 2.494395289420332,
+            "capped": false,
+            "note": "fixed_fallback"
+          }
+        ],
+        "cap": 105.89999999999995,
+        "caps_applied": [],
+        "pre_reconcile_value": 834.983591954023
+      },
+      "consensus": {
+        "value": null,
+        "source": "no comparable consensus series",
+        "fetched_at": null
+      },
+      "reconciliation": null,
+      "validation": [
+        {
+          "check": "magnitude",
+          "passed": true,
+          "detail": "834.983591954023 is 0.86x last reported 972.4 (band 0.50x-2.00x)"
+        },
+        {
+          "check": "pence_trap",
+          "passed": true,
+          "detail": "n/a (not a pence per-share metric)"
+        },
+        {
+          "check": "percent_trap",
+          "passed": true,
+          "detail": "n/a (not a percentage metric)"
+        },
+        {
+          "check": "guidance_sanity",
+          "passed": true,
+          "detail": "no guidance available"
+        }
+      ],
+      "fallback_used": null,
+      "derivation": [
+        {
+          "name": "anchor",
+          "formula": "A = actual[FY2025]",
+          "substituted": "A = 972.4 GBPm",
+          "result": 972.4,
+          "provenance": "data",
+          "refs": [
+            "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md (tier 1)"
+          ],
+          "note": "same period last fiscal year, exact reported figure"
+        },
+        {
+          "name": "baseline",
+          "formula": "B = anchor \u00d7 (1 + mean(recent YoY))",
+          "substituted": "B = 972.4 \u00d7 (1 -12.68%) = 849.1",
+          "result": 849.103591954023,
+          "provenance": "math",
+          "refs": [
+            "chosen by walk-forward backtest: MAE 141.2 over n=1 periods"
+          ],
+          "note": null
+        },
+        {
+          "name": "judgment: quantile",
+          "formula": "\u0394q = p50 \u00d7 shrink",
+          "substituted": "\u0394q = +0.00%(LLM) \u00d7 0.769 = +0.000%",
+          "result": 0.0,
+          "provenance": "llm",
+          "refs": [],
+          "note": "shrink = 1/(1+(p90\u2212p10)/\u03c3), \u03c3=16.63 \u2014 wide model uncertainty shrinks its own influence"
+        },
+        {
+          "name": "judgment: momentum",
+          "formula": "\u0394 = map(momentum label) \u00d7 \u03c3",
+          "substituted": "\u0394(cooling(LLM)) = -4.157%",
+          "result": -4.15732548236722,
+          "provenance": "llm",
+          "refs": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
+            "hays/filings/2025-02-20__has-ln-20250220-q2-8k__119730.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "judgment: surprise skew",
+          "formula": "\u0394 = map(surprise_skew label) \u00d7 \u03c3",
+          "substituted": "\u0394(upside(LLM)) = +2.494%",
+          "result": 2.494395289420332,
+          "provenance": "llm",
+          "refs": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "cap & apply",
+          "formula": "adj = clamp(B \u00d7 (\u0394q+\u0394m+\u0394s)/100, \u00b10.75\u00d7MAE)",
+          "substituted": "adj = clamp(-14.12, \u00b1105.9) = -14.12",
+          "result": -14.119999999999994,
+          "provenance": "math",
+          "refs": [],
+          "note": "within_cap"
+        },
+        {
+          "name": "pre-reconcile",
+          "formula": "V = B + adj",
+          "substituted": "V = 849.1 -14.12 = 834.98",
+          "result": 834.983591954023,
+          "provenance": "math",
+          "refs": [],
+          "note": null
+        },
+        {
+          "name": "final",
+          "formula": "F = V",
+          "substituted": "F = 834.98",
+          "result": 834.983591954023,
+          "provenance": "math",
+          "refs": [],
+          "note": "no consensus blend (pure-blind mode or no consensus)"
+        }
+      ],
+      "worksheet": [
+        {
+          "provenance": "data",
+          "label": "anchor \u2014 FY2025 actual",
+          "amount": 972.4,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "\u00d7 seasonal growth (-12.68%)",
+          "amount": 849.103591954023,
+          "is_final": false
+        },
+        {
+          "provenance": "llm",
+          "label": "+ judgment (-14, within cap)",
+          "amount": 834.983591954023,
+          "is_final": true
+        }
+      ],
+      "final_value": 834.983591954023
+    },
+    {
+      "company": "Hays plc",
+      "ticker": "HAS",
+      "label": "Pre-exceptional basic EPS",
+      "unit": "GBp",
+      "period": "FY2026",
+      "anchor": {
+        "value": 1.31,
+        "period": "FY2025",
+        "quote": "Basic earnings per share before exceptional items        | 0.46p         | 0.81p         | 1.31p",
+        "source_doc": "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md"
+      },
+      "baseline_candidates": [
+        {
+          "method": "growth_drift",
+          "value": -0.9124067052639964,
+          "backtest_mae": 6.945698479817536,
+          "backtest_bias": -6.945698479817536,
+          "backtest_n": 2
+        },
+        {
+          "method": "seasonal_yoy",
+          "value": 0.5202089971315251,
+          "backtest_mae": 8.099348085027712,
+          "backtest_bias": 5.324348085027712,
+          "backtest_n": 4
+        }
+      ],
+      "baseline_chosen": "growth_drift",
+      "guidance": null,
+      "estimate": {
+        "method": "process_evidence",
+        "growth_p10": -15.0,
+        "growth_p50": -5.0,
+        "growth_p90": 5.0,
+        "momentum": {
+          "explanation": "H1 FY2026 pre-exceptional basic EPS fell 44% YoY to 0.46p from 0.81p, continuing a steep multi-year decline from 4.11p (FY2023H1) to 2.37p (FY2024H1) to 0.81p (FY2025H1). The trend is still deteriorating, though the rate of decline has moderated from -66% to -44%.",
+          "label": "cooling",
+          "citations": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
+            "hays/filings/2025-02-20__has-ln-20250220-q2-8k__119730.md"
+          ]
+        },
+        "guidance_style": {
+          "explanation": "No company guidance was found for the target period, so there is no evidence to assess whether management sandbags, guides accurately, or guides promotionally.",
+          "label": "accurate",
+          "citations": []
+        },
+        "surprise_skew": {
+          "explanation": "The baseline of -0.91 GBp is already negative and below the H1 actual of 0.46p, implying a very weak H2. Given the H1 actual is positive and the YoY decline is moderating, the risk is tilted to the upside relative to the extremely low baseline, but the overall trend remains weak.",
+          "label": "upside",
+          "citations": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md"
+          ]
+        },
+        "confidence": "medium",
+        "rationale": "The baseline growth_drift of -0.91 GBp is derived from a walk-forward model with poor backtest performance (MAE 6.95, bias -6.95, n=2). The H1 FY2026 actual of 0.46p is already above the full-year baseline, suggesting the baseline is too pessimistic. However, the historical trend shows severe deterioration, and H1 is only one data point. I set p50 at -5% (actual below baseline) because the baseline is negative and the H1 actual is positive, but the full-year actual could still be negative if H2 is weak. The wide p10-p90 range reflects high uncertainty given the poor baseline backtest and limited evidence."
+      },
+      "nudges": {
+        "components": [
+          {
+            "name": "quantile_p50",
+            "label": null,
+            "raw": -5.0,
+            "applied": -4.063805811592501,
+            "capped": false,
+            "note": "shrink 0.813 (spread 20.0)"
+          },
+          {
+            "name": "momentum",
+            "label": "cooling",
+            "raw": -21.703861559454793,
+            "applied": -21.703861559454793,
+            "capped": false,
+            "note": "fixed_fallback"
+          },
+          {
+            "name": "surprise_skew",
+            "label": "upside",
+            "raw": 13.022316935672876,
+            "applied": 13.022316935672876,
+            "capped": false,
+            "note": "fixed_fallback"
+          }
+        ],
+        "cap": 5.209273859863152,
+        "caps_applied": [],
+        "pre_reconcile_value": -0.7961172732822462
+      },
+      "consensus": {
+        "value": null,
+        "source": "no comparable consensus series",
+        "fetched_at": null
+      },
+      "reconciliation": null,
+      "validation": [
+        {
+          "check": "magnitude",
+          "passed": true,
+          "detail": "1.31 is 1.00x last reported 1.31 (band 0.23x-3.52x)"
+        },
+        {
+          "check": "pence_trap",
+          "passed": true,
+          "detail": "1.31 pence plausible vs history (median 4.03p)"
+        },
+        {
+          "check": "percent_trap",
+          "passed": true,
+          "detail": "n/a (not a percentage metric)"
+        },
+        {
+          "check": "guidance_sanity",
+          "passed": true,
+          "detail": "no guidance available"
+        },
+        {
+          "check": "extraction_flags",
+          "passed": true,
+          "detail": "facts carried flags: magnitude_outlier"
+        }
+      ],
+      "fallback_used": {
+        "source_used": "anchor_last_year",
+        "reasons": [
+          "estimator_nudged: gate-failed (magnitude: -0.7961172732822462 flips sign vs a consistently positive history; pence_trap: -0.7961172732822462 pence is ~-5x below the historical median (4.03p) \u2014 pounds-vs-pence signature (did you mean -79.61172732822462?))",
+          "baseline:growth_drift: gate-failed (magnitude: -0.9124067052639964 flips sign vs a consistently positive history; pence_trap: -0.9124067052639964 pence is ~-4x below the historical median (4.03p) \u2014 pounds-vs-pence signature (did you mean -91.24067052639964?))",
+          "anchor_last_year: accepted"
+        ]
+      },
+      "derivation": [
+        {
+          "name": "anchor",
+          "formula": "A = actual[FY2025]",
+          "substituted": "A = 1.31 GBp",
+          "result": 1.31,
+          "provenance": "data",
+          "refs": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md (tier 1)"
+          ],
+          "note": "same period last fiscal year, exact reported figure"
+        },
+        {
+          "name": "baseline",
+          "formula": "B = anchor \u00d7 (1 + drift-adjusted YoY)",
+          "substituted": "B = 1.31 \u00d7 (1 -169.65%) = -0.91",
+          "result": -0.9124067052639964,
+          "provenance": "math",
+          "refs": [
+            "chosen by walk-forward backtest: MAE 6.95 over n=2 periods"
+          ],
+          "note": null
+        },
+        {
+          "name": "judgment: quantile",
+          "formula": "\u0394q = p50 \u00d7 shrink",
+          "substituted": "\u0394q = -5.00%(LLM) \u00d7 0.813 = -4.064%",
+          "result": -4.063805811592501,
+          "provenance": "llm",
+          "refs": [],
+          "note": "shrink = 1/(1+(p90\u2212p10)/\u03c3), \u03c3=86.82 \u2014 wide model uncertainty shrinks its own influence"
+        },
+        {
+          "name": "judgment: momentum",
+          "formula": "\u0394 = map(momentum label) \u00d7 \u03c3",
+          "substituted": "\u0394(cooling(LLM)) = -21.704%",
+          "result": -21.703861559454793,
+          "provenance": "llm",
+          "refs": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
+            "hays/filings/2025-02-20__has-ln-20250220-q2-8k__119730.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "judgment: surprise skew",
+          "formula": "\u0394 = map(surprise_skew label) \u00d7 \u03c3",
+          "substituted": "\u0394(upside(LLM)) = +13.022%",
+          "result": 13.022316935672876,
+          "provenance": "llm",
+          "refs": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "cap & apply",
+          "formula": "adj = clamp(B \u00d7 (\u0394q+\u0394m+\u0394s)/100, \u00b10.75\u00d7MAE)",
+          "substituted": "adj = clamp(0.12, \u00b15.21) = 0.12",
+          "result": 0.11628943198175015,
+          "provenance": "math",
+          "refs": [],
+          "note": "within_cap"
+        },
+        {
+          "name": "pre-reconcile",
+          "formula": "V = B + adj",
+          "substituted": "V = -0.91 +0.12 = -0.8",
+          "result": -0.7961172732822462,
+          "provenance": "math",
+          "refs": [],
+          "note": null
+        },
+        {
+          "name": "fallback",
+          "formula": "F = anchor_last_year",
+          "substituted": "F = 1.31",
+          "result": 1.31,
+          "provenance": "data",
+          "refs": [
+            "estimator_nudged: gate-failed (magnitude: -0.7961172732822462 flips sign vs a consistently positive history; pence_trap: -0.7961172732822462 pence is ~-5x below the historical median (4.03p) \u2014 pounds-vs-pence signature (did you mean -79.61172732822462?))",
+            "baseline:growth_drift: gate-failed (magnitude: -0.9124067052639964 flips sign vs a consistently positive history; pence_trap: -0.9124067052639964 pence is ~-4x below the historical median (4.03p) \u2014 pounds-vs-pence signature (did you mean -91.24067052639964?))",
+            "anchor_last_year: accepted"
+          ],
+          "note": "failsafe cascade selected this rung"
+        }
+      ],
+      "worksheet": [
+        {
+          "provenance": "data",
+          "label": "anchor \u2014 FY2025 actual",
+          "amount": 1.31,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "\u00d7 growth trend (-169.65%)",
+          "amount": -0.9124067052639964,
+          "is_final": false
+        },
+        {
+          "provenance": "llm",
+          "label": "+ judgment (+0, within cap)",
+          "amount": -0.7961172732822462,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "fallback \u2192 last year's actual (cascade selected this rung)",
+          "amount": 1.31,
+          "is_final": true
+        }
+      ],
+      "final_value": 1.31
+    },
+    {
+      "company": "Hays plc",
+      "ticker": "HAS",
+      "label": "Pre-exceptional operating profit",
+      "unit": "GBPm",
+      "period": "FY2026",
+      "anchor": {
+        "value": 45.6,
+        "period": "FY2025",
+        "quote": "| Operating profit (before exceptional items) (2)         | 45.6    | 105.1   | (57)%         | (56)%        |",
+        "source_doc": "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md"
+      },
+      "baseline_candidates": [
+        {
+          "method": "guidance_mid",
+          "value": 45.2,
+          "backtest_mae": 0.6000000000000014,
+          "backtest_bias": -0.6000000000000014,
+          "backtest_n": 1
+        },
+        {
+          "method": "seasonal_yoy",
+          "value": 19.78458610846813,
+          "backtest_mae": 59.49999999999999,
+          "backtest_bias": 59.49999999999999,
+          "backtest_n": 1
+        }
+      ],
+      "baseline_chosen": "guidance_mid",
+      "guidance": {
+        "low": 37.0,
+        "mid": 45.2,
+        "high": 46.0,
+        "beat_factor": null,
+        "quote": "we currently expect FY26 pre -exceptional operating profit will be at the top of the \u00a337.0 -46.0m consensus range",
+        "source_doc": "hays/filings/2026-07-10__has-ln-20260710-q4-8k__1572805.md"
+      },
+      "estimate": {
+        "method": "I need to output a JSON object with the specified fields. Let me analyze the evidence.",
+        "growth_p10": -2.0,
+        "growth_p50": 0.0,
+        "growth_p90": 2.0,
+        "momentum": {
+          "explanation": "H1 FY2026 pre-exceptional operating profit was 20.1, down 21% from 25.5 in H1 FY2025. The company guided H1 to c.\u00a320m and delivered 20.1, so the decline is in line with guidance. The full-year guidance has been reiterated at the top of the \u00a337-46m range, implying a modest sequential improvement in H2. The trend is still cooling relative to the prior year, but the rate of decline is stabilizing.",
+          "label": "cooling",
+          "citations": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
+            "hays/filings/2026-07-10__has-ln-20260710-q4-8k__1572805.md"
+          ]
+        },
+        "guidance_style": {
+          "explanation": "In FY2025, the company guided to c.\u00a345m and delivered 45.6, slightly above the midpoint. In H1 FY2026, they guided to c.\u00a320m and delivered 20.1, essentially in line. The FY2026 full-year guidance has been updated to 'at the top of the \u00a337.0-46.0m consensus range', which is a firm statement. Historically, they appear to guide accurately or slightly conservatively.",
+          "label": "accurate",
+          "citations": [
+            "hays/filings/2025-06-19__has-ln-20250619-q4-8k__119747.md",
+            "hays/filings/2026-01-14__has-ln-20260114-q2-8k__401006.md",
+            "hays/filings/2026-07-10__has-ln-20260710-q4-8k__1572805.md"
+          ]
+        },
+        "surprise_skew": {
+          "explanation": "The company has guided to the top of the consensus range (\u00a337-46m), which is above the baseline midpoint of 45.2. The H1 actual was in line with guidance. The risk is slightly to the upside if they deliver at the top of the range, but the baseline is already 45.2, which is near the top. The skew is balanced to slightly positive.",
+          "label": "balanced",
+          "citations": [
+            "hays/filings/2026-07-10__has-ln-20260710-q4-8k__1572805.md",
+            "hays/filings/2026-04-16__has-ln-20260416-filing-2__955810.md"
+          ]
+        },
+        "confidence": "medium",
+        "rationale": "The baseline is the guidance midpoint of 45.2 GBPm. The company has guided to the top of the \u00a337-46m range, which is 46 GBPm, implying a potential upside of about 1.8% from the baseline. However, the H1 actual was 20.1, and the full-year guidance implies H2 of about 25.9 (46 - 20.1), which is a significant sequential improvement from H1. The company's guidance has been accurate historically, so the central estimate is close to the baseline. I set p50 at 0.0% deviation, with a slight upside skew reflected in p90 at 2.0% and p10 at -2.0%."
+      },
+      "nudges": {
+        "components": [
+          {
+            "name": "quantile_p50",
+            "label": null,
+            "raw": 0.0,
+            "applied": 0.0,
+            "capped": false,
+            "note": "shrink 0.249 (spread 4.0)"
+          },
+          {
+            "name": "momentum",
+            "label": "cooling",
+            "raw": -0.3318584070796468,
+            "applied": -0.3318584070796468,
+            "capped": false,
+            "note": "fixed_fallback"
+          },
+          {
+            "name": "surprise_skew",
+            "label": "balanced",
+            "raw": 0.0,
+            "applied": 0.0,
+            "capped": false,
+            "note": "fixed_fallback"
+          }
+        ],
+        "cap": 0.678,
+        "caps_applied": [
+          "within_cap; mae_floored_smalln(n=1)"
+        ],
+        "pre_reconcile_value": 45.050000000000004
+      },
+      "consensus": {
+        "value": 43.5,
+        "source": "corpus compiled consensus [hays/filings/2026-07-10__has-ln-20260710-q4-8k__1572805.md]",
+        "fetched_at": null
+      },
+      "reconciliation": {
+        "verdict": "partial",
+        "weight_ours": 0.6,
+        "rationale": "Our value is only +3.56% above consensus and has real cited support: the company guided to/toward the top of the \u00a337\u201346m range, implying about 46 GBPm, and H1 actual of 20.1 with FY guidance at the top implies H2 of about 25.9. That points more toward 45\u201346 than to the 43.5 consensus. However, the estimator's baseline is labeled 'guidance midpoint = 45.2', which is inconsistent with the cited \u00a337\u201346m range whose midpoint is 41.5, so the baseline derivation looks somewhat shaky. The consensus is from the same fresh Q4 filing, so it is not clearly stale. I therefore blend but keep meaningful weight on our value."
+      },
+      "validation": [
+        {
+          "check": "magnitude",
+          "passed": true,
+          "detail": "44.43000000000001 is 0.97x last reported 45.6 (band 0.30x-2.00x)"
+        },
+        {
+          "check": "pence_trap",
+          "passed": true,
+          "detail": "n/a (not a pence per-share metric)"
+        },
+        {
+          "check": "percent_trap",
+          "passed": true,
+          "detail": "n/a (not a percentage metric)"
+        },
+        {
+          "check": "guidance_sanity",
+          "passed": true,
+          "detail": "44.43000000000001 within guidance [37.0, 46.0]"
+        },
+        {
+          "check": "extraction_flags",
+          "passed": true,
+          "detail": "facts carried flags: magnitude_outlier, quote_not_in_excerpt"
+        }
+      ],
+      "fallback_used": null,
+      "derivation": [
+        {
+          "name": "anchor",
+          "formula": "A = actual[FY2025]",
+          "substituted": "A = 45.6 GBPm",
+          "result": 45.6,
+          "provenance": "data",
+          "refs": [
+            "hays/filings/2025-08-21__has-ln-20250821-h2-8k__143890.md (tier 1)"
+          ],
+          "note": "same period last fiscal year, exact reported figure"
+        },
+        {
+          "name": "baseline",
+          "formula": "B = (guidance low + high) / 2",
+          "substituted": "B = guidance mid = 45.2",
+          "result": 45.2,
+          "provenance": "math",
+          "refs": [
+            "chosen by walk-forward backtest: MAE 0.6 over n=1 periods"
+          ],
+          "note": null
+        },
+        {
+          "name": "judgment: quantile",
+          "formula": "\u0394q = p50 \u00d7 shrink",
+          "substituted": "\u0394q = +0.00%(LLM) \u00d7 0.249 = +0.000%",
+          "result": 0.0,
+          "provenance": "llm",
+          "refs": [],
+          "note": "shrink = 1/(1+(p90\u2212p10)/\u03c3), \u03c3=1.33 \u2014 wide model uncertainty shrinks its own influence"
+        },
+        {
+          "name": "judgment: momentum",
+          "formula": "\u0394 = map(momentum label) \u00d7 \u03c3",
+          "substituted": "\u0394(cooling(LLM)) = -0.332%",
+          "result": -0.3318584070796468,
+          "provenance": "llm",
+          "refs": [
+            "hays/filings/2026-02-27__has-ln-20260227-h1-8k__642921.md",
+            "hays/filings/2026-07-10__has-ln-20260710-q4-8k__1572805.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "judgment: surprise skew",
+          "formula": "\u0394 = map(surprise_skew label) \u00d7 \u03c3",
+          "substituted": "\u0394(balanced(LLM)) = +0.000%",
+          "result": 0.0,
+          "provenance": "llm",
+          "refs": [
+            "hays/filings/2026-07-10__has-ln-20260710-q4-8k__1572805.md",
+            "hays/filings/2026-04-16__has-ln-20260416-filing-2__955810.md"
+          ],
+          "note": "fixed \u03c3-multiple mapping"
+        },
+        {
+          "name": "cap & apply",
+          "formula": "adj = clamp(B \u00d7 (\u0394q+\u0394m+\u0394s)/100, \u00b10.75\u00d7MAE)",
+          "substituted": "adj = clamp(-0.15, \u00b10.68) = -0.15",
+          "result": -0.15000000000000038,
+          "provenance": "math",
+          "refs": [],
+          "note": "within_cap; mae_floored_smalln(n=1)"
+        },
+        {
+          "name": "pre-reconcile",
+          "formula": "V = B + adj",
+          "substituted": "V = 45.2 -0.15 = 45.05",
+          "result": 45.050000000000004,
+          "provenance": "math",
+          "refs": [],
+          "note": null
+        },
+        {
+          "name": "reconcile blend",
+          "formula": "F = w\u00b7V + (1\u2212w)\u00b7C",
+          "substituted": "F = 0.60(LLM)\u00b745.05 + 0.40\u00b743.5 = 44.43",
+          "result": 44.43000000000001,
+          "provenance": "math",
+          "refs": [
+            "consensus: corpus compiled consensus [hays/filings/2026-07-10__has-ln-20260710-q4-8k__1572805.md]"
+          ],
+          "note": "reconciler verdict: partial (LLM)"
+        }
+      ],
+      "worksheet": [
+        {
+          "provenance": "data",
+          "label": "anchor \u2014 FY2025 actual",
+          "amount": 45.6,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "guidance midpoint",
+          "amount": 45.2,
+          "is_final": false
+        },
+        {
+          "provenance": "llm",
+          "label": "+ judgment (-0, within cap)",
+          "amount": 45.050000000000004,
+          "is_final": false
+        },
+        {
+          "provenance": "math",
+          "label": "blend: 60% ours / 40% consensus (43.5)",
+          "amount": 44.43000000000001,
+          "is_final": true
+        }
+      ],
+      "final_value": 44.43000000000001
+    }
+  ]
+}
