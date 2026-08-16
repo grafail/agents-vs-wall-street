@@ -75,7 +75,15 @@ def beat_factor(guidance_history: list[Fact], actuals: list[Fact]) -> dict | Non
     Returns None when fewer than 3 matched pairs exist (not calibratable).
     """
     actual_by_period = {f.period: f.value for f in actuals if f.fact_type == "actual"}
-    periods = sorted({f.period for f in guidance_history}, key=period_key)
+
+    def _parseable(p: str) -> bool:
+        try:
+            period_key(p)
+            return True
+        except ValueError:  # half-year guidance like FY2025H1 — no matching series period
+            return False
+
+    periods = sorted({f.period for f in guidance_history if _parseable(f.period)}, key=period_key)
 
     beat_pcts: list[float] = []
     beat_points: list[float] = []

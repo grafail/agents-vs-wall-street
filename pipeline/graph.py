@@ -162,6 +162,21 @@ def node_estimate(state: CompanyState) -> dict:
     metrics = dict(state.get("metrics", {}))
 
     for spec in _specs(ticker):
+        try:
+            _estimate_one(spec, facts, digest, metrics, ticker, log)
+        except Exception as e:  # noqa: BLE001 — one metric must never kill the company
+            if log:
+                log.event("metric_failed", ticker=ticker, metric=spec.label,
+                          error=f"{type(e).__name__}: {e}")
+            blob = metrics.get(spec.label, {})
+            blob.setdefault("spec", spec)
+            blob["error"] = f"{type(e).__name__}: {e}"
+            metrics[spec.label] = blob
+    return {"metrics": metrics}
+
+
+def _estimate_one(spec: MetricSpec, facts: list, digest: list,
+                  metrics: dict, ticker: str, log) -> None:
         blob: dict[str, Any] = metrics.get(spec.label, {})
         sfacts = _series_facts(facts, spec.label)
         gfacts = _guidance_facts(facts, spec.label)
@@ -236,7 +251,6 @@ def node_estimate(state: CompanyState) -> dict:
             blob["estimate"] = None
             blob["estimate_error"] = "no baseline candidates (insufficient history)"
         metrics[spec.label] = blob
-    return {"metrics": metrics}
 
 
 def _consensus_for(spec: MetricSpec, est_data: dict) -> tuple[float | None, str]:

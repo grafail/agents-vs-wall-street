@@ -408,9 +408,20 @@ def cmd_forecast(tickers: list[str], out_dir: Path | None = None,
     written: dict[str, str] = {}
     issues_all: dict[str, list[str]] = {}
     rc = 0
+
+    # Companies run in parallel (independent graphs; RunLog is thread-safe).
+    # Results are consumed in ticker order so reports stay deterministic.
+    from concurrent.futures import ThreadPoolExecutor
+
+    def _run_one(t: str):
+        return run_company(t, log=log, out_dir=out_dir)
+
+    with ThreadPoolExecutor(max_workers=len(tickers)) as pool:
+        futures = {t: pool.submit(_run_one, t) for t in tickers}
+
     for t in tickers:
         try:
-            state = run_company(t, log=log, out_dir=out_dir)
+            state = futures[t].result()
         except Exception as e:  # noqa: BLE001 — one company must not sink the rest
             print(f"[forecast] {t}: FAILED: {type(e).__name__}: {e}", file=sys.stderr)
             log.event("company_failed", ticker=t, error=f"{type(e).__name__}: {e}")
