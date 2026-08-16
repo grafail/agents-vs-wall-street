@@ -56,7 +56,7 @@ everything before a number reaches the spreadsheet.
 <tr><td>Every number is explained</td><td>Each figure comes with a worksheet showing which part is data, which is math, and which is the AI's opinion, with sources for everything.</td></tr>
 <tr><td>The AI is kept on a leash</td><td>Before trusting the AI, the system measures how wrong its own statistics usually are. The AI may only move a number within three quarters of that error.</td></tr>
 <tr><td>Cheap to run, so run it often</td><td>Heavy work is cached and reused. A practice run costs cents, the real run a few dollars, so we could test all day.</td></tr>
-<tr><td>Works with any model</td><td>Which AI models to use is a settings choice, not code. It can even ask several models at once, and when they disagree it automatically trusts them less.</td></tr>
+<tr><td>Works with any model</td><td>Which AI models to use is a settings choice, not code: any model on OpenRouter or OpenAI, mixable in one run. There are three jobs to assign: a cheap fast model for the reading and research, one or several models as the forecasting panel (when panel members disagree, the system automatically trusts them less), and a strong model for the Wall Street check. Swapping any of them is a one-line settings change.</td></tr>
 <tr><td>Rich data, clearly sourced</td><td>Official filings plus live news and market data. Every fact keeps its exact quote, its source, and a trust level that settles conflicts.</td></tr>
 <tr><td>It fails safely</td><td>An empty cell scores worst possible, so there is a ladder of backups. Something sensible always ships, and anything unusual is loudly flagged for review.</td></tr>
 </table>
