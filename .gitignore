@@ -9,3 +9,4 @@ research/
 entry.json
 submission/*.xlsx
 .venv/
+artifacts/cache/

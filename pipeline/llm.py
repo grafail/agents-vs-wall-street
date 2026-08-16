@@ -1,0 +1,64 @@
+"""LLM access. OpenAI-compatible (OpenAI or OpenRouter per settings).
+
+Rules (see CLAUDE.md): never hardcode model IDs; keep prompts cache-friendly
+(stable system prompt first, volatile content last, append-only history);
+callers log usage to the run log.
+"""
+from typing import Any, Type
+
+from openai import OpenAI
+from pydantic import BaseModel
+
+from pipeline.config import settings
+
+
+def client() -> OpenAI:
+    s = settings()
+    kwargs: dict[str, Any] = {"api_key": s.api_key}
+    if s.base_url:
+        kwargs["base_url"] = s.base_url
+    return OpenAI(**kwargs)
+
+
+def model_id(size: str) -> str:
+    s = settings()
+    if size == "big":
+        return s.model_big
+    if size == "small":
+        return s.model_small
+    raise ValueError(f"unknown model size: {size}")
+
+
+def complete_structured(
+    size: str,
+    messages: list[dict],
+    schema: Type[BaseModel],
+    **kwargs: Any,
+) -> tuple[BaseModel, dict]:
+    """Structured-output call. Returns (parsed pydantic object, usage dict incl cached tokens)."""
+    c = client()
+    resp = c.beta.chat.completions.parse(
+        model=model_id(size), messages=messages, response_format=schema, **kwargs
+    )
+    usage = _usage_dict(resp)
+    return resp.choices[0].message.parsed, usage
+
+
+def complete_text(size: str, messages: list[dict], **kwargs: Any) -> tuple[str, dict]:
+    c = client()
+    resp = c.chat.completions.create(model=model_id(size), messages=messages, **kwargs)
+    return resp.choices[0].message.content or "", _usage_dict(resp)
+
+
+def _usage_dict(resp: Any) -> dict:
+    u = resp.usage
+    cached = 0
+    details = getattr(u, "prompt_tokens_details", None)
+    if details is not None:
+        cached = getattr(details, "cached_tokens", 0) or 0
+    return {
+        "model": resp.model,
+        "prompt_tokens": u.prompt_tokens,
+        "completion_tokens": u.completion_tokens,
+        "cached_prompt_tokens": cached,
+    }
