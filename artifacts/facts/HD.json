@@ -3,7 +3,7 @@
  "company": "Home Depot",
  "corpus_dir": "home-depot",
  "target_period": "FY2026Q2",
- "generated_at": "2026-08-16T16:15:37.985553+00:00",
+ "generated_at": "2026-08-16T16:30:29.751008+00:00",
  "metrics": [
   "Net sales",
   "Adjusted diluted EPS",
@@ -14,13 +14,13 @@
    "metric_label": "Net sales",
    "period": "FY2026Q1",
    "value": 41800.0,
-   "raw_text": "$41.8 billion",
+   "raw_text": "$41.8",
    "raw_unit": "USD_billions",
    "quote": "reported sales of $41.8 billion for the first quarter of fiscal 2026",
    "source": {
     "doc_id": "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md",
     "published": "2026-05-19",
-    "fetched_at": "2026-08-16T16:14:48.909145Z",
+    "fetched_at": "2026-08-16T16:29:41.407601Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -33,11 +33,11 @@
    "value": 41765.0,
    "raw_text": "41,765",
    "raw_unit": "USD_millions",
-   "quote": "| Net sales | $ | 41,765 |",
+   "quote": "| Net sales | $ | 41,765",
    "source": {
     "doc_id": "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k-2__1038586.md",
     "published": "2026-05-19",
-    "fetched_at": "2026-08-16T16:14:48.909498Z",
+    "fetched_at": "2026-08-16T16:29:41.407982Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -50,11 +50,11 @@
    "value": 39856.0,
    "raw_text": "39,856",
    "raw_unit": "USD_millions",
-   "quote": "| Net sales | $ | 41,765 | | | $ | 39,856 |",
+   "quote": "| Net sales | $ | 41,765 | | | $ | 39,856",
    "source": {
     "doc_id": "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k-2__1038586.md",
     "published": "2026-05-19",
-    "fetched_at": "2026-08-16T16:14:48.909568Z",
+    "fetched_at": "2026-08-16T16:29:41.408049Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -67,11 +67,11 @@
    "value": 164700.0,
    "raw_text": "$164.7 billion",
    "raw_unit": "USD_billions",
-   "quote": "- Net sales increased by 3.2% to $164.7 billion.",
+   "quote": "Net sales increased by 3.2% to $164.7 billion.",
    "source": {
     "doc_id": "home-depot/filings/2026-04-07__hd-us-20260407-filing-2__904279.md",
     "published": "2026-04-07",
-    "fetched_at": "2026-08-16T16:14:48.910029Z",
+    "fetched_at": "2026-08-16T16:29:41.408479Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -90,7 +90,7 @@
    "source": {
     "doc_id": "home-depot/filings/2026-04-07__hd-us-20260407-filing-2__904279.md",
     "published": "2026-04-07",
-    "fetched_at": "2026-08-16T16:14:48.910111Z",
+    "fetched_at": "2026-08-16T16:29:41.408560Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -106,11 +106,11 @@
    "value": 164683.0,
    "raw_text": "164,683",
    "raw_unit": "USD_millions",
-   "quote": "| Net sales | $ | 164,683 | | | | | $ | 159,514 | | | | | $ | 152,669 | | |",
+   "quote": "| Net sales | $ | 164,683 | | | | | $ | 159,514 | | | | | $ | 152,669 | | | |",
    "source": {
     "doc_id": "home-depot/filings/2026-03-18__hd-us-20260318-fy-10k__828355.md",
     "published": "2026-03-18",
-    "fetched_at": "2026-08-16T16:14:48.910949Z",
+    "fetched_at": "2026-08-16T16:29:41.409394Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -125,11 +125,11 @@
    "value": 159514.0,
    "raw_text": "159,514",
    "raw_unit": "USD_millions",
-   "quote": "| Net sales | $ | 164,683 | | | | | $ | 159,514 | | | | | $ | 152,669 | | |",
+   "quote": "| Net sales | $ | 164,683 | | | | | $ | 159,514 | | | | | $ | 152,669 | | | |",
    "source": {
     "doc_id": "home-depot/filings/2026-03-18__hd-us-20260318-fy-10k__828355.md",
     "published": "2026-03-18",
-    "fetched_at": "2026-08-16T16:14:48.911053Z",
+    "fetched_at": "2026-08-16T16:29:41.409504Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -144,18 +144,16 @@
    "value": 152669.0,
    "raw_text": "152,669",
    "raw_unit": "USD_millions",
-   "quote": "| Net sales | $ | 164,683 | | | | | $ | 159,514 | | | | | $ | 152,669 | | |",
+   "quote": "| Net sales | $ | 164,683 | | | | | $ | 159,514 | | | | | $ | 152,669 | | | |",
    "source": {
     "doc_id": "home-depot/filings/2026-03-18__hd-us-20260318-fy-10k__828355.md",
     "published": "2026-03-18",
-    "fetched_at": "2026-08-16T16:14:48.911152Z",
+    "fetched_at": "2026-08-16T16:29:41.409608Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": [
-    "magnitude_outlier"
-   ]
+   "flags": []
   },
   {
    "metric_label": "Net sales",
@@ -167,12 +165,14 @@
    "source": {
     "doc_id": "home-depot/filings/2026-02-24__hd-us-20260224-q4-8k__615609.md",
     "published": "2026-02-24",
-    "fetched_at": "2026-08-16T16:14:48.911250Z",
+    "fetched_at": "2026-08-16T16:29:41.409702Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": []
+   "flags": [
+    "magnitude_outlier"
+   ]
   },
   {
    "metric_label": "Net sales",
@@ -184,24 +184,26 @@
    "source": {
     "doc_id": "home-depot/filings/2026-02-24__hd-us-20260224-q4-8k__615609.md",
     "published": "2026-02-24",
-    "fetched_at": "2026-08-16T16:14:48.911341Z",
+    "fetched_at": "2026-08-16T16:29:41.409790Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": []
+   "flags": [
+    "magnitude_outlier"
+   ]
   },
   {
    "metric_label": "Net sales",
    "period": "FY2025Q3",
    "value": 41400.0,
-   "raw_text": "$41.4 billion",
+   "raw_text": "$41.4",
    "raw_unit": "USD_billions",
    "quote": "today reported sales of $41.4 billion for the third quarter of fiscal 2025",
    "source": {
     "doc_id": "home-depot/filings/2025-11-18__hd-us-20251118-q3-8k__359994.md",
     "published": "2025-11-18",
-    "fetched_at": "2026-08-16T16:14:48.912324Z",
+    "fetched_at": "2026-08-16T16:29:41.410727Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -214,11 +216,11 @@
    "value": 41352.0,
    "raw_text": "$ 41,352",
    "raw_unit": "USD_millions",
-   "quote": "Net sales         | $ 41,352",
+   "quote": "| Net sales         | $ 41,352         | $ 40,217         | $ 126,485         | $ 119,810         |",
    "source": {
     "doc_id": "home-depot/filings/2025-11-18__hd-us-20251118-q3-10q__437649.md",
     "published": "2025-11-18",
-    "fetched_at": "2026-08-16T16:14:48.912506Z",
+    "fetched_at": "2026-08-16T16:29:41.410899Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -231,18 +233,50 @@
    "value": 40217.0,
    "raw_text": "$ 40,217",
    "raw_unit": "USD_millions",
-   "quote": "Net sales         | $ 40,217",
+   "quote": "| Net sales         | $ 41,352         | $ 40,217         | $ 126,485         | $ 119,810         |",
    "source": {
     "doc_id": "home-depot/filings/2025-11-18__hd-us-20251118-q3-10q__437649.md",
     "published": "2025-11-18",
-    "fetched_at": "2026-08-16T16:14:48.912572Z",
+    "fetched_at": "2026-08-16T16:29:41.410967Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": [
-    "quote_not_in_excerpt"
-   ]
+   "flags": []
+  },
+  {
+   "metric_label": "Net sales",
+   "period": "FY2025Q3",
+   "value": 126485.0,
+   "raw_text": "$ 126,485",
+   "raw_unit": "USD_millions",
+   "quote": "| Net sales         | $ 41,352         | $ 40,217         | $ 126,485         | $ 119,810         |",
+   "source": {
+    "doc_id": "home-depot/filings/2025-11-18__hd-us-20251118-q3-10q__437649.md",
+    "published": "2025-11-18",
+    "fetched_at": "2026-08-16T16:29:41.411035Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "actual",
+   "flags": []
+  },
+  {
+   "metric_label": "Net sales",
+   "period": "FY2024Q3",
+   "value": 119810.0,
+   "raw_text": "$ 119,810",
+   "raw_unit": "USD_millions",
+   "quote": "| Net sales         | $ 41,352         | $ 40,217         | $ 126,485         | $ 119,810         |",
+   "source": {
+    "doc_id": "home-depot/filings/2025-11-18__hd-us-20251118-q3-10q__437649.md",
+    "published": "2025-11-18",
+    "fetched_at": "2026-08-16T16:29:41.411102Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "actual",
+   "flags": []
   },
   {
    "metric_label": "Net sales",
@@ -250,11 +284,11 @@
    "value": 45277.0,
    "raw_text": "45,277",
    "raw_unit": "USD_millions",
-   "quote": "| Net sales | $ | 45,277 | | | $ | 43,175 | | | $ | 85,133 | | | $ | 79,593 |",
+   "quote": "| Net sales | $ | 45,277",
    "source": {
     "doc_id": "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md",
     "published": "2025-08-25",
-    "fetched_at": "2026-08-16T16:14:48.912671Z",
+    "fetched_at": "2026-08-16T16:29:41.411189Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -267,16 +301,18 @@
    "value": 43175.0,
    "raw_text": "43,175",
    "raw_unit": "USD_millions",
-   "quote": "| Net sales | $ | 45,277 | | | $ | 43,175 | | | $ | 85,133 | | | $ | 79,593 |",
+   "quote": "| Net sales | $ | 43,175",
    "source": {
     "doc_id": "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md",
     "published": "2025-08-25",
-    "fetched_at": "2026-08-16T16:14:48.912745Z",
+    "fetched_at": "2026-08-16T16:29:41.411260Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": []
+   "flags": [
+    "quote_not_in_excerpt"
+   ]
   },
   {
    "metric_label": "Net sales",
@@ -284,16 +320,18 @@
    "value": 85133.0,
    "raw_text": "85,133",
    "raw_unit": "USD_millions",
-   "quote": "| Net sales | $ | 45,277 | | | $ | 43,175 | | | $ | 85,133 | | | $ | 79,593 |",
+   "quote": "| Net sales | $ | 85,133",
    "source": {
     "doc_id": "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md",
     "published": "2025-08-25",
-    "fetched_at": "2026-08-16T16:14:48.912821Z",
+    "fetched_at": "2026-08-16T16:29:41.411332Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": []
+   "flags": [
+    "quote_not_in_excerpt"
+   ]
   },
   {
    "metric_label": "Net sales",
@@ -301,16 +339,18 @@
    "value": 79593.0,
    "raw_text": "79,593",
    "raw_unit": "USD_millions",
-   "quote": "| Net sales | $ | 45,277 | | | $ | 43,175 | | | $ | 85,133 | | | $ | 79,593 |",
+   "quote": "| Net sales | $ | 79,593",
    "source": {
     "doc_id": "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md",
     "published": "2025-08-25",
-    "fetched_at": "2026-08-16T16:14:48.912897Z",
+    "fetched_at": "2026-08-16T16:29:41.411401Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
-   "flags": []
+   "flags": [
+    "quote_not_in_excerpt"
+   ]
   },
   {
    "metric_label": "Net sales",
@@ -322,7 +362,7 @@
    "source": {
     "doc_id": "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md",
     "published": "2025-08-20",
-    "fetched_at": "2026-08-16T16:14:48.912978Z",
+    "fetched_at": "2026-08-16T16:29:41.411480Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -339,7 +379,7 @@
    "source": {
     "doc_id": "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md",
     "published": "2026-05-19",
-    "fetched_at": "2026-08-16T16:15:19.886887Z",
+    "fetched_at": "2026-08-16T16:30:12.849416Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -358,7 +398,7 @@
    "source": {
     "doc_id": "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md",
     "published": "2026-05-19",
-    "fetched_at": "2026-08-16T16:15:19.887038Z",
+    "fetched_at": "2026-08-16T16:30:12.849563Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -377,7 +417,7 @@
    "source": {
     "doc_id": "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md",
     "published": "2026-05-19",
-    "fetched_at": "2026-08-16T16:15:19.887357Z",
+    "fetched_at": "2026-08-16T16:30:12.849912Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -396,12 +436,32 @@
    "source": {
     "doc_id": "home-depot/filings/2026-04-07__hd-us-20260407-filing-2__904279.md",
     "published": "2026-04-07",
-    "fetched_at": "2026-08-16T16:15:19.888018Z",
+    "fetched_at": "2026-08-16T16:30:12.850522Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
    "flags": []
+  },
+  {
+   "metric_label": "Adjusted diluted EPS",
+   "period": "FY2024",
+   "value": 30.0,
+   "raw_text": "$0.30",
+   "raw_unit": "USD_per_share",
+   "quote": "increased each of diluted earnings per share and adjusted diluted earnings per share for Fiscal 2024 by approximately $0.30.",
+   "source": {
+    "doc_id": "home-depot/filings/2026-04-07__hd-us-20260407-filing-2__904279.md",
+    "published": "2026-04-07",
+    "fetched_at": "2026-08-16T16:30:12.850625Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "actual",
+   "flags": [
+    "auto_corrected_scale_x100 (was 0.3)",
+    "magnitude_outlier"
+   ]
   },
   {
    "metric_label": "Adjusted diluted EPS",
@@ -413,7 +473,7 @@
    "source": {
     "doc_id": "home-depot/filings/2026-04-07__hd-us-20260407-filing-2__904279.md",
     "published": "2026-04-07",
-    "fetched_at": "2026-08-16T16:15:19.888286Z",
+    "fetched_at": "2026-08-16T16:30:12.851021Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -432,7 +492,7 @@
    "source": {
     "doc_id": "home-depot/filings/2026-02-24__hd-us-20260224-q4-8k__615609.md",
     "published": "2026-02-24",
-    "fetched_at": "2026-08-16T16:15:19.888710Z",
+    "fetched_at": "2026-08-16T16:30:12.851895Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -447,17 +507,36 @@
    "value": 3.13,
    "raw_text": "$3.13",
    "raw_unit": "USD_per_share",
-   "quote": "compared with adjusted diluted earnings per share of $3.13 in the same period of fiscal 2024",
+   "quote": "adjusted diluted earnings per share of $3.13 in the same period of fiscal 2024",
    "source": {
     "doc_id": "home-depot/filings/2026-02-24__hd-us-20260224-q4-8k__615609.md",
     "published": "2026-02-24",
-    "fetched_at": "2026-08-16T16:15:19.888780Z",
+    "fetched_at": "2026-08-16T16:30:12.851973Z",
     "trust_tier": 1,
     "kind": "filing"
    },
    "fact_type": "actual",
    "flags": [
     "magnitude_outlier"
+   ]
+  },
+  {
+   "metric_label": "Adjusted diluted EPS",
+   "period": "FY2025",
+   "value": 15.2776,
+   "raw_text": "4.0%",
+   "raw_unit": "pct_growth",
+   "quote": "Adjusted diluted earnings-per-share to grow approximately flat to 4.0% from $14.69 in fiscal 2025",
+   "source": {
+    "doc_id": "home-depot/filings/2026-02-24__hd-us-20260224-q4-8k__615609.md",
+    "published": "2026-02-24",
+    "fetched_at": "2026-08-16T16:30:12.852410Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "guidance_high",
+   "flags": [
+    "derived_from_growth"
    ]
   },
   {
@@ -470,7 +549,7 @@
    "source": {
     "doc_id": "home-depot/filings/2025-11-18__hd-us-20251118-q3-8k__359994.md",
     "published": "2025-11-18",
-    "fetched_at": "2026-08-16T16:15:19.889308Z",
+    "fetched_at": "2026-08-16T16:30:12.852498Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -485,11 +564,11 @@
    "value": 3.78,
    "raw_text": "$3.78",
    "raw_unit": "USD_per_share",
-   "quote": "compared with adjusted diluted earnings per share of $3.78 in the same period of fiscal 2024",
+   "quote": "adjusted diluted earnings per share of $3.78 in the same period of fiscal 2024",
    "source": {
     "doc_id": "home-depot/filings/2025-11-18__hd-us-20251118-q3-8k__359994.md",
     "published": "2025-11-18",
-    "fetched_at": "2026-08-16T16:15:19.889383Z",
+    "fetched_at": "2026-08-16T16:30:12.852585Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -508,7 +587,7 @@
    "source": {
     "doc_id": "home-depot/filings/2025-11-18__hd-us-20251118-q3-8k__359994.md",
     "published": "2025-11-18",
-    "fetched_at": "2026-08-16T16:15:19.889675Z",
+    "fetched_at": "2026-08-16T16:30:12.852907Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -527,7 +606,7 @@
    "source": {
     "doc_id": "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md",
     "published": "2025-08-20",
-    "fetched_at": "2026-08-16T16:15:19.889776Z",
+    "fetched_at": "2026-08-16T16:30:12.853013Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -546,7 +625,7 @@
    "source": {
     "doc_id": "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md",
     "published": "2025-08-20",
-    "fetched_at": "2026-08-16T16:15:19.889849Z",
+    "fetched_at": "2026-08-16T16:30:12.853091Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -565,7 +644,7 @@
    "source": {
     "doc_id": "home-depot/filings/2025-08-20__hd-us-20250820-q2-8k__143688.md",
     "published": "2025-08-20",
-    "fetched_at": "2026-08-16T16:15:19.889909Z",
+    "fetched_at": "2026-08-16T16:30:12.853158Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -580,11 +659,11 @@
    "value": 3.67,
    "raw_text": "$3.67",
    "raw_unit": "USD_per_share",
-   "quote": "compared with adjusted diluted earnings per share of $3.67 in the same period of fiscal 2024",
+   "quote": "adjusted diluted earnings per share of $3.67 in the same period of fiscal 2024",
    "source": {
     "doc_id": "home-depot/filings/2025-05-20__hd-us-20250520-q1-8k__101847.md",
     "published": "2025-05-20",
-    "fetched_at": "2026-08-16T16:15:19.890686Z",
+    "fetched_at": "2026-08-16T16:30:12.853951Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -599,11 +678,11 @@
    "value": 15.25,
    "raw_text": "$ 15.25",
    "raw_unit": "USD_per_share",
-   "quote": "Adjusted diluted earnings per share (Non-GAAP)         | $ 15.25",
+   "quote": "Adjusted diluted earnings per share (Non-GAAP)         $ 15.25",
    "source": {
     "doc_id": "home-depot/filings/2025-04-07__hd-us-20250407-filing-2__437651.md",
     "published": "2025-04-07",
-    "fetched_at": "2026-08-16T16:15:19.891239Z",
+    "fetched_at": "2026-08-16T16:30:12.854517Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -622,7 +701,7 @@
    "source": {
     "doc_id": "home-depot/filings/2025-02-25__hd-us-20250225-q4-8k__101827.md",
     "published": "2025-02-25",
-    "fetched_at": "2026-08-16T16:15:19.891403Z",
+    "fetched_at": "2026-08-16T16:30:12.854688Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -641,7 +720,7 @@
    "source": {
     "doc_id": "home-depot/filings/2025-02-25__hd-us-20250225-q4-8k__101827.md",
     "published": "2025-02-25",
-    "fetched_at": "2026-08-16T16:15:19.891476Z",
+    "fetched_at": "2026-08-16T16:30:12.854763Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -652,22 +731,21 @@
   },
   {
    "metric_label": "Adjusted diluted EPS",
-   "period": "FY2024",
-   "value": 30.0,
-   "raw_text": "$0.30",
-   "raw_unit": "USD_per_share",
-   "quote": "The 14th week added approximately $0.30 to adjusted diluted earnings per share for the quarter and the year.",
+   "period": "FY2025",
+   "value": 15.5448,
+   "raw_text": "2%",
+   "raw_unit": "pct_growth",
+   "quote": "Adjusted diluted earnings-per-share to decline approximately 2% from $15.24 in fiscal 2024 (1)",
    "source": {
     "doc_id": "home-depot/filings/2025-02-25__hd-us-20250225-q4-8k__101827.md",
     "published": "2025-02-25",
-    "fetched_at": "2026-08-16T16:15:19.891549Z",
+    "fetched_at": "2026-08-16T16:30:12.855539Z",
     "trust_tier": 1,
     "kind": "filing"
    },
-   "fact_type": "actual",
+   "fact_type": "guidance_mid",
    "flags": [
-    "auto_corrected_scale_x100 (was 0.3)",
-    "magnitude_outlier"
+    "derived_from_growth"
    ]
   },
   {
@@ -680,7 +758,7 @@
    "source": {
     "doc_id": "home-depot/filings/2024-11-12__hd-us-20241112-q3-8k__101844.md",
     "published": "2024-11-12",
-    "fetched_at": "2026-08-16T16:15:19.897616Z",
+    "fetched_at": "2026-08-16T16:30:12.855657Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -692,14 +770,14 @@
   {
    "metric_label": "Adjusted diluted EPS",
    "period": "FY2024",
-   "value": 15.0975,
-   "raw_text": "-1%",
+   "value": 15.4025,
+   "raw_text": "1%",
    "raw_unit": "pct_growth",
    "quote": "53-week adjusted (1) diluted earnings-per-share to decline approximately 1% from $15.25 in fiscal 2023",
    "source": {
     "doc_id": "home-depot/filings/2024-11-12__hd-us-20241112-q3-8k__101844.md",
     "published": "2024-11-12",
-    "fetched_at": "2026-08-16T16:15:19.897862Z",
+    "fetched_at": "2026-08-16T16:30:12.855902Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -718,7 +796,7 @@
    "source": {
     "doc_id": "home-depot/filings/2024-11-12__hd-us-20241112-q3-8k__101844.md",
     "published": "2024-11-12",
-    "fetched_at": "2026-08-16T16:15:19.897945Z",
+    "fetched_at": "2026-08-16T16:30:12.855974Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -738,7 +816,7 @@
    "source": {
     "doc_id": "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md",
     "published": "2026-05-19",
-    "fetched_at": "2026-08-16T16:15:37.981866Z",
+    "fetched_at": "2026-08-16T16:30:29.747599Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -755,7 +833,7 @@
    "source": {
     "doc_id": "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k__1038584.md",
     "published": "2026-05-19",
-    "fetched_at": "2026-08-16T16:15:37.982020Z",
+    "fetched_at": "2026-08-16T16:30:29.747760Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -768,28 +846,11 @@
    "value": -0.3,
    "raw_text": "(0.3)",
    "raw_unit": "pct_points",
-   "quote": "| Comparable sales (% change) | 0.6 | % | | (0.3) | %",
+   "quote": "| Comparable sales (% change) | 0.6 | % | | (0.3) | % | | N/A |",
    "source": {
     "doc_id": "home-depot/filings/2026-05-19__hd-us-20260519-q1-8k-2__1038586.md",
     "published": "2026-05-19",
-    "fetched_at": "2026-08-16T16:15:37.982455Z",
-    "trust_tier": 1,
-    "kind": "filing"
-   },
-   "fact_type": "actual",
-   "flags": []
-  },
-  {
-   "metric_label": "Comparable sales, total company",
-   "period": "FY2025Q3",
-   "value": 0.2,
-   "raw_text": "0.2%",
-   "raw_unit": "pct_points",
-   "quote": "In  Q3, comparable sales increased by only 0.2%",
-   "source": {
-    "doc_id": "home-depot/filings/2026-04-07__hd-us-20260407-filing-2__904279.md",
-    "published": "2026-04-07",
-    "fetched_at": "2026-08-16T16:15:37.982835Z",
+    "fetched_at": "2026-08-16T16:30:29.748176Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -806,7 +867,7 @@
    "source": {
     "doc_id": "home-depot/filings/2026-03-18__hd-us-20260318-fy-10k__828355.md",
     "published": "2026-03-18",
-    "fetched_at": "2026-08-16T16:15:37.983033Z",
+    "fetched_at": "2026-08-16T16:30:29.748544Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -823,7 +884,7 @@
    "source": {
     "doc_id": "home-depot/filings/2026-03-18__hd-us-20260318-fy-10k__828355.md",
     "published": "2026-03-18",
-    "fetched_at": "2026-08-16T16:15:37.983119Z",
+    "fetched_at": "2026-08-16T16:30:29.748641Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -840,7 +901,7 @@
    "source": {
     "doc_id": "home-depot/filings/2026-03-18__hd-us-20260318-fy-10k__828355.md",
     "published": "2026-03-18",
-    "fetched_at": "2026-08-16T16:15:37.983205Z",
+    "fetched_at": "2026-08-16T16:30:29.748723Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -851,13 +912,30 @@
    "metric_label": "Comparable sales, total company",
    "period": "FY2025Q4",
    "value": 0.4,
-   "raw_text": "0.4",
+   "raw_text": "0.4%",
    "raw_unit": "pct_points",
    "quote": "Comparable sales for the fourth quarter of fiscal 2025 increased 0.4%",
    "source": {
     "doc_id": "home-depot/filings/2026-02-24__hd-us-20260224-q4-8k__615609.md",
     "published": "2026-02-24",
-    "fetched_at": "2026-08-16T16:15:37.983403Z",
+    "fetched_at": "2026-08-16T16:30:29.748924Z",
+    "trust_tier": 1,
+    "kind": "filing"
+   },
+   "fact_type": "actual",
+   "flags": []
+  },
+  {
+   "metric_label": "Comparable sales, total company",
+   "period": "FY2025Q3",
+   "value": 0.2,
+   "raw_text": "0.2%",
+   "raw_unit": "pct_points",
+   "quote": "Comparable sales for the third quarter of fiscal 2025 increased 0.2%",
+   "source": {
+    "doc_id": "home-depot/filings/2025-11-18__hd-us-20251118-q3-8k__359994.md",
+    "published": "2025-11-18",
+    "fetched_at": "2026-08-16T16:30:29.749864Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -870,11 +948,11 @@
    "value": -1.3,
    "raw_text": "(1.3)%",
    "raw_unit": "pct_points",
-   "quote": "Comparable sales (% change)         | 0.2%         | (1.3)%",
+   "quote": "| Comparable sales (% change)         | 0.2%         | (1.3)%         |",
    "source": {
     "doc_id": "home-depot/filings/2025-11-18__hd-us-20251118-q3-8k__359994.md",
     "published": "2025-11-18",
-    "fetched_at": "2026-08-16T16:15:37.984646Z",
+    "fetched_at": "2026-08-16T16:30:29.750098Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -887,11 +965,11 @@
    "value": 1.0,
    "raw_text": "1.0",
    "raw_unit": "pct_points",
-   "quote": "| Comparable sales (% change) | 1.0 | % | | (3.3) | % | | N/A |",
+   "quote": "Comparable sales (% change) | 1.0 | %",
    "source": {
     "doc_id": "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md",
     "published": "2025-08-25",
-    "fetched_at": "2026-08-16T16:15:37.984981Z",
+    "fetched_at": "2026-08-16T16:30:29.750438Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -904,11 +982,11 @@
    "value": -3.3,
    "raw_text": "(3.3)",
    "raw_unit": "pct_points",
-   "quote": "| Comparable sales (% change) | 1.0 | % | | (3.3) | % | | N/A |",
+   "quote": "Comparable sales (% change) | 1.0 | % | | (3.3) | %",
    "source": {
     "doc_id": "home-depot/filings/2025-08-25__hd-us-20250825-q2-10q__144029.md",
     "published": "2025-08-25",
-    "fetched_at": "2026-08-16T16:15:37.985051Z",
+    "fetched_at": "2026-08-16T16:30:29.750504Z",
     "trust_tier": 1,
     "kind": "filing"
    },
@@ -920,15 +998,36 @@
   {
    "metric": "Net sales",
    "reason": "growth guidance without a base figure",
-   "period": "FY2025",
-   "value_as_written": "3.0%",
-   "quote": "Total sales growth of approximately 3.0%"
+   "period": "FY2026",
+   "value_as_written": "2.5%",
+   "quote": "Total sales growth of approximately 2.5% to 4.5%"
+  },
+  {
+   "metric": "Net sales",
+   "reason": "growth guidance without a base figure",
+   "period": "FY2026",
+   "value_as_written": "4.5%",
+   "quote": "Total sales growth of approximately 2.5% to 4.5%"
+  },
+  {
+   "metric": "Net sales",
+   "reason": "growth guidance without a base figure",
+   "period": "FY2026",
+   "value_as_written": "2.5%",
+   "quote": "\u2022Total sales growth of approximately 2.5% to 4.5%"
+  },
+  {
+   "metric": "Net sales",
+   "reason": "growth guidance without a base figure",
+   "period": "FY2026",
+   "value_as_written": "4.5%",
+   "quote": "\u2022Total sales growth of approximately 2.5% to 4.5%"
   },
   {
    "metric": "Net sales",
    "reason": "growth guidance without a base figure",
    "period": "FY2025",
-   "value_as_written": "2.8%",
+   "value_as_written": "2.8",
    "quote": "Total sales growth of approximately 2.8%"
   },
   {
@@ -964,14 +1063,14 @@
    "reason": "growth-of-a-percent guidance not normalizable",
    "period": "FY2025",
    "value_as_written": "1%",
-   "quote": "revised  its  full-year  comparable  sales  growth  expectation  from  a  1%  increase"
+   "quote": "HD revised its full-year comparable sales growth expectation from a 1% increase to being 'slightly positive.'"
   },
   {
    "metric": "Comparable sales, total company",
    "reason": "growth-of-a-percent guidance not normalizable",
    "period": "FY2025",
    "value_as_written": "1%",
-   "quote": "revised  its  full-year  comparable  sales  growth  expectation  from  a  1%  increase"
+   "quote": "HD revised its full-year comparable sales growth expectation from a 1% increase to being 'slightly positive.'"
   },
   {
    "metric": "Comparable sales, total company",
@@ -992,110 +1091,110 @@
   {
    "model": "gpt-5.6-luna",
    "prompt_tokens": 3169,
-   "completion_tokens": 844,
-   "cached_prompt_tokens": 1175
+   "completion_tokens": 1221,
+   "cached_prompt_tokens": 3166
   },
   {
    "model": "gpt-5.6-luna",
    "prompt_tokens": 3666,
-   "completion_tokens": 1387,
-   "cached_prompt_tokens": 1175
+   "completion_tokens": 1340,
+   "cached_prompt_tokens": 3663
   },
   {
    "model": "gpt-5.6-luna",
    "prompt_tokens": 4069,
-   "completion_tokens": 1196,
-   "cached_prompt_tokens": 1175
+   "completion_tokens": 1276,
+   "cached_prompt_tokens": 4066
   },
   {
    "model": "gpt-5.6-luna",
    "prompt_tokens": 4184,
-   "completion_tokens": 868,
-   "cached_prompt_tokens": 0
+   "completion_tokens": 793,
+   "cached_prompt_tokens": 4181
   },
   {
    "model": "gpt-5.6-luna",
    "prompt_tokens": 3629,
-   "completion_tokens": 893,
-   "cached_prompt_tokens": 1175
+   "completion_tokens": 1590,
+   "cached_prompt_tokens": 3626
   },
   {
    "model": "gpt-5.6-luna",
    "prompt_tokens": 3549,
-   "completion_tokens": 1315,
-   "cached_prompt_tokens": 1175
+   "completion_tokens": 1485,
+   "cached_prompt_tokens": 3546
   },
   {
    "model": "gpt-5.6-luna",
    "prompt_tokens": 3422,
-   "completion_tokens": 2049,
-   "cached_prompt_tokens": 1175
+   "completion_tokens": 2745,
+   "cached_prompt_tokens": 3419
   },
   {
    "model": "gpt-5.6-luna",
    "prompt_tokens": 3659,
-   "completion_tokens": 1267,
-   "cached_prompt_tokens": 1175
+   "completion_tokens": 1688,
+   "cached_prompt_tokens": 3656
   },
   {
    "model": "gpt-5.6-luna",
    "prompt_tokens": 3555,
-   "completion_tokens": 2104,
-   "cached_prompt_tokens": 1175
-  },
-  {
-   "model": "gpt-5.6-luna",
-   "prompt_tokens": 3356,
-   "completion_tokens": 1465,
-   "cached_prompt_tokens": 1175
-  },
-  {
-   "model": "gpt-5.6-luna",
-   "prompt_tokens": 3547,
-   "completion_tokens": 1247,
-   "cached_prompt_tokens": 1175
-  },
-  {
-   "model": "gpt-5.6-luna",
-   "prompt_tokens": 3388,
-   "completion_tokens": 2419,
-   "cached_prompt_tokens": 1175
-  },
-  {
-   "model": "gpt-5.6-luna",
-   "prompt_tokens": 3201,
-   "completion_tokens": 1168,
-   "cached_prompt_tokens": 1175
-  },
-  {
-   "model": "gpt-5.6-luna",
-   "prompt_tokens": 3556,
-   "completion_tokens": 1071,
-   "cached_prompt_tokens": 1175
-  },
-  {
-   "model": "gpt-5.6-luna",
-   "prompt_tokens": 3699,
-   "completion_tokens": 769,
-   "cached_prompt_tokens": 1175
-  },
-  {
-   "model": "gpt-5.6-luna",
-   "prompt_tokens": 3775,
-   "completion_tokens": 1240,
-   "cached_prompt_tokens": 1175
-  },
-  {
-   "model": "gpt-5.6-luna",
-   "prompt_tokens": 3715,
-   "completion_tokens": 1327,
+   "completion_tokens": 1501,
    "cached_prompt_tokens": 0
   },
   {
    "model": "gpt-5.6-luna",
+   "prompt_tokens": 3356,
+   "completion_tokens": 1573,
+   "cached_prompt_tokens": 3353
+  },
+  {
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3547,
+   "completion_tokens": 1215,
+   "cached_prompt_tokens": 3544
+  },
+  {
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3388,
+   "completion_tokens": 2929,
+   "cached_prompt_tokens": 3385
+  },
+  {
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3201,
+   "completion_tokens": 1219,
+   "cached_prompt_tokens": 3198
+  },
+  {
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3556,
+   "completion_tokens": 828,
+   "cached_prompt_tokens": 3553
+  },
+  {
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3699,
+   "completion_tokens": 757,
+   "cached_prompt_tokens": 3696
+  },
+  {
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3775,
+   "completion_tokens": 1241,
+   "cached_prompt_tokens": 3772
+  },
+  {
+   "model": "gpt-5.6-luna",
+   "prompt_tokens": 3715,
+   "completion_tokens": 1283,
+   "cached_prompt_tokens": 3712
+  },
+  {
+   "model": "gpt-5.6-luna",
    "prompt_tokens": 3595,
-   "completion_tokens": 1014,
-   "cached_prompt_tokens": 1175
+   "completion_tokens": 993,
+   "cached_prompt_tokens": 3592
   }
  ]
 }
