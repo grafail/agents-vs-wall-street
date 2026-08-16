@@ -387,10 +387,18 @@ def _totals_from_events(events_path: Path) -> report_mod.RunTotals:
                     hits += 1
                 else:
                     live += 1
+    s = settings()
+    cost = None
+    if s.price_in_per_m > 0 or s.price_out_per_m > 0:
+        # cached prompt tokens billed at ~10% of input price (provider-typical)
+        cost = round(
+            ((prompt - cached) * s.price_in_per_m
+             + cached * s.price_in_per_m * 0.1
+             + completion * s.price_out_per_m) / 1e6, 4)
     return report_mod.RunTotals(
         llm_calls=llm_calls, prompt_tokens=prompt, completion_tokens=completion,
         cached_prompt_tokens=cached, tool_cache_hits=hits, tool_cache_live=live,
-        est_cost_usd=None)
+        est_cost_usd=cost)
 
 
 # ---------------------------------------------------------------- forecast

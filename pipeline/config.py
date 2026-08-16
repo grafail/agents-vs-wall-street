@@ -30,6 +30,8 @@ class Settings(BaseSettings):
     enable_research: bool = True    # live research agent (news/peers digest) in the graph
     small_reasoning_effort: str = "low"   # OpenRouter reasoning effort for the small role ("" disables)
     extract_workers: int = 4              # parallel LLM parse batches during extraction
+    price_in_per_m: float = 0.0           # USD per 1M input tokens (blended; 0 = unknown, cost shows —)
+    price_out_per_m: float = 0.0          # USD per 1M output tokens
 
     @property
     def api_key(self) -> str:
