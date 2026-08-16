@@ -17,6 +17,9 @@ Unit conventions (pipeline.types):
 from __future__ import annotations
 
 import re
+from datetime import date as _date
+
+_DATE_MIN = _date.min
 import statistics
 from typing import Callable
 
@@ -44,6 +47,13 @@ def prior_year_period(period: str) -> str:
 
 # ---------------------------------------------------------------- series
 
+def _published_key(f: Fact) -> tuple:
+    """Sort key for restatement preference: newest published source wins;
+    facts without a published date lose to dated ones."""
+    pub = getattr(f.source, "published", None)
+    return (pub is not None, pub or _DATE_MIN)
+
+
 class Series:
     """Ordered per-metric history built from Facts (fact_type='actual' only).
 
@@ -52,10 +62,17 @@ class Series:
     """
 
     def __init__(self, facts: list[Fact]):
-        by_period: dict[str, float] = {}
+        # Duplicate periods: prefer the fact from the most recently PUBLISHED source
+        # (restated comparatives supersede as-originally-reported figures — e.g. Hays
+        # restates prior-year net fees for continuing operations after divestments).
+        best: dict[str, Fact] = {}
         for f in facts:
-            if f.fact_type == "actual":
-                by_period[f.period] = f.value
+            if f.fact_type != "actual":
+                continue
+            cur = best.get(f.period)
+            if cur is None or _published_key(f) >= _published_key(cur):
+                best[f.period] = f
+        by_period = {p: f.value for p, f in best.items()}
         self.points: list[tuple[str, float]] = sorted(
             by_period.items(), key=lambda kv: period_key(kv[0])
         )

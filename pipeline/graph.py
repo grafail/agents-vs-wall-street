@@ -198,8 +198,18 @@ def node_estimate(state: CompanyState) -> dict:
         })
 
         if cands_bt:
+            # Interim (half-year) actuals can't enter Series math but are prime
+            # evidence for annual metrics (e.g. Hays H1-FY2026 net fees) — feed
+            # them to the estimator as cited evidence lines.
+            interim = [
+                f"INTERIM ACTUAL {f.period}: {f.metric_label} = {f.value} "
+                f"[{f.source.doc_id}] \"{f.quote[:160]}\""
+                for f in facts
+                if f.metric_label == spec.label and f.fact_type == "actual"
+                and f not in sfacts and "H" in f.period
+            ]
             context = build_estimator_context(spec, sfacts, gfacts, trend, cands_bt,
-                                              list(digest))
+                                              interim + list(digest))
             try:
                 est, usage = llm.complete_structured(
                     "big",

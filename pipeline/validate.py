@@ -100,17 +100,29 @@ def magnitude_gate(value: float, history_values: list[float] | None,
     return _result("magnitude", "ok", f"{value} is {ratio:.2f}x history median {med}")
 
 
-def pence_trap(value: float, spec: MetricSpec) -> dict[str, Any]:
-    """Hays EPS is in PENCE. A per-share pence value < 5 almost certainly means
-    someone passed pounds (0.915) instead of pence (91.5)."""
+def pence_trap(value: float, spec: MetricSpec, history: list[float] | None = None) -> dict[str, Any]:
+    """Hays EPS is in PENCE. Detect the pounds-passed-as-pence signature (a ~100x
+    drop) — but HISTORY-AWARE: genuinely small pence values are legitimate when
+    the company's own history is small (Hays FY2025 basic EPS was 1.31p)."""
     if spec.kind != "per_share" or not spec.unit.pence:
         return _result("pence_trap", "ok", "n/a (not a pence per-share metric)")
     if not _finite(value):
         return _result("pence_trap", "fail", f"value not finite: {value!r}")
-    if value < 5.0:
-        return _result("pence_trap", "fail",
-                       f"{value} pence is implausibly small — probably pounds not pence "
-                       f"(did you mean {value * 100.0}?)")
+    hist = [h for h in (history or []) if _finite(h)]
+    if hist:
+        med = statistics.median(hist)
+        if med > 0 and value <= med / 25.0:
+            return _result("pence_trap", "fail",
+                           f"{value} pence is ~{med / value:.0f}x below the historical median "
+                           f"({med:.2f}p) — pounds-vs-pence signature (did you mean {value * 100.0}?)")
+        if med > 0 and value <= med / 5.0:
+            return _result("pence_trap", "warn",
+                           f"{value} pence is far below the historical median ({med:.2f}p) — check units")
+        return _result("pence_trap", "ok", f"{value} pence plausible vs history (median {med:.2f}p)")
+    if value < 5.0:  # no history to compare — keep the conservative absolute check
+        return _result("pence_trap", "warn",
+                       f"{value} pence is small and no history available — verify not pounds "
+                       f"(pence would be {value * 100.0})")
     return _result("pence_trap", "ok", f"{value} pence plausible")
 
 
@@ -176,7 +188,7 @@ def run_all_gates(value: float, spec: MetricSpec,
     try:
         return [
             magnitude_gate(value, history, kind=spec.kind),
-            pence_trap(value, spec),
+            pence_trap(value, spec, history=history),
             percent_trap(value, spec),
             guidance_sanity(value, g_lo, g_hi),
         ]

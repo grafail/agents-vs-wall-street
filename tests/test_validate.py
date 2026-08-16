@@ -78,14 +78,23 @@ def test_magnitude_never_raises_on_garbage():
 # ---------------------------------------------------------------- pence trap
 
 def test_pence_trap_catches_pounds():
-    r = pence_trap(0.915, HAYS_EPS)  # pounds passed where pence expected
+    # pounds passed where pence expected — the ~100x-below-history signature
+    r = pence_trap(0.915, HAYS_EPS, history=[88.0, 91.5, 95.0])
     assert not r["passed"]
     assert "pounds" in r["detail"]
+    # without history we can only warn, not hard-fail (Hays EPS is legitimately ~1p now)
+    r2 = pence_trap(0.915, HAYS_EPS)
+    assert r2["passed"] and r2["level"] == "warn"
 
 
 def test_pence_trap_passes_real_pence():
     assert pence_trap(91.5, HAYS_EPS)["passed"]
     assert pence_trap(6.2, HAYS_EPS)["passed"]
+    # genuinely small pence values pass when the company's own history is small
+    hays_hist = [9.22, 8.59, 4.03, 1.31]
+    assert pence_trap(1.1, HAYS_EPS, history=hays_hist)["passed"]
+    # but a pounds-slip of that same small history still fails
+    assert not pence_trap(0.011, HAYS_EPS, history=hays_hist)["passed"]
 
 
 def test_pence_trap_na_for_usd_eps():
