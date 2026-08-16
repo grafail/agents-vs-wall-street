@@ -67,7 +67,7 @@ into a number by deterministic code</em>. It never writes a final figure itself.
 <div class="stats">
 <span><b>12</b> metrics, 4 workbooks</span>
 <span><b>1</b> command</span>
-<span><b>161</b> tests</span>
+<span><b>176</b> tests</span>
 <span><b>~$0.06</b> per company run (dev model)</span>
 <span><b>50+</b> commits today</span>
 </div>
@@ -110,57 +110,51 @@ the H1-ratio method that dissolved the fallback. The audit trail is also our deb
 
 <details><summary>Data &amp; trust: extraction funnel, tiers, restatements</summary><div class="body">
 <ul>
-<li>Deterministic search narrows the frozen 1,139-doc corpus to candidate excerpts; the small model parses them into typed facts; a fact is rejected unless its raw value string-matches inside its own quoted source line (hallucination gate). ~160 facts/company, &lt;$1, run once, committed.</li>
-<li>Every fact carries source doc, published date, fetch time, trust tier (1 filings/RNS &middot; 2 IR/official macro &middot; 3 aggregators &amp; peers &middot; 4 news = leads only). Higher tier wins conflicts; newer publication wins within a tier &mdash; fired live on Hays&rsquo; continuing-operations restatement.</li>
-<li>Unambiguous unit slips (&times;100 pence, &times;1000 scale) are auto-corrected with an audit flag when exactly one canonical factor fits; ambiguous cases flagged, never guessed.</li>
-</ul>
-</div></details>
+<li>Search narrows the corpus &rarr; small model parses excerpts &rarr; fact rejected unless its value appears verbatim in its own quote.</li>
+<li>Facts carry source, date, trust tier (filings &gt; IR &gt; aggregators &gt; news). Higher tier wins; newer wins within a tier (restatements supersede).</li>
+<li>Unambiguous unit slips auto-corrected with an audit flag; ambiguous ones flagged, never guessed.</li>
+</ul></div></details>
 
 <details><summary>The judgment layer: quantiles, vibes, caps</summary><div class="body">
 <ul>
-<li>Estimator returns p10/p50/p90 relative deltas + three categoricals, each <em>explanation-before-label</em> with citations &mdash; an uncited label contributes exactly zero.</li>
-<li>Quantile influence is shrunk by the model&rsquo;s own stated uncertainty: shrink = 1/(1+(p90&minus;p10)/&sigma;); zero spread is treated as overconfidence and penalized.</li>
-<li>Total adjustment clamped to 0.75 &times; the chosen method&rsquo;s backtest MAE; tiny-sample MAEs floored; every degradation writes an audit note.</li>
-</ul>
-</div></details>
+<li>p10/p50/p90 + three cited labels, explanation before label. Uncited label = zero effect.</li>
+<li>Influence shrinks with the model&rsquo;s own stated uncertainty; zero spread = overconfidence, penalized.</li>
+<li>Total adjustment &le; 0.75 &times; backtest MAE. Every degradation leaves an audit note.</li>
+</ul></div></details>
 
 <details><summary>Validation &amp; reliability: gates, containment, tests</summary><div class="body">
 <ul>
-<li>History-adaptive magnitude bands (a collapsing series gets a band that tolerates collapse; sign-flips vs consistent history fail); pence/pounds and percent/decimal traps; unit-consistency asserts; guidance-range sanity. All logged per candidate.</li>
-<li>Containment: metric failure &rarr; fallback ladder; company failure never stops the others; LLM calls retry once; failed research yields an empty digest, not a dead run.</li>
-<li>161 pytest tests over the deterministic layers; LLM/network mocked; real corpus files as fixtures; templates sha-asserted unmodified.</li>
-</ul>
-</div></details>
+<li>Gates: history-adaptive magnitude bands, sign-flip check, pence/percent traps, guidance sanity &mdash; all logged.</li>
+<li>Failures degrade, never crash: metric &rarr; fallback ladder; company failures isolated; calls retried.</li>
+<li>176 tests on the deterministic layers; LLM/network mocked; templates sha-asserted untouched.</li>
+</ul></div></details>
 
 <details><summary>What we tried, changed, or got wrong</summary><div class="body">
 <ul>
-<li><strong>OpenBB adopted then dropped</strong> the same hour &mdash; a lean keyless tool belt was more debuggable.</li>
-<li><strong>Guessed the wrong golden document</strong> (Hays Aug-3 filing = admin notice); the pipeline found the real July-10 pre-close on its own.</li>
-<li><strong>Blind-integrity leak found &amp; sealed:</strong> Hays&rsquo; RNS publishes company-compiled consensus; extraction first classed it as guidance &mdash; a street number sat in the blind context. Now typed <code>consensus_*</code>, reconciler-only (and it became our best consensus source).</li>
-<li><strong>Silent self-muting:</strong> a 2-point series made &sigma;=None and zeroed all judgment without a trace. Fixed + a sweep found four sibling bugs.</li>
-<li><strong>Fixed validation bands rejected true values</strong> (Hays&rsquo; genuine EPS collapse read as a &ldquo;unit error&rdquo;); bands now derive from the series&rsquo; own volatility.</li>
-<li><strong>Metrics were estimated in isolation</strong> &mdash; one run forecast flat profit but collapsing EPS for the same company. Fix in progress: company-level estimation (the model sees all three metrics together) + a deterministic profit&harr;EPS coherence gate.</li>
-</ul>
-</div></details>
+<li>OpenBB in, then out same hour &mdash; lean tools won.</li>
+<li>Guessed the wrong &ldquo;golden document&rdquo; for Hays; the pipeline found the real one itself.</li>
+<li>Company-compiled consensus leaked into the blind context as &ldquo;guidance&rdquo; &mdash; sealed, and it became our best consensus source.</li>
+<li>&sigma;=None silently zeroed all judgment; fixing it surfaced four sibling bugs.</li>
+<li>Fixed bands called a real EPS collapse a &ldquo;unit error&rdquo; &mdash; bands now adapt to each series.</li>
+<li>Metrics estimated in isolation produced flat profit + collapsing EPS &mdash; now one company-level call + a coherence gate.</li>
+</ul></div></details>
 
 <details><summary>Known weaknesses (unresolved, disclosed)</summary><div class="body">
 <ul>
-<li><strong>Blindness controls the context, not the model&rsquo;s pretrained priors</strong> &mdash; famous tickers carry consensus-shaped memory; anonymization was rejected (costs peer knowledge); we disclose instead.</li>
-<li><strong>Run-to-run estimator variance is real</strong> (~12% swing observed on one metric). Mitigation in progress: a small cross-provider model panel with deterministic aggregation &mdash; disagreement between models widens uncertainty and shrinks their influence.</li>
-<li><strong>Vibe &sigma;-multiples are declared, not fully calibrated</strong>; caps + citations-or-zero are the defence.</li>
-<li><strong>Sparse annual histories</strong> leave some backtests at n=1&ndash;3; we floor error scales rather than trust tiny samples.</li>
-<li><strong>yfinance consensus mapping is the least-verified seam</strong>; corpus-published consensus + magnitude gates reduce, not eliminate, the risk.</li>
-</ul>
-</div></details>
+<li>Blindness can&rsquo;t erase pretrained consensus-shaped priors; disclosed, not anonymized.</li>
+<li>Estimator variance between runs (~12% seen once); mitigated by the model panel, not eliminated.</li>
+<li>Vibe &sigma;-multiples declared, not calibrated; caps are the defence.</li>
+<li>Some backtests sit on 1&ndash;3 samples; error scales floored.</li>
+<li>yfinance consensus mapping is the weakest seam.</li>
+</ul></div></details>
 
 <details><summary>Reproduce it</summary><div class="body">
 <ul>
-<li><code>uv sync</code> rebuilds the env (Python 3.13, lockfile committed); keys/models via <code>.env</code>.</li>
-<li>Prepare (re-runnable, parallel): <code>uv run python -m pipeline.run --prepare --all [--refresh]</code></li>
-<li><strong>Final command:</strong> <code>uv run python -m pipeline.run --forecast --all</code> &rarr; 4 workbooks + <code>logs/run-&lt;ts&gt;/{events.jsonl, report.json, report.html}</code> + the contest submission check.</li>
-<li>Cost: dev on DeepSeek (~$0.06/company run, billed cost logged per call); final on GPT-5.6 Sol + Luna, ~$5&ndash;8 per full run against the $50 budget.</li>
-</ul>
-</div></details>
+<li><code>uv sync</code>; keys/models in <code>.env</code>.</li>
+<li>Prepare: <code>uv run python -m pipeline.run --prepare --all</code></li>
+<li>Final: <code>uv run python -m pipeline.run --forecast --all</code> &rarr; 4 workbooks + full run log/report.</li>
+<li>~$0.06/company on the dev model; ~$5&ndash;8 full run on the final pair. Billed cost logged per call.</li>
+</ul></div></details>
 
 <p style="color:var(--muted); font-size:.85rem; margin-top:1.5rem">This page describes the system at the final commit recorded in
 the entry; the run report it references is produced by that same code at run time. The repository history (50+ granular commits today)
