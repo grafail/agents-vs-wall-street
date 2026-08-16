@@ -515,8 +515,8 @@ def _panel_inline(p: "PanelView | None") -> str:
     return (f'<div style="font-size:.84rem;margin:.35rem 0 .45rem">'
             f'<span style="font-weight:600;color:var(--accent);margin-right:.4rem">Model panel</span>'
             f'{cells}{spread}'
-            f'<span style="color:var(--muted);font-size:.78rem"> — each model\'s central answer; '
-            f'big disagreement automatically shrinks their influence. Full answers in Blind estimate.</span></div>')
+            f'<span style="color:var(--muted);font-size:.78rem"> — each model\'s central adjustment to the statistical baseline; '
+            f'when they disagree, the system trusts the whole panel less. Full answers in Blind estimate.</span></div>')
 
 
 def _panel_html(p: "PanelView | None") -> str:
