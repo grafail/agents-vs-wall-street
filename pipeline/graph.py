@@ -131,6 +131,20 @@ def _research_digest(ticker: str, log: RunLog | None) -> list[str]:
             f"Metrics of interest: " + ", ".join(s.label for s in _specs(ticker)) + "."}]},
         config={"recursion_limit": RESEARCH_RECURSION_LIMIT},
     )
+    # Log the scout's own LLM usage — these calls otherwise bypass llm.py's
+    # usage accounting (LangChain path) and would be invisible in the trace.
+    if log is not None:
+        n_calls, p_tok, c_tok = 0, 0, 0
+        for msg in result["messages"]:
+            um = getattr(msg, "usage_metadata", None)
+            if um:
+                n_calls += 1
+                p_tok += um.get("input_tokens", 0)
+                c_tok += um.get("output_tokens", 0)
+        if n_calls:
+            log.event("llm_call", stage="research", ticker=ticker, model="small",
+                      calls=n_calls, prompt_tokens=p_tok, completion_tokens=c_tok)
+
     content = result["messages"][-1].content
     text = content if isinstance(content, str) else json.dumps(content, default=str)
     bullets = [ln.strip().lstrip("-• ").strip() for ln in text.splitlines()
