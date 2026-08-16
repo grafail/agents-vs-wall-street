@@ -70,31 +70,6 @@ everything before a number reaches the spreadsheet.
 <tr><td>Whole company at once</td><td>The AI forecasts all of a company's numbers in one sitting, so related figures (like profit and earnings per share) stay consistent with each other.</td></tr>
 <tr><td>Prepare early, run late</td><td>Reading and research are done and saved during the day. The final run reuses them, so it is fast and does not depend on the venue wi-fi.</td></tr>
 </table>
-<h2>What the AI's answers actually look like</h2>
-<p style="font-size:.9rem">Real, unedited output from today's runs (Hays operating profit). Note the shape: reasons and sources first, then a label or a range. Never a bare number.</p>
-<div class="cols">
-<div>
-<pre style="white-space:pre-wrap">momentum: "warming"
-"FY26 H1 operating profit declined 21% y/y, but FY26
-guidance at the top of the disclosed consensus range
-implies stabilization after FY25's 57% decline."
-sources: 2026-02-27 H1 report; 2025-08-21 FY report
-
-range for the year (relative to baseline):
-p10 -1.5%   p50 +1.9%   p90 +5.25%   confidence: high</pre>
-<figcaption style="text-align:left">The blind estimate: a labeled opinion with its reasoning and sources, and a range instead of a single number.</figcaption>
-</div>
-<div>
-<pre style="white-space:pre-wrap">street check verdict: "hold"  (weight 75/25)
-"The gap is modest (+4.78%), but it is not an arbitrary
-deviation. Our estimate is anchored to management's FY26
-guidance midpoint of £45.20, plus a small evidence-cited
-positive adjustment..."</pre>
-<figcaption style="text-align:left">The reconciliation: confronted with Wall Street's £43.5m, the AI defends the gap with the company's own guidance, and code blends 75/25.</figcaption>
-</div>
-</div>
-
-
 <h2>The AI's questionnaire</h2>
 <p style="font-size:.92rem">The heart of stage 2. The AI is never asked "what will the number be?".
 Instead, for every metric it must fill in a fixed form, and anything outside the form is rejected:</p>
