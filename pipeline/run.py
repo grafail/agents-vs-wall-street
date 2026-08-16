@@ -38,31 +38,41 @@ def _git_commit() -> str | None:
 # ---------------------------------------------------------------- prepare
 
 def cmd_prepare(tickers: list[str], refresh: bool) -> int:
+    """Extraction + research warming, companies in parallel (RunLog is thread-safe)."""
+    from concurrent.futures import ThreadPoolExecutor
+
     log = RunLog()
     log.event("prepare_start", tickers=tickers, refresh=refresh)
     rc = 0
-    for t in tickers:
+
+    def _extract_one(t: str) -> int:
         path = FACTS_DIR / f"{t}.json"
         if path.exists() and not refresh:
             print(f"[prepare] {t}: facts exist ({path}) — skipping (use --refresh to redo)")
-            continue
+            return 0
         try:
             out = extract_company(t, log=log)
             print(f"[prepare] {t}: facts -> {out}")
+            return 0
         except Exception as e:  # noqa: BLE001 — other companies must continue
             print(f"[prepare] {t}: FAILED: {type(e).__name__}: {e}", file=sys.stderr)
             log.event("prepare_failed", ticker=t, error=str(e))
-            rc = 1
-    if settings().enable_research:
-        # warm the research cache too so the final run is mostly cache hits
+            return 1
+
+    def _warm_one(t: str) -> None:
         from pipeline.graph import _research_digest
-        for t in tickers:
-            try:
-                bullets = _research_digest(t, log)
-                print(f"[prepare] {t}: research digest warmed ({len(bullets)} bullets)")
-            except Exception as e:  # noqa: BLE001 — optional enrichment
-                print(f"[prepare] {t}: research warm failed ({type(e).__name__}) — tolerated")
-                log.event("prepare_research_failed", ticker=t, error=str(e))
+        try:
+            bullets = _research_digest(t, log)
+            print(f"[prepare] {t}: research digest warmed ({len(bullets)} bullets)")
+        except Exception as e:  # noqa: BLE001 — optional enrichment
+            print(f"[prepare] {t}: research warm failed ({type(e).__name__}) — tolerated")
+            log.event("prepare_research_failed", ticker=t, error=str(e))
+
+    with ThreadPoolExecutor(max_workers=len(tickers)) as pool:
+        rc = max(pool.map(_extract_one, tickers), default=0)
+    if settings().enable_research:
+        with ThreadPoolExecutor(max_workers=len(tickers)) as pool:
+            list(pool.map(_warm_one, tickers))
     print(f"[prepare] log: {log.dir}")
     return rc
 

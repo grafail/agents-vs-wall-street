@@ -4,6 +4,7 @@ This IS the contest's required clear-run log. Log everything: tool calls with
 cache hit/live, LLM usage, validation results, fallbacks with reasons, mode flags.
 """
 import json
+import threading
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -21,9 +22,10 @@ class RunLog:
         self.dir.mkdir(parents=True, exist_ok=True)
         self._events = self.dir / "events.jsonl"
         self.echo = echo
+        self._lock = threading.Lock()  # events may arrive from worker threads
 
     def event(self, kind: str, **data) -> None:
-        with open(self._events, "a") as f:
+        with self._lock, open(self._events, "a") as f:
             f.write(json.dumps({"ts": _now(), "kind": kind, **data}, default=str) + "\n")
         if self.echo:
             brief = " ".join(
