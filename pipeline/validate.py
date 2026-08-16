@@ -76,31 +76,42 @@ def _finite(x: Any) -> bool:
 
 def magnitude_gate(value: float, history_values: list[float] | None,
                    kind: str = "flow_absolute") -> dict[str, Any]:
-    """Flows/EPS: within 0.5x-2x of the history median. ratio_pct: within
-    +/-15 points of the history median. No history => warn, not fail."""
+    """Unit-error detector with a history-adaptive band.
+
+    Flows/EPS: compare against the LAST reported value; the allowed ratio band
+    widens with the volatility the series itself has shown (a series that halves
+    yearly gets a band that tolerates halving; a stable one keeps 0.5x-2x).
+    Sign flips vs a consistently-signed history fail. ratio_pct: within +/-15
+    points of the recent median. No history => warn, not fail."""
     if not _finite(value):
         return _result("magnitude", "fail", f"value not finite: {value!r}")
     hist = [h for h in (history_values or []) if _finite(h)]
     if not hist:
         return _result("magnitude", "warn", "no history to compare against")
-    # Recency-weighted reference: structurally trending series (e.g. Hays EPS
-    # 9.22p -> 1.31p) make the all-time median stale — compare against the
-    # median of the most recent 3 periods instead (history arrives ordered).
-    med = statistics.median(hist[-3:])
     if kind == "ratio_pct":
+        med = statistics.median(hist[-3:])
         delta = abs(value - med)
         if delta > 15.0:
             return _result("magnitude", "fail",
-                           f"{value} is {delta:.1f} pts from history median {med} (limit 15)")
-        return _result("magnitude", "ok", f"{value} within 15 pts of median {med}")
-    if med == 0:
-        return _result("magnitude", "warn", "history median is 0; cannot ratio-check")
-    ratio = value / med
-    if not (0.5 <= ratio <= 2.0):
+                           f"{value} is {delta:.1f} pts from recent median {med} (limit 15)")
+        return _result("magnitude", "ok", f"{value} within 15 pts of recent median {med}")
+    last = hist[-1]
+    if last == 0:
+        return _result("magnitude", "warn", "last reported value is 0; cannot ratio-check")
+    if value * last < 0 and all(h * last > 0 for h in hist):
         return _result("magnitude", "fail",
-                       f"{value} is {ratio:.3f}x history median {med} (allowed 0.5x-2x) "
-                       "— possible unit error (billions vs millions?)")
-    return _result("magnitude", "ok", f"{value} is {ratio:.2f}x history median {med}")
+                       f"{value} flips sign vs a consistently {'positive' if last > 0 else 'negative'} history")
+    # observed YoY ratios widen the band beyond the 0.5x-2x default
+    obs = [hist[i] / hist[i - 1] for i in range(1, len(hist)) if hist[i - 1] != 0]
+    lo = min([0.5] + [r * 0.7 for r in obs if r > 0])
+    hi = max([2.0] + [r * 1.4 for r in obs if r > 0])
+    ratio = value / last
+    if not (lo <= ratio <= hi):
+        return _result("magnitude", "fail",
+                       f"{value} is {ratio:.3f}x the last reported value {last} "
+                       f"(history-adaptive band {lo:.2f}x-{hi:.2f}x) — possible unit error")
+    return _result("magnitude", "ok",
+                   f"{value} is {ratio:.2f}x last reported {last} (band {lo:.2f}x-{hi:.2f}x)")
 
 
 def pence_trap(value: float, spec: MetricSpec, history: list[float] | None = None) -> dict[str, Any]:
