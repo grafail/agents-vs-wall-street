@@ -57,3 +57,13 @@ def load_companies() -> list[dict]:
     """The contest spec: 4 companies x 3 metrics, exact labels/units/output files."""
     with open(CHALLENGE_DIR / "companies.json") as f:
         return json.load(f)["companies"]
+
+def load_company_settings() -> dict:
+    """Per-company integration settings (yfinance ticker, etc.) — config, not code."""
+    import json as _json
+    with open(Path(__file__).parent / "company_settings.json") as f:
+        return {k: v for k, v in _json.load(f).items() if not k.startswith("_")}
+
+
+def yf_ticker(ticker: str) -> str:
+    return load_company_settings().get(ticker, {}).get("yfinance_ticker", ticker)

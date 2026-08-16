@@ -16,7 +16,7 @@ from pipeline import ensemble, llm, tools
 from pipeline.backtest import beat_factor, best_method
 from pipeline.baselines import Series, interim_map, run_all, trend_sheet, yoy_sigma
 from pipeline.baselines import prior_year_period
-from pipeline.config import settings
+from pipeline.config import settings, yf_ticker
 from pipeline.extract import ExtractedFact, extract_company, load_facts
 from pipeline.nudges import apply_nudges, reconcile_blend
 from pipeline.prompts import (
@@ -32,7 +32,6 @@ from pipeline.types import Estimate, MetricSpec, Reconciliation, metric_specs
 from pipeline.validate import resolve_final_value, run_all_gates, sibling_coherence
 from pipeline.writer import verify_workbook, write_workbook
 
-YF_TICKER = {"HD": "HD", "ADI": "ADI", "DE": "DE", "HAS": "HAS.L"}
 
 RESEARCH_RECURSION_LIMIT = 20  # ~8 tool iterations for the react scout
 
@@ -407,7 +406,7 @@ def node_consensus(state: CompanyState) -> dict:
             log.event("consensus_skipped", ticker=ticker, reason="ENABLE_RECONCILE=false")
         return {}
     facts = state.get("facts", [])
-    data, hit = tools.get_market_data(YF_TICKER.get(ticker, ticker), "estimates", log=log)
+    data, hit = tools.get_market_data(yf_ticker(ticker), "estimates", log=log)
     est_data = (data or {}).get("data") if isinstance(data, dict) else None
     for spec in _specs(ticker):
         blob = metrics.get(spec.label, {})

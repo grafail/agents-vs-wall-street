@@ -1,0 +1,7 @@
+{
+  "_comment": "Per-company integration settings (not contest data — that's challenge/companies.json). Add a row here when adding a company.",
+  "HD":  {"yfinance_ticker": "HD"},
+  "ADI": {"yfinance_ticker": "ADI"},
+  "HAS": {"yfinance_ticker": "HAS.L"},
+  "DE":  {"yfinance_ticker": "DE"}
+}
