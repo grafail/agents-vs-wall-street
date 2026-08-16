@@ -54,6 +54,15 @@ everything before a number reaches the spreadsheet.
 <figcaption>Two different ways the AI is used: in research it is a <strong>roaming agent</strong> (dashed box) that freely picks tools and searches until satisfied; for estimating and checking it gets <strong>one structured call</strong> each (dark boxes): a fixed questionnaire it must answer with ranges, labeled opinions and sources, nothing else. Light solid boxes are plain code. This picture is drawn automatically from the program itself.</figcaption>
 </figure>
 
+<h2>The main choices, and why</h2>
+<table class="rules">
+<tr><td>Freedom only where it helps</td><td>The AI is free where judgment matters (what to research, what to believe). It has no freedom where precision matters (arithmetic, units, file format).</td></tr>
+<tr><td>Estimate first, peek later</td><td>The AI forecasts without seeing Wall Street's number, so it cannot just copy it. Only afterwards is it confronted: justify the difference with evidence, or move closer.</td></tr>
+<tr><td>Rehearse before trusting</td><td>Every statistical method is tested on the company's own past first. The one with the smallest misses wins, and its miss size becomes the AI's adjustment limit.</td></tr>
+<tr><td>Whole company at once</td><td>The AI forecasts all of a company's numbers in one sitting, so related figures (like profit and earnings per share) stay consistent with each other.</td></tr>
+<tr><td>Prepare early, run late</td><td>Reading and research are done and saved during the day. The final run reuses them, so it is fast and does not depend on the venue wi-fi.</td></tr>
+</table>
+
 <h2>What makes this architecture strong</h2>
 <table class="strength">
 <tr><td>The AI does the hard work</td><td>It reads 1,139 company documents, plans its own web research and weighs the evidence. A person runs one command and reviews the result.</td></tr>
@@ -170,14 +179,6 @@ and the run report shows the filled-in worksheet for each one:</p>
 forecast below zero; the safety checks refused it, a flagged backup shipped instead, and reading that worksheet led us to a better
 method. The worksheet is also how we debug.</p>
 
-<h2>The main choices, and why</h2>
-<table class="rules">
-<tr><td>Freedom only where it helps</td><td>The AI is free where judgment matters (what to research, what to believe). It has no freedom where precision matters (arithmetic, units, file format).</td></tr>
-<tr><td>Estimate first, peek later</td><td>The AI forecasts without seeing Wall Street's number, so it cannot just copy it. Only afterwards is it confronted: justify the difference with evidence, or move closer.</td></tr>
-<tr><td>Rehearse before trusting</td><td>Every statistical method is tested on the company's own past first. The one with the smallest misses wins, and its miss size becomes the AI's adjustment limit.</td></tr>
-<tr><td>Whole company at once</td><td>The AI forecasts all of a company's numbers in one sitting, so related figures (like profit and earnings per share) stay consistent with each other.</td></tr>
-<tr><td>Prepare early, run late</td><td>Reading and research are done and saved during the day. The final run reuses them, so it is fast and does not depend on the venue wi-fi.</td></tr>
-</table>
 
 
 <h2>Where to look, per judging question</h2>
