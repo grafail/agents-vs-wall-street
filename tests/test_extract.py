@@ -47,6 +47,23 @@ def test_narrowing_finds_comparable_sales_and_guidance():
     assert "approximately 1.0%" in joined or "1.0" in joined
 
 
+HAYS_FY25_PRELIM = OFFLINE_DATA / "hays/filings/2025-08-21__has-ln-20250821-filing__143845.md"
+
+
+@pytest.mark.skipif(not HAYS_FY25_PRELIM.exists(), reason="corpus doc missing")
+def test_narrowing_reaches_hays_results_through_rns_noise():
+    # Hays' filing stream is dominated by administrative RNS (director dealings,
+    # AGM notices); the FY2025 preliminary report is named "...-filing", not
+    # "-8k". Regression guard: a full-corpus walk must still surface it — this
+    # breaks if max_docs is tuned back down or the strong-number gate weakens.
+    spec = spec_for("HAS", "Pre-exceptional basic EPS")
+    cands = collect_candidates(spec)
+    assert cands, "no HAS EPS candidates found in the Hays corpus"
+    prelim = [c for c in cands if "2025-08-21" in c.doc_id]
+    assert prelim, "FY2025 preliminary report not reached by narrowing"
+    assert any("1.31p" in c.excerpt for c in prelim)  # the FY2025 pre-exceptional EPS
+
+
 def test_narrowing_requires_strong_numbers():
     # bare years/integers must NOT qualify a line; real figures must
     assert not extract._STRONG_NUM_RE.search("the Reform Act of 1995 on net sales growth")
@@ -117,6 +134,14 @@ def test_percent_trap():
 def test_currency_mismatch_skipped():
     v, _, reason = normalize_value(USDm, "£972.4", "GBP_millions")
     assert v is None and "currency mismatch" in reason
+
+
+def test_adi_dollar_line_cannot_pollute_pct_metric():
+    # ADI trap: "Adjusted gross margin" is a $ table line; the contest metric is
+    # the "... percentage" line. Even if the LLM extracts the dollar figure, the
+    # unit gate must skip it rather than emit 1995 "percent".
+    v, _, reason = normalize_value(PCT, "1,995", "USD_millions")
+    assert v is None and "incompatible with pct metric" in reason
 
 
 def test_growth_guidance_needs_base():

@@ -375,6 +375,9 @@ actuals and company guidance. Rules:
 - raw_unit must reflect what the document says, including table headers like
   "in millions" or "In £s million". Percent written as 69.2% -> pct_points;
   written as 0.692 -> pct_decimal. UK pence like "1.31p" -> GBP_pence_per_share.
+- When the target metric's canonical unit is %, extract the PERCENTAGE line, not
+  a same-named currency line (e.g. "Adjusted gross margin $1,995" is a dollar
+  figure; the metric is the "Adjusted gross margin percentage 69.2%" line).
 - period: canonical form FY<year> (full fiscal year), FY<year>Q<n> (quarter),
   FY<year>H<n> (half), using the company's own fiscal labeling. Prefer the
   period stated next to the figure; else the excerpt's document period.
