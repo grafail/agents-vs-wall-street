@@ -30,12 +30,19 @@ def model_id(size: str) -> str:
 
 
 def _extra_body(size: str) -> dict:
-    """On OpenRouter, dial reasoning to low for the small role — extraction/labeling
-    doesn't need deep thinking and reasoning models are slow/expensive there."""
+    """OpenRouter extras: pin ONE backend provider (routing to different hosts
+    destroys prompt-cache continuity — observed live: identical prompts, different
+    tokenizers, cached_tokens always 0), request per-call billed cost, and dial
+    reasoning to low for the small role."""
     s = settings()
-    if s.llm_provider == "openrouter" and size == "small" and s.small_reasoning_effort:
-        return {"reasoning": {"effort": s.small_reasoning_effort}}
-    return {}
+    if s.llm_provider != "openrouter":
+        return {}
+    extra: dict = {"usage": {"include": True}}
+    if s.openrouter_provider:
+        extra["provider"] = {"order": [s.openrouter_provider], "allow_fallbacks": False}
+    if size == "small" and s.small_reasoning_effort:
+        extra["reasoning"] = {"effort": s.small_reasoning_effort}
+    return extra
 
 
 def complete_structured(
@@ -58,6 +65,9 @@ def complete_structured(
 
 def complete_text(size: str, messages: list[dict], **kwargs: Any) -> tuple[str, dict]:
     c = client()
+    extra = _extra_body(size)
+    if extra:
+        kwargs.setdefault("extra_body", {}).update(extra)
     resp = c.chat.completions.create(model=model_id(size), messages=messages, **kwargs)
     return resp.choices[0].message.content or "", _usage_dict(resp)
 
@@ -80,9 +90,13 @@ def _usage_dict(resp: Any) -> dict:
     details = getattr(u, "prompt_tokens_details", None)
     if details is not None:
         cached = getattr(details, "cached_tokens", 0) or 0
-    return {
+    out = {
         "model": resp.model,
         "prompt_tokens": u.prompt_tokens,
         "completion_tokens": u.completion_tokens,
         "cached_prompt_tokens": cached,
     }
+    cost = getattr(u, "cost", None)  # OpenRouter returns billed USD with usage.include
+    if cost is not None:
+        out["cost_usd"] = cost
+    return out

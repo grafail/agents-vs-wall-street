@@ -32,6 +32,8 @@ class Settings(BaseSettings):
     extract_workers: int = 4              # parallel LLM parse batches during extraction
     price_in_per_m: float = 0.0           # USD per 1M input tokens (blended; 0 = unknown, cost shows —)
     price_out_per_m: float = 0.0          # USD per 1M output tokens
+    openrouter_provider: str = ""         # pin ONE backend provider (cache continuity!); "" = no pin
+                                          # e.g. "deepseek" for deepseek models, "openai" for gpt models
 
     @property
     def api_key(self) -> str:
