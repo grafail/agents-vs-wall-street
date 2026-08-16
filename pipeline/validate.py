@@ -122,6 +122,10 @@ def pence_trap(value: float, spec: MetricSpec, history: list[float] | None = Non
         return _result("pence_trap", "ok", "n/a (not a pence per-share metric)")
     if not _finite(value):
         return _result("pence_trap", "fail", f"value not finite: {value!r}")
+    if value <= 0:
+        # A non-positive value is a sign problem, not a pounds-vs-pence problem —
+        # the magnitude gate's sign-flip check owns that diagnosis.
+        return _result("pence_trap", "ok", "non-positive value — sign handled by magnitude gate")
     hist = [h for h in (history or []) if _finite(h)]
     if hist:
         med = statistics.median(hist)
