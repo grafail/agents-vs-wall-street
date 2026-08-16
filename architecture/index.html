@@ -54,6 +54,14 @@ everything before a number reaches the spreadsheet.
 <figcaption>Two different ways the AI is used: in research it is a <strong>roaming agent</strong> (dashed box) that freely picks tools and searches until satisfied; for estimating and checking it gets <strong>one structured call</strong> each (dark boxes): a fixed questionnaire it must answer with ranges, labeled opinions and sources, nothing else. Light solid boxes are plain code. This picture is drawn automatically from the program itself.</figcaption>
 </figure>
 
+
+<table class="rules" style="margin-top:.2rem">
+<tr><td>1 &middot; Read &amp; research</td><td>Code loads the extracted, quoted facts for each company. A small roaming AI agent then searches the web and news on its own (competitor results, economic data, fresh headlines) and writes a short list of findings, each with its source.</td></tr>
+<tr><td>2 &middot; Blind estimate</td><td>One structured call per company: the AI sees the history, the company's own guidance, the rehearsed statistical baselines and the research findings, and answers a fixed questionnaire: a range for each number plus labeled opinions, every opinion with a source. It is never shown Wall Street's number here.</td></tr>
+<tr><td>3 &middot; Street check</td><td>Code fetches Wall Street's expectation. If ours differs, the AI is challenged: justify the gap with the evidence, or move closer. Its verdict is a blend weight, applied by code.</td></tr>
+<tr><td>4 &middot; Verify &amp; ship</td><td>Code runs the safety checks (units, sizes, signs, guidance range). If anything fails, the backup ladder supplies the next best number, flagged. The workbook cells are filled, re-verified, and the full audit report is written.</td></tr>
+</table>
+
 <h2>The main choices, and why</h2>
 <table class="rules">
 <tr><td>Freedom only where it helps</td><td>The AI is free where judgment matters (what to research, what to believe). It has no freedom where precision matters (arithmetic, units, file format).</td></tr>
@@ -62,6 +70,30 @@ everything before a number reaches the spreadsheet.
 <tr><td>Whole company at once</td><td>The AI forecasts all of a company's numbers in one sitting, so related figures (like profit and earnings per share) stay consistent with each other.</td></tr>
 <tr><td>Prepare early, run late</td><td>Reading and research are done and saved during the day. The final run reuses them, so it is fast and does not depend on the venue wi-fi.</td></tr>
 </table>
+<h2>What the AI's answers actually look like</h2>
+<p style="font-size:.9rem">Real, unedited output from today's runs (Hays operating profit). Note the shape: reasons and sources first, then a label or a range. Never a bare number.</p>
+<div class="cols">
+<div>
+<pre style="white-space:pre-wrap">momentum: "warming"
+"FY26 H1 operating profit declined 21% y/y, but FY26
+guidance at the top of the disclosed consensus range
+implies stabilization after FY25's 57% decline."
+sources: 2026-02-27 H1 report; 2025-08-21 FY report
+
+range for the year (relative to baseline):
+p10 -1.5%   p50 +1.9%   p90 +5.25%   confidence: high</pre>
+<figcaption style="text-align:left">The blind estimate: a labeled opinion with its reasoning and sources, and a range instead of a single number.</figcaption>
+</div>
+<div>
+<pre style="white-space:pre-wrap">street check verdict: "hold"  (weight 75/25)
+"The gap is modest (+4.78%), but it is not an arbitrary
+deviation. Our estimate is anchored to management's FY26
+guidance midpoint of £45.20, plus a small evidence-cited
+positive adjustment..."</pre>
+<figcaption style="text-align:left">The reconciliation: confronted with Wall Street's £43.5m, the AI defends the gap with the company's own guidance, and code blends 75/25.</figcaption>
+</div>
+</div>
+
 
 <h2>What makes this architecture strong</h2>
 <table class="strength">
