@@ -11,31 +11,29 @@
   main { max-width:840px; margin:0 auto; padding:2.2rem 1.4rem 4rem; }
   h1,h2 { font-family:Georgia,"Times New Roman",serif; color:var(--accent); line-height:1.2; }
   h1 { font-size:2rem; margin:.2rem 0 .2rem; }
-  h2 { font-size:1.25rem; margin:2rem 0 .5rem; }
+  h2 { font-size:1.25rem; margin:1.8rem 0 .5rem; }
   p { margin:.5rem 0; }
-  .sub { color:var(--muted); margin:0 0 1.2rem; }
-  .tldr { border:1.5px solid var(--accent); border-radius:8px; padding:.9rem 1.1rem; margin:1rem 0; font-size:1.05rem; background:#fff; }
-  .stats { display:flex; flex-wrap:wrap; gap:.6rem 1.6rem; margin:.9rem 0 1.4rem; padding:.55rem .9rem; background:#f2f4f7; border-radius:6px; font-size:.9rem; }
+  .sub { color:var(--muted); margin:0 0 1.1rem; }
+  .tldr { border:1.5px solid var(--accent); border-radius:8px; padding:.85rem 1.05rem; margin:.9rem 0; font-size:1.04rem; background:#fff; }
+  .stats { display:flex; flex-wrap:wrap; gap:.5rem 1.5rem; margin:.8rem 0 1rem; padding:.5rem .9rem; background:#f2f4f7; border-radius:6px; font-size:.9rem; }
   .stats b { color:var(--accent); font-size:1.05rem; }
-  table { border-collapse:collapse; width:100%; margin:.6rem 0; font-size:.9rem; }
+  table { border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.9rem; }
   th { text-align:left; font-weight:600; border-bottom:1.5px solid var(--accent); padding:.28rem .5rem; }
-  td { border-bottom:1px solid var(--hair); padding:.28rem .5rem; vertical-align:top; }
-  code, .mono { font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:.86em; background:#f1f3f6; padding:.05em .3em; border-radius:3px; }
+  td { border-bottom:1px solid var(--hair); padding:.3rem .5rem; vertical-align:top; }
+  code { font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:.86em; background:#f1f3f6; padding:.05em .3em; border-radius:3px; }
   pre { background:#f6f7f9; border:1px solid var(--hair); border-radius:6px; padding:.7rem .9rem; overflow-x:auto; font-size:.8rem; line-height:1.5; margin:.5rem 0; }
-  details { border:1px solid var(--hair); border-radius:6px; background:#fff; margin:.45rem 0; padding:0; }
+  details { border:1px solid var(--hair); border-radius:6px; background:#fff; margin:.45rem 0; }
   details summary { cursor:pointer; padding:.55rem .9rem; font-weight:600; color:var(--accent); }
   details[open] summary { border-bottom:1px solid var(--hair); }
   details .body { padding:.6rem 1rem .8rem; }
-  figure { margin:.8rem 0; text-align:center; }
-  figure img { max-width:300px; width:100%; border:1px solid var(--hair); border-radius:6px; background:#fff; padding:.5rem; }
-  figcaption { font-size:.8rem; color:var(--muted); margin-top:.3rem; }
+  figure { margin:.9rem 0 .4rem; }
+  figcaption { font-size:.8rem; color:var(--muted); margin-top:.15rem; text-align:center; }
   ul { margin:.35rem 0 .5rem; padding-left:1.25rem; }
-  li { margin:.22rem 0; }
-  .flow { text-align:center; font-family:ui-monospace,monospace; font-size:.82rem; background:#f6f7f9; border:1px solid var(--hair); border-radius:6px; padding:.6rem; margin:.7rem 0; }
-  .cols { display:flex; gap:1.4rem; flex-wrap:wrap; align-items:flex-start; }
-  .cols > div { flex:1 1 300px; }
+  li { margin:.24rem 0; }
+  .why td:first-child { white-space:nowrap; font-weight:600; color:#8a2626; }
+  .why td:nth-child(2) { font-weight:600; color:#1f5f38; white-space:nowrap; }
+  .rules td:first-child { white-space:nowrap; font-weight:600; color:#2e4a75; }
   .ledger { font-family:ui-monospace,monospace; font-size:.78rem; }
-  .oneline td:first-child { white-space:nowrap; font-weight:600; color:#2e4a75; }
 </style>
 </head>
 <body>
@@ -45,36 +43,33 @@
 <p class="sub">Blind-then-reconcile earnings forecaster &mdash; Agents vs Wall Street, 16 Aug 2026</p>
 
 <div class="tldr">
-<strong>The idea in two sentences:</strong> the LLM is the analyst, the code is the calculator.
-The model reads filings, researches live evidence and expresses <em>bounded, cited judgments</em> &mdash;
-it never writes a final number. Deterministic code computes every figure from exact extracted anchors,
-backtests its own statistical methods, caps the model&rsquo;s influence at <strong>0.75&times; the measured
-backtest error</strong>, and guarantees a sane number in every cell even when stages fail.
+<strong>The idea:</strong> the LLM is the analyst, the code is the calculator. The model reads, researches
+and judges &mdash; but every judgment is <em>cited, capped at 0.75&times; the measured backtest error, and turned
+into a number by deterministic code</em>. It never writes a final figure itself.
 </div>
+
+<figure>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 150" role="img" aria-label="Concept diagram"><defs><marker id="ca" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5a6472"/></marker></defs><rect x="14" y="30" width="176" height="62" rx="10" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.8"/><text x="102.0" y="56" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="#1f3a5f">READ & RESEARCH</text><text x="102.0" y="74" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">load + research</text><text x="102.0" y="108" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">1,139 filings + live tools — every</text><text x="102.0" y="120" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">fact cited & trust-tiered</text><rect x="216" y="30" width="176" height="62" rx="10" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.8"/><text x="304.0" y="56" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="#ffffff">BLIND ESTIMATE</text><text x="304.0" y="74" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#b8c4d8">estimate</text><text x="304.0" y="108" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">LLM judgment, capped at 0.75×</text><text x="304.0" y="120" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">backtested error</text><rect x="418" y="30" width="176" height="62" rx="10" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.8"/><text x="506.0" y="56" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="#ffffff">STREET CHECK</text><text x="506.0" y="74" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#b8c4d8">consensus + reconcile</text><text x="506.0" y="108" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">defend the gap vs consensus, or</text><text x="506.0" y="120" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">revise (config-gated)</text><rect x="620" y="30" width="176" height="62" rx="10" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.8"/><text x="708.0" y="56" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="#1f3a5f">VERIFY & SHIP</text><text x="708.0" y="74" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">finalize + write</text><text x="708.0" y="108" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">unit gates · never-blank ladder ·</text><text x="708.0" y="120" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">full audit trail</text><line x1="190" y1="61.0" x2="208" y2="61.0" stroke="#5a6472" stroke-width="1.6" marker-end="url(#ca)"/><line x1="392" y1="61.0" x2="410" y2="61.0" stroke="#5a6472" stroke-width="1.6" marker-end="url(#ca)"/><line x1="594" y1="61.0" x2="612" y2="61.0" stroke="#5a6472" stroke-width="1.6" marker-end="url(#ca)"/><line x1="405.0" y1="12" x2="405.0" y2="98" stroke="#8a2626" stroke-width="1.4" stroke-dasharray="5 4"/><text x="405.0" y="6" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#8a2626">consensus firewall — the street number cannot reach the estimator</text></svg>
+<figcaption>Phase grouping is asserted against the compiled pipeline&rsquo;s node list at generation time
+(<code>architecture/make_diagram.py</code>) &mdash; the diagram cannot drift from the code. Dark = model-driven.</figcaption>
+</figure>
+
+<h2>Why not just ask a big model for 12 numbers?</h2>
+<table class="why">
+<tr><th>Naive approach fails because&hellip;</th><th>This system instead&hellip;</th><th></th></tr>
+<tr><td>LLMs mis-generate absolute digits</td><td>Assumptions, not numbers</td><td>model outputs bounded deltas &amp; labels; Python computes figures from exact, quoted anchors</td></tr>
+<tr><td>models anchor on remembered consensus</td><td>Blind, then reconcile</td><td>consensus is firewalled out of estimation, then confronted: defend the gap with evidence or revise</td></tr>
+<tr><td>no way to know how much to trust it</td><td>Backtest before trust</td><td>every statistical method is rehearsed on the company&rsquo;s own past; the measured error becomes the model&rsquo;s influence budget</td></tr>
+<tr><td>one bad call ruins a metric (blank = worst score)</td><td>Never blank</td><td>fallback ladder estimator &rarr; baseline &rarr; guidance &rarr; consensus &rarr; anchor; every skip logged</td></tr>
+<tr><td>numbers appear, unexplainable</td><td>Audit everything</td><td>each figure ships as a worksheet: data / math / model-judgment tagged per line, with citations</td></tr>
+</table>
 
 <div class="stats">
 <span><b>12</b> metrics, 4 workbooks</span>
 <span><b>1</b> command</span>
-<span><b>154</b> tests</span>
-<span><b>$0.11</b> per company run (dev model)</span>
-<span><b>40+</b> commits today</span>
-<span>every number: <b>full audit trail</b></span>
-</div>
-
-<figure style="margin:1rem 0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 208" role="img" aria-label="Pipeline diagram"><defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5a6472"/></marker></defs><rect x="18" y="28" width="148" height="44" rx="8" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.6"/><text x="92.0" y="48" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#1f3a5f">load</text><rect x="228" y="28" width="148" height="44" rx="8" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.6"/><text x="302.0" y="48" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#ffffff">research</text><text x="302.0" y="63" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#b8c4d8">agent</text><text x="302.0" y="86" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#5a6472">cached tools</text><rect x="438" y="28" width="148" height="44" rx="8" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.6"/><text x="512.0" y="48" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#ffffff">estimate</text><text x="512.0" y="63" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#b8c4d8">agent</text><text x="512.0" y="86" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#5a6472">blind — no consensus</text><rect x="648" y="28" width="148" height="44" rx="8" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.6"/><text x="722.0" y="48" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#1f3a5f">consensus</text><rect x="438" y="124" width="148" height="44" rx="8" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.6"/><text x="512.0" y="144" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#ffffff">reconcile</text><text x="512.0" y="159" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#b8c4d8">agent</text><text x="512.0" y="182" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#5a6472">config-gated</text><rect x="228" y="124" width="148" height="44" rx="8" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.6"/><text x="302.0" y="144" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#1f3a5f">finalize</text><text x="302.0" y="182" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#5a6472">gates + fallback ladder</text><rect x="18" y="124" width="148" height="44" rx="8" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.6"/><text x="92.0" y="144" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#1f3a5f">write</text><line x1="166" y1="50.0" x2="221" y2="50.0" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/><line x1="376" y1="50.0" x2="431" y2="50.0" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/><line x1="586" y1="50.0" x2="641" y2="50.0" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/><line x1="722.0" y1="72" x2="722.0" y2="117" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/><line x1="438" y1="146.0" x2="383" y2="146.0" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/><line x1="228" y1="146.0" x2="173" y2="146.0" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/></svg><figcaption>Node sequence read from the compiled LangGraph&rsquo;s edge list (<code>architecture/make_diagram.py</code>) &mdash; generated from the code, so it cannot drift. Dark nodes are model-driven; row two flows right to left.</figcaption></figure>
-<div class="cols"><div style="display:none">
-<div>
-<table class="oneline">
-<tr><td>load</td><td>cited facts from committed extraction artifacts</td></tr>
-<tr><td>research</td><td><em>agent:</em> scout picks its own searches (peers, macro, news) via cached tools &rarr; cited digest</td></tr>
-<tr><td>estimate</td><td><em>agent, blind:</em> quantiles + 3 cited &ldquo;vibe&rdquo; labels per metric &mdash; consensus structurally unreachable</td></tr>
-<tr><td>consensus</td><td>street number: corpus-published first, else gated yfinance</td></tr>
-<tr><td>reconcile</td><td><em>agent, gated:</em> defend the gap vs street or revise &rarr; blend weight</td></tr>
-<tr><td>finalize</td><td>unit/sanity gates + never-blank fallback ladder</td></tr>
-<tr><td>write</td><td>fill 3 yellow cells/template, verify, emit report.json/.html</td></tr>
-</table>
-<div class="flow">anchor &rarr; backtested baseline &rarr; guidance-beat &rarr; capped judgment &rarr; gated blend</div>
-</div>
+<span><b>161</b> tests</span>
+<span><b>~$0.06</b> per company run (dev model)</span>
+<span><b>50+</b> commits today</span>
 </div>
 
 <h2>One real number, end to end</h2>
@@ -84,77 +79,92 @@ backtest error</strong>, and guarantees a sane number in every cell even when st
      &#8627; walk-forward backtest picked it: MAE 0.67p (vs seasonal 8.1, drift 6.9)
 [L]  judgment: cited quantiles + vibes, shrunk by own uncertainty, |&Delta;| &le; 0.75&times;MAE
 [M]  final &rarr; workbook cell               (no street consensus exists for this metric)</pre>
-<p style="font-size:.9rem">First run of the day, both the estimator and a baseline extrapolated that collapse to <em>negative</em>
-EPS &mdash; every gate refused, the failsafe shipped last year&rsquo;s value flagged &ldquo;needs manual review&rdquo;,
-and inspecting that report produced the H1-ratio method that dissolved the fallback. The system debugged itself in public.</p>
+<p style="font-size:.9rem">In the first run, estimator and baseline both extrapolated that collapse to <em>negative</em> EPS &mdash;
+the gates refused, the failsafe shipped last year&rsquo;s value flagged for review, and inspecting that report produced
+the H1-ratio method that dissolved the fallback. The audit trail is also our debugger.</p>
 
-<h2>Why it&rsquo;s built this way &mdash; 5 rules</h2>
-<table class="oneline">
-<tr><td>Assumptions, not numbers</td><td>LLMs mis-generate absolute digits; they judge relative change well. Model outputs deltas/labels; Python does all arithmetic on exact anchors.</td></tr>
-<tr><td>Blind, then reconcile</td><td>Consensus is withheld from the estimator (anchoring bias), then confronted at a separate step: defend the gap with evidence or revise. Scoring is relative to Wall St &mdash; deviations must be earned.</td></tr>
-<tr><td>Backtest before trust</td><td>Every statistical method is walk-forward tested per metric on the company&rsquo;s own history; the winner&rsquo;s measured error becomes the LLM&rsquo;s influence budget.</td></tr>
-<tr><td>Never blank</td><td>Missing cell = worst score. Fallback ladder: estimator &rarr; best baseline &rarr; guidance mid &rarr; consensus &rarr; last-year anchor; every skip logged with a reason.</td></tr>
-<tr><td>Cache-first</td><td>Stable-prefix prompts (provider cache) + read-through disk cache for all external data. Pre-baking the day = warming caches; the final run is fast, cheap and wifi-resilient.</td></tr>
+<h2>Main choices, one line each</h2>
+<table class="rules">
+<tr><td>LangGraph fixed pipeline</td><td>agency exactly where judgment lives (research, estimate, reconcile); determinism where correctness lives (math, units, output). Explicit graph = this diagram = the code.</td></tr>
+<tr><td>Two-stage day</td><td>prepare (extract + research, cached, re-runnable) is separated from the final run, which is fast, cheap and venue-wifi-proof.</td></tr>
+<tr><td>Categorical &ldquo;vibes&rdquo;</td><td>soft signals (momentum, guidance style, surprise skew) enter as cited labels mapped to fixed &sigma;-multiples &mdash; uncited labels count zero.</td></tr>
+<tr><td>Cache-first everywhere</td><td>stable-prefix prompts + read-through disk cache for all external data; pre-baking = warming caches.</td></tr>
+<tr><td>Cheap model for volume, big model for judgment</td><td>extraction/research on the small tier; estimate/reconcile on the big tier; both env-swappable, nothing hardcoded.</td></tr>
 </table>
 
 <h2>Depth on demand</h2>
 
+<details><summary>The exact compiled graph (7 nodes)</summary><div class="body">
+<figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 208" role="img" aria-label="Pipeline diagram"><defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5a6472"/></marker></defs><rect x="18" y="28" width="148" height="44" rx="8" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.6"/><text x="92.0" y="48" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#1f3a5f">load</text><rect x="228" y="28" width="148" height="44" rx="8" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.6"/><text x="302.0" y="48" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#ffffff">research</text><text x="302.0" y="63" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#b8c4d8">agent</text><text x="302.0" y="86" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#5a6472">cached tools</text><rect x="438" y="28" width="148" height="44" rx="8" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.6"/><text x="512.0" y="48" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#ffffff">estimate</text><text x="512.0" y="63" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#b8c4d8">agent</text><text x="512.0" y="86" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#5a6472">blind — no consensus</text><rect x="648" y="28" width="148" height="44" rx="8" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.6"/><text x="722.0" y="48" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#1f3a5f">consensus</text><rect x="438" y="124" width="148" height="44" rx="8" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.6"/><text x="512.0" y="144" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#ffffff">reconcile</text><text x="512.0" y="159" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#b8c4d8">agent</text><text x="512.0" y="182" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#5a6472">config-gated</text><rect x="228" y="124" width="148" height="44" rx="8" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.6"/><text x="302.0" y="144" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#1f3a5f">finalize</text><text x="302.0" y="182" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#5a6472">gates + fallback ladder</text><rect x="18" y="124" width="148" height="44" rx="8" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.6"/><text x="92.0" y="144" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#1f3a5f">write</text><line x1="166" y1="50.0" x2="221" y2="50.0" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/><line x1="376" y1="50.0" x2="431" y2="50.0" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/><line x1="586" y1="50.0" x2="641" y2="50.0" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/><line x1="722.0" y1="72" x2="722.0" y2="117" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/><line x1="438" y1="146.0" x2="383" y2="146.0" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/><line x1="228" y1="146.0" x2="173" y2="146.0" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/></svg>
+<figcaption>Node sequence read from the compiled LangGraph&rsquo;s edge list. Row two flows right to left.</figcaption></figure>
+<table class="rules">
+<tr><td>load</td><td>cited facts from committed extraction artifacts</td></tr>
+<tr><td>research</td><td><em>agent:</em> scout picks its own searches (peers, macro, news) via cached tools &rarr; cited digest</td></tr>
+<tr><td>estimate</td><td><em>agent, blind:</em> quantiles + 3 cited vibe labels per metric</td></tr>
+<tr><td>consensus</td><td>street number: corpus-published first, else gated yfinance</td></tr>
+<tr><td>reconcile</td><td><em>agent, gated:</em> defend the gap vs street or revise &rarr; blend weight</td></tr>
+<tr><td>finalize</td><td>unit/sanity gates + never-blank fallback ladder</td></tr>
+<tr><td>write</td><td>fill 3 yellow cells/template, verify, emit report.json/.html</td></tr>
+</table>
+</div></details>
+
 <details><summary>Data &amp; trust: extraction funnel, tiers, restatements</summary><div class="body">
 <ul>
-<li>Deterministic search narrows the frozen 1,139-doc corpus to candidate excerpts (strong-number line gate, per-metric synonyms); the small model parses excerpts to typed facts; a fact is rejected unless its raw value string-matches inside its own quoted source line (hallucination gate). ~160 facts/company, &lt;$1, run once, committed.</li>
-<li>Every fact carries source doc, published date, fetch time, trust tier (1 corpus filings/RNS &middot; 2 IR/official macro &middot; 3 aggregators &amp; peers &middot; 4 news = leads only &mdash; can feed a vibe, never move a number alone). Higher tier wins conflicts; newer publication wins within a tier &mdash; fired in practice on Hays&rsquo; continuing-operations restatement (583.3 vs 496.0 for the same period).</li>
+<li>Deterministic search narrows the frozen 1,139-doc corpus to candidate excerpts; the small model parses them into typed facts; a fact is rejected unless its raw value string-matches inside its own quoted source line (hallucination gate). ~160 facts/company, &lt;$1, run once, committed.</li>
+<li>Every fact carries source doc, published date, fetch time, trust tier (1 filings/RNS &middot; 2 IR/official macro &middot; 3 aggregators &amp; peers &middot; 4 news = leads only). Higher tier wins conflicts; newer publication wins within a tier &mdash; fired live on Hays&rsquo; continuing-operations restatement.</li>
 <li>Unambiguous unit slips (&times;100 pence, &times;1000 scale) are auto-corrected with an audit flag when exactly one canonical factor fits; ambiguous cases flagged, never guessed.</li>
 </ul>
 </div></details>
 
 <details><summary>The judgment layer: quantiles, vibes, caps</summary><div class="body">
 <ul>
-<li>Estimator returns p10/p50/p90 relative deltas + three categoricals (momentum, guidance style, surprise skew), each <em>explanation-before-label</em> with citations &mdash; an uncited label contributes exactly zero.</li>
-<li>Quantile influence is shrunk by the model&rsquo;s own stated uncertainty: shrink = 1/(1+(p90&minus;p10)/&sigma;). Zero spread is treated as overconfidence and penalized, not rewarded.</li>
-<li>Total adjustment clamped to 0.75 &times; chosen method&rsquo;s backtest MAE; tiny-sample MAEs (n&lt;3) are floored; when &sigma; is unavailable the MAE provides the scale &mdash; every degradation writes an audit note.</li>
+<li>Estimator returns p10/p50/p90 relative deltas + three categoricals, each <em>explanation-before-label</em> with citations &mdash; an uncited label contributes exactly zero.</li>
+<li>Quantile influence is shrunk by the model&rsquo;s own stated uncertainty: shrink = 1/(1+(p90&minus;p10)/&sigma;); zero spread is treated as overconfidence and penalized.</li>
+<li>Total adjustment clamped to 0.75 &times; the chosen method&rsquo;s backtest MAE; tiny-sample MAEs floored; every degradation writes an audit note.</li>
 </ul>
 </div></details>
 
 <details><summary>Validation &amp; reliability: gates, containment, tests</summary><div class="body">
 <ul>
-<li>History-adaptive magnitude bands (a series that halves yearly gets a band that tolerates halving; sign-flips vs consistent history fail); pence/pounds and percent/decimal traps; unit-consistency asserts; guidance-range sanity. All logged pass/fail per candidate.</li>
+<li>History-adaptive magnitude bands (a collapsing series gets a band that tolerates collapse; sign-flips vs consistent history fail); pence/pounds and percent/decimal traps; unit-consistency asserts; guidance-range sanity. All logged per candidate.</li>
 <li>Containment: metric failure &rarr; fallback ladder; company failure never stops the others; LLM calls retry once; failed research yields an empty digest, not a dead run.</li>
-<li>154 pytest tests over deterministic layers (converters, baselines, backtests, caps, gates, writer). LLM/network mocked; real corpus files as fixtures; templates sha-asserted unmodified.</li>
+<li>161 pytest tests over the deterministic layers; LLM/network mocked; real corpus files as fixtures; templates sha-asserted unmodified.</li>
 </ul>
 </div></details>
 
 <details><summary>What we tried, changed, or got wrong</summary><div class="body">
 <ul>
-<li><strong>OpenBB adopted then dropped</strong> the same hour &mdash; a lean keyless tool belt (yfinance/ddgs/trafilatura) was more debuggable.</li>
+<li><strong>OpenBB adopted then dropped</strong> the same hour &mdash; a lean keyless tool belt was more debuggable.</li>
 <li><strong>Guessed the wrong golden document</strong> (Hays Aug-3 filing = admin notice); the pipeline found the real July-10 pre-close on its own.</li>
-<li><strong>Blind-integrity leak found &amp; sealed:</strong> Hays&rsquo; RNS publishes company-compiled consensus; extraction first classed it as guidance &mdash; a street number sat in the blind context. Now typed <code>consensus_*</code>, routed only to the reconciler (and it became our best consensus source).</li>
-<li><strong>Silent self-muting:</strong> with a 2-point series, &sigma;=None zeroed all judgment without a trace. Fixed + a sweep found four sibling bugs (tiny-n caps, overconfidence reward, unlogged scout tokens, uncached digest).</li>
-<li><strong>Fixed bands rejected true values:</strong> the 0.5&ndash;2&times;-median gate called Hays&rsquo; genuine EPS collapse a &ldquo;unit error&rdquo;; bands now derive from the series&rsquo; own YoY ratios.</li>
+<li><strong>Blind-integrity leak found &amp; sealed:</strong> Hays&rsquo; RNS publishes company-compiled consensus; extraction first classed it as guidance &mdash; a street number sat in the blind context. Now typed <code>consensus_*</code>, reconciler-only (and it became our best consensus source).</li>
+<li><strong>Silent self-muting:</strong> a 2-point series made &sigma;=None and zeroed all judgment without a trace. Fixed + a sweep found four sibling bugs.</li>
+<li><strong>Fixed validation bands rejected true values</strong> (Hays&rsquo; genuine EPS collapse read as a &ldquo;unit error&rdquo;); bands now derive from the series&rsquo; own volatility.</li>
+<li><strong>Metrics were estimated in isolation</strong> &mdash; one run forecast flat profit but collapsing EPS for the same company. Fix in progress: company-level estimation (the model sees all three metrics together) + a deterministic profit&harr;EPS coherence gate.</li>
 </ul>
 </div></details>
 
 <details><summary>Known weaknesses (unresolved, disclosed)</summary><div class="body">
 <ul>
-<li><strong>Blindness controls the context, not the model&rsquo;s pretrained priors</strong> &mdash; famous tickers carry consensus-shaped memory. Anonymization was rejected (costs peer knowledge); we disclose instead.</li>
-<li><strong>Run-to-run estimator variance is real</strong> (~12% swing observed on one metric between identical runs). Self-consistency sampling is designed but deferred &mdash; our most acknowledged gap if unshipped.</li>
-<li><strong>Vibe &sigma;-multiples are declared, not fully calibrated</strong> (time-travel calibration designed, may not ship); caps + citations-or-zero are the defence.</li>
-<li><strong>Sparse annual histories</strong> (Hays) leave some backtests at n=1&ndash;3; we floor error scales rather than trust tiny samples.</li>
+<li><strong>Blindness controls the context, not the model&rsquo;s pretrained priors</strong> &mdash; famous tickers carry consensus-shaped memory; anonymization was rejected (costs peer knowledge); we disclose instead.</li>
+<li><strong>Run-to-run estimator variance is real</strong> (~12% swing observed on one metric). Mitigation in progress: a small cross-provider model panel with deterministic aggregation &mdash; disagreement between models widens uncertainty and shrinks their influence.</li>
+<li><strong>Vibe &sigma;-multiples are declared, not fully calibrated</strong>; caps + citations-or-zero are the defence.</li>
+<li><strong>Sparse annual histories</strong> leave some backtests at n=1&ndash;3; we floor error scales rather than trust tiny samples.</li>
 <li><strong>yfinance consensus mapping is the least-verified seam</strong>; corpus-published consensus + magnitude gates reduce, not eliminate, the risk.</li>
 </ul>
 </div></details>
 
 <details><summary>Reproduce it</summary><div class="body">
 <ul>
-<li><code>uv sync</code> rebuilds the exact env (Python 3.13, lockfile committed); keys/models via <code>.env</code> (<code>MODEL_BIG</code>/<code>MODEL_SMALL</code>, OpenRouter or OpenAI).</li>
+<li><code>uv sync</code> rebuilds the env (Python 3.13, lockfile committed); keys/models via <code>.env</code>.</li>
 <li>Prepare (re-runnable, parallel): <code>uv run python -m pipeline.run --prepare --all [--refresh]</code></li>
-<li><strong>Final command:</strong> <code>uv run python -m pipeline.run --forecast --all</code> &rarr; 4 workbooks + <code>logs/run-&lt;ts&gt;/{events.jsonl, report.json, report.html}</code>, ending with the contest submission check.</li>
-<li>Cost: dev iteration on DeepSeek (~$0.11/company run); final on GPT-5.6 Sol (estimate/reconcile) + Luna (extraction/research), ~$5&ndash;6 per full run against the $50 budget. Every call&rsquo;s tokens, cache hits included, are in the run log.</li>
+<li><strong>Final command:</strong> <code>uv run python -m pipeline.run --forecast --all</code> &rarr; 4 workbooks + <code>logs/run-&lt;ts&gt;/{events.jsonl, report.json, report.html}</code> + the contest submission check.</li>
+<li>Cost: dev on DeepSeek (~$0.06/company run, billed cost logged per call); final on GPT-5.6 Sol + Luna, ~$5&ndash;8 per full run against the $50 budget.</li>
 </ul>
 </div></details>
 
-<p style="color:var(--muted); font-size:.85rem; margin-top:1.6rem">This page describes the system at the final commit recorded in
-the entry; the run report it references is produced by that same code at run time. The repository history (40+ granular commits
-today) is the evidence trail.</p>
+<p style="color:var(--muted); font-size:.85rem; margin-top:1.5rem">This page describes the system at the final commit recorded in
+the entry; the run report it references is produced by that same code at run time. The repository history (50+ granular commits today)
+is the evidence trail.</p>
 
 </main>
 </body>
