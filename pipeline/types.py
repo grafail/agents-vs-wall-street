@@ -118,7 +118,10 @@ class Fact(BaseModel):
     raw_unit: str                     # e.g. "USD_billions"
     quote: str                        # the source line; extraction must string-match raw value inside it
     source: SourceRef
-    fact_type: Literal["actual", "guidance_low", "guidance_mid", "guidance_high"] = "actual"
+    fact_type: Literal["actual", "guidance_low", "guidance_mid", "guidance_high",
+                       "consensus_low", "consensus_mid", "consensus_high"] = "actual"
+    # consensus_* = figures a document attributes to analyst/market/compiled consensus.
+    # These are NEVER shown to the blind estimator; they feed the reconciler.
 
 # ---------------------------------------------------------------- LLM judgment outputs
 

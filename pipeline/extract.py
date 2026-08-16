@@ -56,7 +56,8 @@ class ParsedFact(BaseModel):
     """What the small model returns per figure found in an excerpt."""
     excerpt_index: int
     period: str                       # canonical: FY2025, FY2025Q2, FY2025H1
-    fact_type: Literal["actual", "guidance_low", "guidance_mid", "guidance_high"]
+    fact_type: Literal["actual", "guidance_low", "guidance_mid", "guidance_high",
+                       "consensus_low", "consensus_mid", "consensus_high"]
     value_as_written: str             # verbatim, must appear in `quote`
     raw_unit: RawUnit
     quote: str                        # verbatim source line/fragment from the excerpt
@@ -386,6 +387,11 @@ actuals and company guidance. Rules:
 - fact_type: "actual" for reported results. Guidance/outlook figures:
   "guidance_mid" for a point/approximate value, "guidance_low"/"guidance_high"
   for explicit range endpoints (each endpoint must appear verbatim).
+  Figures the document attributes to ANALYST/MARKET/COMPILED CONSENSUS (e.g.
+  "company compiled consensus is £43.5m", "consensus range £37.0-46.0m") are
+  "consensus_mid" / "consensus_low" / "consensus_high" — NOT guidance. The
+  company's own expectation stated relative to consensus ("at the top of the
+  consensus range") remains guidance, valued at the level it points to.
   For "X, +/- Y" ranges: emit guidance_mid with spread_as_written = Y and
   spread_raw_unit = Y's own unit (mid may be billions while the spread is millions).
   For growth-style guidance ("sales growth of approximately 2.8%",

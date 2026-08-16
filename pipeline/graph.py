@@ -72,6 +72,32 @@ def _guidance_facts(facts: list[ExtractedFact], label: str) -> list[ExtractedFac
     return [f for f in facts if f.metric_label == label and f.fact_type.startswith("guidance")]
 
 
+def _consensus_facts(facts: list[ExtractedFact], label: str) -> list[ExtractedFact]:
+    return [f for f in facts if f.metric_label == label and f.fact_type.startswith("consensus")]
+
+
+_CONSENSUS_QUOTE = ("consensus", "analyst estimate", "analysts' estimate", "market expectation")
+
+
+def _reclassify_consensus(facts: list[ExtractedFact]) -> list[ExtractedFact]:
+    """Blind-integrity guard for artifacts extracted before consensus fact types
+    existed: guidance facts whose quote attributes the figure to consensus are
+    reclassified consensus_* so they never reach the blind estimator. A company
+    expectation stated RELATIVE to consensus ('at the top of the consensus
+    range') stays guidance only when the quote also carries expectation wording."""
+    out = []
+    for f in facts:
+        if f.fact_type.startswith("guidance"):
+            q = f.quote.lower()
+            if any(k in q for k in _CONSENSUS_QUOTE) and not any(
+                    w in q for w in ("we expect", "we currently expect", "company expects",
+                                     "expected to be", "guidance")):
+                f = f.model_copy(update={
+                    "fact_type": f.fact_type.replace("guidance", "consensus")})
+        out.append(f)
+    return out
+
+
 # ================================================================ nodes
 
 def node_load(state: CompanyState) -> dict:
@@ -83,8 +109,10 @@ def node_load(state: CompanyState) -> dict:
             log.event("load_facts_missing", ticker=ticker, action="extracting now")
         extract_company(ticker, log=log)
         facts = load_facts(ticker)
+    facts = _reclassify_consensus(facts)
     if log:
-        log.event("load_facts", ticker=ticker, n=len(facts))
+        n_cons = sum(1 for f in facts if f.fact_type.startswith("consensus"))
+        log.event("load_facts", ticker=ticker, n=len(facts), consensus_facts=n_cons)
     return {"facts": facts, "metrics": {}, "errors": state.get("errors", [])}
 
 
@@ -297,10 +325,34 @@ def node_consensus(state: CompanyState) -> dict:
         if log:
             log.event("consensus_skipped", ticker=ticker, reason="ENABLE_RECONCILE=false")
         return {}
+    facts = state.get("facts", [])
     data, hit = tools.get_market_data(YF_TICKER.get(ticker, ticker), "estimates", log=log)
     est_data = (data or {}).get("data") if isinstance(data, dict) else None
     for spec in _specs(ticker):
         blob = metrics.get(spec.label, {})
+
+        # Corpus-published compiled consensus first (tier 1, exact metric basis —
+        # e.g. Hays RNS: "company compiled consensus ... is £43.5m"). Beats any
+        # aggregator mapping when present for the target period.
+        cfacts = [f for f in _consensus_facts(facts, spec.label) if f.period == spec.period]
+        mids = [f for f in cfacts if f.fact_type == "consensus_mid"]
+        lows = [f for f in cfacts if f.fact_type == "consensus_low"]
+        highs = [f for f in cfacts if f.fact_type == "consensus_high"]
+        corpus_val, corpus_src = None, None
+        if mids:
+            corpus_val = mids[-1].value
+            corpus_src = f"corpus compiled consensus [{mids[-1].source.doc_id}]"
+        elif lows and highs:
+            corpus_val = (lows[-1].value + highs[-1].value) / 2.0
+            corpus_src = f"corpus consensus range midpoint [{lows[-1].source.doc_id}]"
+        if corpus_val is not None:
+            blob["consensus"] = {"value": corpus_val, "source": corpus_src}
+            metrics[spec.label] = blob
+            if log:
+                log.event("consensus_from_corpus", ticker=ticker, metric=spec.label,
+                          value=corpus_val, source=corpus_src)
+            continue
+
         if not isinstance(est_data, dict):
             blob["consensus"] = {"value": None, "source": "yfinance estimates unavailable"}
             metrics[spec.label] = blob
