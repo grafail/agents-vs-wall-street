@@ -83,14 +83,6 @@ method. The worksheet is also how we debug.</p>
 </table>
 
 
-<h2>Tech stack</h2>
-<table class="rules">
-<tr><td>Data: history</td><td>The supplied frozen corpus: 1,139 SEC filings, UK regulatory announcements, earnings-call transcripts and investor slides across the four companies.</td></tr>
-<tr><td>Data: live</td><td>Web and news search (DuckDuckGo), Yahoo Finance market data, company investor-relations pages, official statistics releases. Wall Street expectations: company-published figures first, Yahoo Finance as backup.</td></tr>
-<tr><td>AI models</td><td>Set in configuration, mixable per job: a cheap model reads and researches, a panel of one or more models forecasts (this run: Qwen + MiniMax via OpenRouter), a strong model does the Wall Street check.</td></tr>
-<tr><td>Pipeline</td><td>Python 3.13, LangGraph for the flow, pydantic for every data shape, one command end to end. 176 automated tests.</td></tr>
-<tr><td>Own tooling</td><td>Cached search/fetch/market tools, the extraction funnel with its quote-match check, the backtester, the audit-report renderer, and the diagram generator that draws this page's picture from the code.</td></tr>
-</table>
 <h2>Where to look, per judging question</h2>
 <table class="rubric">
 <tr><td>Forecasting approach</td><td>Start from last year's real number, apply the statistical method that proved best on this company's own past, let the AI adjust a little (with sources), then face Wall Street's number.</td></tr>
@@ -120,6 +112,15 @@ method. The worksheet is also how we debug.</p>
 <li>The free market-data feed we compare against is the part we trust least.</li>
 </ul></div>
 </div>
+
+<h2>Tech stack</h2>
+<table class="rules">
+<tr><td>Data: history</td><td>The supplied frozen corpus: 1,139 SEC filings, UK regulatory announcements, earnings-call transcripts and investor slides across the four companies.</td></tr>
+<tr><td>Data: live</td><td>Web and news search (DuckDuckGo), Yahoo Finance market data, company investor-relations pages, official statistics releases. Wall Street expectations: company-published figures first, Yahoo Finance as backup.</td></tr>
+<tr><td>AI models</td><td>Set in configuration, mixable per job: a cheap model reads and researches, a panel of one or more models forecasts (this run: Qwen + MiniMax via OpenRouter), a strong model does the Wall Street check.</td></tr>
+<tr><td>Pipeline</td><td>Python 3.13, LangGraph for the flow, pydantic for every data shape, one command end to end. 176 automated tests.</td></tr>
+<tr><td>Own tooling</td><td>Cached search/fetch/market tools, the extraction funnel with its quote-match check, the backtester, the audit-report renderer, and the diagram generator that draws this page's picture from the code.</td></tr>
+</table>
 
 <div class="repro"><strong>To reproduce:</strong> <code>uv sync</code> &middot; keys in <code>.env</code> &middot;
 prepare: <code>uv run python -m pipeline.run --prepare --all</code> &middot;
