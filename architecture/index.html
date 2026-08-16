@@ -208,20 +208,6 @@ Adding a fifth company means: a row here, a one-line type tag per metric, and a 
 </div></details>
 
 
-<h2>How every number is made: the worksheet</h2>
-<p style="font-size:.92rem">This five-step recipe is the heart of the system. All 12 submitted figures are built this way,
-and the run report shows the filled-in worksheet for each one:</p>
-<pre>[D]  anchor      start from what the company actually reported last time   (quoted from the filing)
-[M]  baseline    apply a simple statistical forecast                        (the method that proved best on this company's past)
-[L]  judgment    let the AI adjust it, within its measured limit            (every opinion needs a source, or it counts for nothing)
-[M]  check       compare with Wall Street: justify the gap, or move closer  (the only step where Wall Street's number is allowed in)
-[M]  ship        run the safety checks, then write the cell                 (if any step failed, the next backup takes over, flagged)</pre>
-<p style="font-size:.88rem;color:var(--muted)">[D] data &middot; [M] math &middot; [L] the AI's judgment. In one live run the AI pushed a
-forecast below zero; the safety checks refused it, a flagged backup shipped instead, and reading that worksheet led us to a better
-method. The worksheet is also how we debug.</p>
-
-
-
 <h2>Where to look, per judging question</h2>
 <table class="rubric">
 <tr><td>Forecasting approach</td><td>Start from last year's real number, apply the statistical method that proved best on this company's own past, let the AI adjust a little (with sources), then face Wall Street's number.</td></tr>
