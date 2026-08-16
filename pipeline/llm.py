@@ -50,6 +50,18 @@ def complete_text(size: str, messages: list[dict], **kwargs: Any) -> tuple[str, 
     return resp.choices[0].message.content or "", _usage_dict(resp)
 
 
+def chat_model(size: str, **kwargs: Any):
+    """Provider-specific LangChain chat model for LangGraph nodes, selected by
+    LLM_PROVIDER: ChatOpenRouter for openrouter, ChatOpenAI for openai.
+    `size` is "big" | "small" (env-configured model IDs)."""
+    s = settings()
+    if s.llm_provider == "openrouter":
+        from langchain_openrouter import ChatOpenRouter
+        return ChatOpenRouter(model=model_id(size), api_key=s.openrouter_api_key, **kwargs)
+    from langchain_openai import ChatOpenAI
+    return ChatOpenAI(model=model_id(size), api_key=s.openai_api_key, **kwargs)
+
+
 def _usage_dict(resp: Any) -> dict:
     u = resp.usage
     cached = 0

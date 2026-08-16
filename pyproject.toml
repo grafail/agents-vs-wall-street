@@ -5,6 +5,7 @@ requires-python = ">=3.13"
 dependencies = [
     "ddgs>=9.15.0",
     "langchain-openai>=1.5.1",
+    "langchain-openrouter>=0.2.8",
     "langgraph>=1.2.11",
     "openai>=3.1.0",
     "openpyxl>=3.1.5",
