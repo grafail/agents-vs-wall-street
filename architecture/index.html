@@ -29,6 +29,10 @@
   .cols > div { flex:1 1 320px; }
   .cols h3 { font-family:Georgia,serif; font-size:1rem; color:var(--accent); margin:.4rem 0 .2rem; }
   .cols ul { font-size:.9rem; }
+  details { border:1px solid var(--hair); border-radius:6px; background:#fff; }
+  details summary { cursor:pointer; padding:.5rem .9rem; font-weight:600; color:var(--accent); }
+  details[open] summary { border-bottom:1px solid var(--hair); }
+  details .body { padding:.5rem 1rem .7rem; }
   .repro { background:#f2f4f7; border-radius:6px; padding:.6rem .9rem; font-size:.9rem; margin-top:1.4rem; }
 </style>
 </head>
@@ -60,6 +64,99 @@ everything before a number reaches the spreadsheet.
 <tr><td>Rich data, clearly sourced</td><td>Historical numbers come from the official record: the supplied corpus of 1,139 SEC filings, UK regulatory announcements, earnings-call transcripts and investor slides. Fresh context comes live from web and news search (DuckDuckGo), Yahoo Finance market data, company investor-relations pages and official statistics releases. Wall Street expectations come from figures the companies themselves publish, then Yahoo Finance as backup. Every fact keeps its exact quote, source and a trust level that settles conflicts.</td></tr>
 <tr><td>It fails safely</td><td>An empty cell scores worst possible, so there is a ladder of backups. Something sensible always ships, and anything unusual is loudly flagged for review.</td></tr>
 </table>
+<details style="margin:.7rem 0 0"><summary>The four companies are just rows in a config file (click to see)</summary>
+<div class="body">
+<p style="font-size:.9rem">The pipeline loops over whatever this file contains; no company names live in the code.
+Adding a fifth company means: a row here, a one-line type tag per metric, and a source of filings
+(the contest supplied ours pre-frozen). Everything else, from extraction to the final report, works unchanged.</p>
+<pre style="max-height:340px; overflow:auto"><code>{
+  &quot;challenge&quot;: &quot;Agents vs Wall Street&quot;,
+  &quot;outputFormat&quot;: &quot;xlsx&quot;,
+  &quot;companies&quot;: [
+    {
+      &quot;company&quot;: &quot;Home Depot&quot;,
+      &quot;ticker&quot;: &quot;HD&quot;,
+      &quot;period&quot;: &quot;FY2026Q2&quot;,
+      &quot;outputFile&quot;: &quot;HD-FY2026Q2.xlsx&quot;,
+      &quot;metrics&quot;: [
+        {
+          &quot;label&quot;: &quot;Net sales&quot;,
+          &quot;units&quot;: &quot;USDm&quot;
+        },
+        {
+          &quot;label&quot;: &quot;Adjusted diluted EPS&quot;,
+          &quot;units&quot;: &quot;USD / share&quot;
+        },
+        {
+          &quot;label&quot;: &quot;Comparable sales, total company&quot;,
+          &quot;units&quot;: &quot;%&quot;
+        }
+      ]
+    },
+    {
+      &quot;company&quot;: &quot;Analog Devices&quot;,
+      &quot;ticker&quot;: &quot;ADI&quot;,
+      &quot;period&quot;: &quot;FY2026Q3&quot;,
+      &quot;outputFile&quot;: &quot;ADI-FY2026Q3.xlsx&quot;,
+      &quot;metrics&quot;: [
+        {
+          &quot;label&quot;: &quot;Revenue&quot;,
+          &quot;units&quot;: &quot;USDm&quot;
+        },
+        {
+          &quot;label&quot;: &quot;Adjusted diluted EPS&quot;,
+          &quot;units&quot;: &quot;USD / share&quot;
+        },
+        {
+          &quot;label&quot;: &quot;Adjusted gross margin&quot;,
+          &quot;units&quot;: &quot;%&quot;
+        }
+      ]
+    },
+    {
+      &quot;company&quot;: &quot;Hays plc&quot;,
+      &quot;ticker&quot;: &quot;LSE:HAS&quot;,
+      &quot;period&quot;: &quot;FY2026&quot;,
+      &quot;outputFile&quot;: &quot;HAS-FY2026.xlsx&quot;,
+      &quot;metrics&quot;: [
+        {
+          &quot;label&quot;: &quot;Net fees&quot;,
+          &quot;units&quot;: &quot;GBPm&quot;
+        },
+        {
+          &quot;label&quot;: &quot;Pre-exceptional basic EPS&quot;,
+          &quot;units&quot;: &quot;GBp&quot;
+        },
+        {
+          &quot;label&quot;: &quot;Pre-exceptional operating profit&quot;,
+          &quot;units&quot;: &quot;GBPm&quot;
+        }
+      ]
+    },
+    {
+      &quot;company&quot;: &quot;Deere &amp; Company&quot;,
+      &quot;ticker&quot;: &quot;DE&quot;,
+      &quot;period&quot;: &quot;FY2026Q3&quot;,
+      &quot;outputFile&quot;: &quot;DE-FY2026Q3.xlsx&quot;,
+      &quot;metrics&quot;: [
+        {
+          &quot;label&quot;: &quot;Worldwide net sales and revenues&quot;,
+          &quot;units&quot;: &quot;USDm&quot;
+        },
+        {
+          &quot;label&quot;: &quot;Diluted EPS (GAAP)&quot;,
+          &quot;units&quot;: &quot;USD / share&quot;
+        },
+        {
+          &quot;label&quot;: &quot;Production &amp; Precision Ag operating profit&quot;,
+          &quot;units&quot;: &quot;USDm&quot;
+        }
+      ]
+    }
+  ]
+}</code></pre>
+</div></details>
+
 
 <h2>How every number is made: the worksheet</h2>
 <p style="font-size:.92rem">This five-step recipe is the heart of the system. All 12 submitted figures are built this way,
