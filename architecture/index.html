@@ -5,33 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Agents of S.T.O.C.K. — Architecture</title>
 <style>
-  :root { --accent:#1f3a5f; --muted:#5a6472; --hair:#d9dde3; --paper:#fdfdfb; }
+  :root { --accent:#1f3a5f; --muted:#5a6472; --hair:#d9dde3; --paper:#fdfdfb; --good:#1f5f38; }
   * { box-sizing:border-box; }
   body { margin:0; background:var(--paper); color:#1c2128; font:16px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; font-variant-numeric:tabular-nums; }
-  main { max-width:840px; margin:0 auto; padding:2.2rem 1.4rem 4rem; }
+  main { max-width:840px; margin:0 auto; padding:2.2rem 1.4rem 3.5rem; }
   h1,h2 { font-family:Georgia,"Times New Roman",serif; color:var(--accent); line-height:1.2; }
   h1 { font-size:2rem; margin:.2rem 0 .2rem; }
-  h2 { font-size:1.25rem; margin:1.8rem 0 .5rem; }
+  h2 { font-size:1.22rem; margin:1.9rem 0 .5rem; }
   p { margin:.5rem 0; }
   .sub { color:var(--muted); margin:0 0 1.1rem; }
   .tldr { border:1.5px solid var(--accent); border-radius:8px; padding:.85rem 1.05rem; margin:.9rem 0; font-size:1.04rem; background:#fff; }
-  .stats { display:flex; flex-wrap:wrap; gap:.5rem 1.5rem; margin:.8rem 0 1rem; padding:.5rem .9rem; background:#f2f4f7; border-radius:6px; font-size:.9rem; }
-  .stats b { color:var(--accent); font-size:1.05rem; }
   table { border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem; }
   td { border-bottom:1px solid var(--hair); padding:.34rem .5rem; vertical-align:top; }
-  .strength td:first-child { white-space:nowrap; font-weight:600; color:#1f5f38; }
-  .rules td:first-child { white-space:nowrap; font-weight:600; color:#2e4a75; }
+  .strength td:first-child, .rules td:first-child, .rubric td:first-child { white-space:nowrap; font-weight:600; color:#2e4a75; }
+  .strength td:first-child { color:var(--good); }
   code { font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:.86em; background:#f1f3f6; padding:.05em .3em; border-radius:3px; }
-  pre { background:#f6f7f9; border:1px solid var(--hair); border-radius:6px; padding:.7rem .9rem; overflow-x:auto; font-size:.8rem; line-height:1.5; margin:.5rem 0; }
-  details { border:1px solid var(--hair); border-radius:6px; background:#fff; margin:.45rem 0; }
-  details summary { cursor:pointer; padding:.55rem .9rem; font-weight:600; color:var(--accent); }
-  details[open] summary { border-bottom:1px solid var(--hair); }
-  details .body { padding:.6rem 1rem .8rem; }
+  pre { background:#f6f7f9; border:1px solid var(--hair); border-radius:6px; padding:.75rem .95rem; overflow-x:auto; font-size:.82rem; line-height:1.62; margin:.5rem 0; }
   figure { margin:.9rem 0 .4rem; }
   figcaption { font-size:.8rem; color:var(--muted); margin-top:.15rem; text-align:center; }
   ul { margin:.35rem 0 .5rem; padding-left:1.25rem; }
-  li { margin:.24rem 0; }
-  .ledger { font-family:ui-monospace,monospace; font-size:.78rem; }
+  li { margin:.22rem 0; }
+  .cols { display:flex; gap:1.6rem; flex-wrap:wrap; }
+  .cols > div { flex:1 1 320px; }
+  .cols h3 { font-family:Georgia,serif; font-size:1rem; color:var(--accent); margin:.4rem 0 .2rem; }
+  .cols ul { font-size:.9rem; }
+  .repro { background:#f2f4f7; border-radius:6px; padding:.6rem .9rem; font-size:.9rem; margin-top:1.4rem; }
 </style>
 </head>
 <body>
@@ -48,8 +46,8 @@ and turned into the final number by plain, testable code. It never writes a figu
 
 <figure>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 172" role="img" aria-label="Concept diagram"><defs><marker id="ca" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5a6472"/></marker></defs><rect x="14" y="46" width="176" height="62" rx="10" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.8"/><text x="102.0" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="#1f3a5f">READ & RESEARCH</text><text x="102.0" y="90" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">load + research</text><text x="102.0" y="124" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">1,139 filings + live tools — every</text><text x="102.0" y="136" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">fact cited & trust-tiered</text><rect x="216" y="46" width="176" height="62" rx="10" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.8"/><text x="304.0" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="#ffffff">BLIND ESTIMATE</text><text x="304.0" y="90" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#b8c4d8">estimate</text><text x="304.0" y="124" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">LLM judgment, capped at 0.75×</text><text x="304.0" y="136" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">backtested error</text><rect x="418" y="46" width="176" height="62" rx="10" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.8"/><text x="506.0" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="#ffffff">STREET CHECK</text><text x="506.0" y="90" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#b8c4d8">consensus + reconcile</text><text x="506.0" y="124" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">defend the gap vs consensus, or</text><text x="506.0" y="136" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">revise (config-gated)</text><rect x="620" y="46" width="176" height="62" rx="10" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.8"/><text x="708.0" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="#1f3a5f">VERIFY & SHIP</text><text x="708.0" y="90" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">finalize + write</text><text x="708.0" y="124" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">unit gates · never-blank ladder ·</text><text x="708.0" y="136" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">full audit trail</text><line x1="190" y1="77.0" x2="208" y2="77.0" stroke="#5a6472" stroke-width="1.6" marker-end="url(#ca)"/><line x1="392" y1="77.0" x2="410" y2="77.0" stroke="#5a6472" stroke-width="1.6" marker-end="url(#ca)"/><line x1="594" y1="77.0" x2="612" y2="77.0" stroke="#5a6472" stroke-width="1.6" marker-end="url(#ca)"/><line x1="405.0" y1="24" x2="405.0" y2="114" stroke="#8a2626" stroke-width="1.4" stroke-dasharray="5 4"/><text x="405.0" y="18" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#8a2626">consensus firewall — the street number cannot reach the estimator</text></svg>
-<figcaption>The four phases. Dark = the agent decides; light = code decides. The diagram is generated
-from the pipeline&rsquo;s own compiled graph, so it always matches the real system.</figcaption>
+<figcaption>Dark = the agent decides; light = code decides. Generated from the pipeline&rsquo;s own compiled graph,
+so it always matches the real system.</figcaption>
 </figure>
 
 <h2>What makes this architecture strong</h2>
@@ -57,127 +55,68 @@ from the pipeline&rsquo;s own compiled graph, so it always matches the real syst
 <tr><td>The agent does the hard work</td><td>reads a 1,139-document corpus, plans its own web research, weighs the evidence &mdash; a person runs one command and reviews the result.</td></tr>
 <tr><td>Every number is explained</td><td>each figure ships as a worksheet: which line is data, which is math, which is model judgment &mdash; with citations. Nothing is just asserted.</td></tr>
 <tr><td>Judgment on a leash</td><td>the model may move a number by at most 0.75&times; the error its statistics historically make. Trust is measured, not assumed.</td></tr>
-<tr><td>Cost-efficient &amp; rerunnable</td><td>caching at every layer; ~$0.06 per company in development, ~$5&ndash;8 for a full premium run &mdash; so it can be run again and again all day.</td></tr>
-<tr><td>Flexible across models</td><td>models are configuration, not code &mdash; and it can ask several models at once (a cross-provider panel): where they disagree, the system automatically trusts them less.</td></tr>
+<tr><td>Cost-efficient &amp; rerunnable</td><td>caching at every layer; cents per company in development, a few dollars for a full premium run &mdash; so it can be rerun all day.</td></tr>
+<tr><td>Flexible across models</td><td>models are configuration, not code &mdash; it can ask several models at once (a cross-provider panel): where they disagree, the system automatically trusts them less.</td></tr>
 <tr><td>Rich, trusted data</td><td>frozen filings corpus + live news/market/web tools; every fact carries its source, date and a trust tier that decides conflicts.</td></tr>
 <tr><td>Fails safe</td><td>a blank cell scores worst-possible, so a fallback ladder guarantees a sane number even when stages fail &mdash; loudly flagged, never silent.</td></tr>
 </table>
 
-<h2>One real number, end to end</h2>
-<pre class="ledger">Hays pre-exceptional EPS (FY2026)                      [D]ata [M]ath [L]LM judgment
-[D]  anchor &mdash; FY2025 actual                 1.31p   (9.22 &rarr; 4.03 &rarr; 1.31 collapse)
-[M]  baseline h1_ratio &starf;                    0.76p   = H1 actual 0.46p &divide; mean H1:FY ratio 0.605
-     &#8627; picked by rehearsing every method on the past: this one missed by 0.67p on average, the next best by 6.9p
-[L]  judgment: cited quantiles + &ldquo;vibes&rdquo;, shrunk by the model&rsquo;s own uncertainty, capped
-[M]  final &rarr; workbook cell</pre>
-<p style="font-size:.9rem">In the first run, the model extrapolated that collapse into <em>negative</em> EPS &mdash; the safety gates refused,
-a flagged fallback shipped instead, and reading that report led to the better method above. The audit trail is also our debugger.</p>
+<h2>How every number is assembled &mdash; the worksheet</h2>
+<p style="font-size:.92rem">This five-row recipe is the system&rsquo;s core contribution. Every one of the 12 submitted
+figures is built exactly this way, and the run report shows the filled-in version of this worksheet for each:</p>
+<pre>[D]  anchor      what the company actually reported last time     &larr; quoted from the filing
+[M]  baseline    a statistical starting forecast                  &larr; the method that rehearsed best on this metric's own past
+[L]  judgment    the AI&rsquo;s adjustment &mdash; cited, self-shrunk, capped  &larr; at most 0.75&times; the baseline&rsquo;s measured error
+[M]  check       compared to Wall Street: defend the gap or blend &larr; the only place consensus is allowed in
+[M]  ship        sanity gates pass &rarr; the cell; a rung fails &rarr; the next rung takes over, flagged</pre>
+<p style="font-size:.88rem;color:var(--muted)">[D] data &middot; [M] deterministic math &middot; [L] model judgment. In one live run the model pushed a metric negative;
+the gates refused, a flagged fallback shipped, and that report led us to a better statistical method &mdash; the worksheet is also our debugger.</p>
 
 <h2>Main choices, one line each</h2>
 <table class="rules">
-<tr><td>Fixed pipeline, agentic inside</td><td>the agent has freedom exactly where judgment lives (research, estimate, reconcile) and none where correctness lives (math, units, output).</td></tr>
-<tr><td>Blind, then reconcile</td><td>the estimator never sees Wall Street&rsquo;s number; a separate step then makes it defend any gap with evidence, or revise.</td></tr>
-<tr><td>Backtest before trust</td><td>every statistical method is rehearsed on the company&rsquo;s own history first; the winner&rsquo;s measured error sets the agent&rsquo;s influence budget.</td></tr>
-<tr><td>Two-stage day</td><td>research and extraction are prepared and cached in advance; the final run is fast and independent of venue wi-fi.</td></tr>
-<tr><td>Small model for volume, big for judgment</td><td>extraction and research run on a cheap model; only estimation and reconciliation use the expensive one.</td></tr>
+<tr><td>Fixed pipeline, agentic inside</td><td>freedom exactly where judgment lives (research, estimate, reconcile); none where correctness lives (math, units, output).</td></tr>
+<tr><td>Blind, then reconcile</td><td>the estimator never sees Wall Street&rsquo;s number; a separate step makes it defend any gap with evidence, or revise.</td></tr>
+<tr><td>Backtest before trust</td><td>every statistical method is rehearsed on the company&rsquo;s own history first; the winner&rsquo;s error sets the AI&rsquo;s influence budget.</td></tr>
+<tr><td>Company-level estimation</td><td>one blind call sees all of a company&rsquo;s metrics together, so profit and EPS can&rsquo;t drift apart.</td></tr>
+<tr><td>Two-stage day</td><td>research and extraction are prepared and cached in advance; the final run is fast and wi-fi-proof.</td></tr>
 </table>
 
-<h2>Under the hood <span style="font-size:.8rem;color:var(--muted);font-family:sans-serif">(optional &mdash; click anything)</span></h2>
-
-<details><summary>Code: the cap that limits the model&rsquo;s influence</summary><div class="body">
-<pre><code># nudges.py — the model's total adjustment can never exceed
-# 0.75x the error its chosen statistical method makes historically
-cap = 0.75 * backtest_mae
-adjustment = max(-cap, min(cap, raw_adjustment))</code></pre>
-<p style="font-size:.88rem">And an uncited opinion counts for nothing:</p>
-<pre><code># a categorical "vibe" with no citations contributes exactly zero
-if not grounded.citations:
-    return {"label": label, "value": 0.0, "source": "empty_citations_zeroed"}</code></pre>
-</div></details>
-
-<details><summary>Code: what the model is allowed to say</summary><div class="body">
-<pre><code>class Grounded(BaseModel):      # explanation FIRST — reason, then classify
-    explanation: str
-    label: Literal["cold","cooling","neutral","warming","hot"]
-    citations: list[str]
-
-class Estimate(BaseModel):      # no absolute numbers anywhere in here
-    growth_p10: float; growth_p50: float; growth_p90: float
-    momentum: Grounded
-    guidance_style: Grounded
-    surprise_skew: Grounded</code></pre>
-<p style="font-size:.88rem">The model&rsquo;s entire output is bounded deltas and labeled opinions &mdash; code does the rest.</p>
-</div></details>
-
-<details><summary>Code: the never-blank fallback ladder</summary><div class="body">
-<pre><code># finalize — ordered candidates; first one that passes all gates ships
-candidates = [estimator_nudged, best_baseline, guidance_mid,
-              consensus, anchor_last_year]
-value, source, reasons = resolve_final_value(candidates, spec, history)
-# every skipped rung is logged with the gate that refused it</code></pre>
-</div></details>
-
-<details><summary>The exact compiled graph (7 nodes)</summary><div class="body">
-<figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 208" role="img" aria-label="Pipeline diagram"><defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5a6472"/></marker></defs><rect x="18" y="28" width="148" height="44" rx="8" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.6"/><text x="92.0" y="48" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#1f3a5f">load</text><rect x="228" y="28" width="148" height="44" rx="8" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.6"/><text x="302.0" y="48" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#ffffff">research</text><text x="302.0" y="63" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#b8c4d8">agent</text><text x="302.0" y="86" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#5a6472">cached tools</text><rect x="438" y="28" width="148" height="44" rx="8" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.6"/><text x="512.0" y="48" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#ffffff">estimate</text><text x="512.0" y="63" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#b8c4d8">agent</text><text x="512.0" y="86" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#5a6472">blind — no consensus</text><rect x="648" y="28" width="148" height="44" rx="8" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.6"/><text x="722.0" y="48" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#1f3a5f">consensus</text><rect x="438" y="124" width="148" height="44" rx="8" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.6"/><text x="512.0" y="144" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#ffffff">reconcile</text><text x="512.0" y="159" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#b8c4d8">agent</text><text x="512.0" y="182" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#5a6472">config-gated</text><rect x="228" y="124" width="148" height="44" rx="8" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.6"/><text x="302.0" y="144" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#1f3a5f">finalize</text><text x="302.0" y="182" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#5a6472">gates + fallback ladder</text><rect x="18" y="124" width="148" height="44" rx="8" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.6"/><text x="92.0" y="144" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#1f3a5f">write</text><line x1="166" y1="50.0" x2="221" y2="50.0" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/><line x1="376" y1="50.0" x2="431" y2="50.0" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/><line x1="586" y1="50.0" x2="641" y2="50.0" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/><line x1="722.0" y1="72" x2="722.0" y2="117" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/><line x1="438" y1="146.0" x2="383" y2="146.0" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/><line x1="228" y1="146.0" x2="173" y2="146.0" stroke="#5a6472" stroke-width="1.4" marker-end="url(#arr)"/></svg>
-<figcaption>Node sequence read from the compiled graph&rsquo;s edge list. Row two flows right to left.</figcaption></figure>
-<table class="rules">
-<tr><td>load</td><td>cited facts from committed extraction artifacts</td></tr>
-<tr><td>research</td><td><em>agent:</em> picks its own searches via cached tools &rarr; cited digest</td></tr>
-<tr><td>estimate</td><td><em>agent, blind:</em> one call per company &mdash; sees all its metrics together for coherence</td></tr>
-<tr><td>consensus</td><td>street number: corpus-published first, else gated yfinance</td></tr>
-<tr><td>reconcile</td><td><em>agent, gated:</em> defend the gap vs street or revise</td></tr>
-<tr><td>finalize</td><td>unit/sanity gates + fallback ladder</td></tr>
-<tr><td>write</td><td>fill 3 yellow cells/template, verify, emit the audit report</td></tr>
+<h2>Where to look, per judging question</h2>
+<table class="rubric">
+<tr><td>Forecasting approach</td><td>the worksheet above: anchor &rarr; backtested baseline &rarr; capped judgment &rarr; street check &mdash; reasoning, not a number from a prompt.</td></tr>
+<tr><td>Model quality</td><td>open any metric in the run report: the full derivation with substituted values, provenance-tagged per term, citations expandable.</td></tr>
+<tr><td>Data approach</td><td>committed extraction artifacts (value + verbatim quote + source + trust tier), live tools cached with fetch times, restatement-aware history.</td></tr>
+<tr><td>Validation &amp; reliability</td><td>unit/magnitude/sign gates on every candidate, the fallback ladder, per-metric failure containment, 176 tests, pre-upload checklist in the report.</td></tr>
+<tr><td>Agent harness</td><td>one command; LangGraph pipeline whose diagram is generated from the compiled graph; timestamped events log of every tool and model call.</td></tr>
+<tr><td>Tooling &amp; ergonomics</td><td>cached research tool belt, extraction funnel with hallucination gate, backtester, audit-report renderer, diagram generator.</td></tr>
 </table>
-</div></details>
 
-<details><summary>Data &amp; trust</summary><div class="body">
+<h2>Honest notes</h2>
+<div class="cols">
+<div><h3>Tried, changed, got wrong</h3>
 <ul>
-<li>Search narrows the corpus &rarr; small model parses excerpts &rarr; fact rejected unless its value appears verbatim in its own quote.</li>
-<li>Facts carry source, date, trust tier (filings &gt; IR &gt; aggregators &gt; news). Higher tier wins; newer wins within a tier (restatements supersede).</li>
-<li>Unambiguous unit slips auto-corrected with an audit flag; ambiguous ones flagged, never guessed.</li>
-</ul>
-</div></details>
-
-<details><summary>Validation &amp; reliability</summary><div class="body">
-<ul>
-<li>Gates: history-adaptive magnitude bands, sign-flip check, pence/percent traps, guidance sanity &mdash; all logged.</li>
-<li>Failures degrade, never crash: metric &rarr; fallback ladder; company failures isolated; calls retried.</li>
-<li>176 tests on the deterministic layers; LLM/network mocked; templates sha-asserted untouched.</li>
-</ul>
-</div></details>
-
-<details><summary>What we tried, changed, or got wrong</summary><div class="body">
-<ul>
-<li>OpenBB in, then out same hour &mdash; lean tools won.</li>
-<li>Guessed the wrong &ldquo;golden document&rdquo; for Hays; the pipeline found the real one itself.</li>
-<li>Company-compiled consensus leaked into the blind context as &ldquo;guidance&rdquo; &mdash; sealed, and it became our best consensus source.</li>
-<li>&sigma;=None silently zeroed all judgment; fixing it surfaced four sibling bugs.</li>
-<li>Fixed bands called a real EPS collapse a &ldquo;unit error&rdquo; &mdash; bands now adapt to each series.</li>
-<li>Metrics estimated in isolation produced flat profit + collapsing EPS &mdash; now one company-level call + a coherence gate.</li>
-</ul>
-</div></details>
-
-<details><summary>Known weaknesses</summary><div class="body">
+<li>OpenBB in, then out &mdash; lean tools won.</li>
+<li>Guessed the wrong &ldquo;golden document&rdquo;; the pipeline found the real one itself.</li>
+<li>Published consensus leaked into the blind context as &ldquo;guidance&rdquo; &mdash; sealed, then reused as our best consensus source.</li>
+<li>A sparse series silently zeroed all model judgment; the fix surfaced four sibling bugs.</li>
+<li>Metrics estimated in isolation gave flat profit + collapsing EPS &mdash; hence company-level estimation.</li>
+</ul></div>
+<div><h3>Still weak, knowingly</h3>
 <ul>
 <li>Blindness can&rsquo;t erase pretrained consensus-shaped priors; disclosed, not anonymized.</li>
-<li>Estimator variance between runs (~12% seen once); mitigated by the model panel, not eliminated.</li>
-<li>Vibe &sigma;-multiples declared, not calibrated; caps are the defence.</li>
-<li>Some backtests sit on 1&ndash;3 samples; error scales floored.</li>
-<li>yfinance consensus mapping is the weakest seam.</li>
-</ul>
-</div></details>
+<li>Run-to-run estimator variance; damped by the model panel, not eliminated.</li>
+<li>Vibe mappings declared, not calibrated; the cap is the defence.</li>
+<li>Some backtests rest on 1&ndash;3 samples; error scales are floored.</li>
+<li>The yfinance consensus mapping is the weakest seam.</li>
+</ul></div>
+</div>
 
-<details><summary>Reproduce it</summary><div class="body">
-<ul>
-<li><code>uv sync</code>; keys/models in <code>.env</code>.</li>
-<li>Prepare: <code>uv run python -m pipeline.run --prepare --all</code></li>
-<li>Final: <code>uv run python -m pipeline.run --forecast --all</code> &rarr; 4 workbooks + full run log/report.</li>
-<li>Billed cost logged per call; a full premium run is ~$5&ndash;8 of the $50 budget.</li>
-</ul>
-</div></details>
+<div class="repro"><strong>Reproduce:</strong> <code>uv sync</code> &middot; keys in <code>.env</code> &middot;
+prepare: <code>uv run python -m pipeline.run --prepare --all</code> &middot;
+final: <code>uv run python -m pipeline.run --forecast --all</code> &rarr; 4 workbooks + timestamped events log + audit report.
+Billed cost is logged per model call.</div>
 
-<p style="color:var(--muted); font-size:.85rem; margin-top:1.5rem">This page describes the system at the final commit recorded in the entry;
+<p style="color:var(--muted); font-size:.85rem; margin-top:1.2rem">This page describes the system at the final commit recorded in the entry;
 the run report it references is produced by that same code at run time. The granular repository history is the evidence trail.</p>
 
 </main>
