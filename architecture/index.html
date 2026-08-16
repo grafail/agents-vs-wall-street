@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Agents of S.T.O.C.K.: Architecture</title>
+<title>Agents of S.T.O.C.K. — Architecture</title>
 <style>
   :root { --accent:#1f3a5f; --muted:#5a6472; --hair:#d9dde3; --paper:#fdfdfb; --good:#1f5f38; }
   * { box-sizing:border-box; }
@@ -36,49 +36,51 @@
 <main>
 
 <h1>Agents of S.T.O.C.K.</h1>
-<p class="sub">Blind-then-reconcile earnings forecaster: Agents vs Wall Street, 16 Aug 2026</p>
+<p class="sub">An AI analyst that forecasts company results, and shows its work &middot; Agents vs Wall Street, 16 Aug 2026</p>
 
 <div class="tldr">
-<strong>The idea:</strong> the AI is the analyst, the code is the calculator. The agent reads the filings,
-does its own research and forms a judgment: but every judgment is cited, capped by measured error,
-and turned into the final number by plain, testable code. It never writes a figure itself.
+<strong>The idea:</strong> the AI is the analyst, the code is the calculator. The AI reads the company's
+filings, does its own research, and forms an opinion. But it never writes the final number: plain,
+tested code does the arithmetic, keeps the AI's influence inside a measured limit, and double-checks
+everything before a number reaches the spreadsheet.
 </div>
 
 <figure>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 172" role="img" aria-label="Concept diagram"><defs><marker id="ca" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5a6472"/></marker></defs><rect x="14" y="46" width="176" height="62" rx="10" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.8"/><text x="102.0" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="#1f3a5f">READ & RESEARCH</text><text x="102.0" y="90" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">load + research</text><text x="102.0" y="124" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">1,139 filings + live tools: every</text><text x="102.0" y="136" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">fact cited & trust-tiered</text><rect x="216" y="46" width="176" height="62" rx="10" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.8"/><text x="304.0" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="#ffffff">BLIND ESTIMATE</text><text x="304.0" y="90" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#b8c4d8">estimate</text><text x="304.0" y="124" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">LLM judgment, capped at 0.75×</text><text x="304.0" y="136" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">backtested error</text><rect x="418" y="46" width="176" height="62" rx="10" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.8"/><text x="506.0" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="#ffffff">STREET CHECK</text><text x="506.0" y="90" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#b8c4d8">consensus + reconcile</text><text x="506.0" y="124" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">defend the gap vs consensus, or</text><text x="506.0" y="136" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">revise (config-gated)</text><rect x="620" y="46" width="176" height="62" rx="10" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.8"/><text x="708.0" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="#1f3a5f">VERIFY & SHIP</text><text x="708.0" y="90" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">finalize + write</text><text x="708.0" y="124" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">unit gates · never-blank ladder ·</text><text x="708.0" y="136" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">full audit trail</text><line x1="190" y1="77.0" x2="208" y2="77.0" stroke="#5a6472" stroke-width="1.6" marker-end="url(#ca)"/><line x1="392" y1="77.0" x2="410" y2="77.0" stroke="#5a6472" stroke-width="1.6" marker-end="url(#ca)"/><line x1="594" y1="77.0" x2="612" y2="77.0" stroke="#5a6472" stroke-width="1.6" marker-end="url(#ca)"/><line x1="405.0" y1="24" x2="405.0" y2="114" stroke="#8a2626" stroke-width="1.4" stroke-dasharray="5 4"/><text x="405.0" y="18" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#8a2626">consensus firewall: the street number cannot reach the estimator</text></svg>
-<figcaption>Dark = the agent decides; light = code decides. Generated from the pipeline&rsquo;s own compiled graph,
-so it always matches the real system.</figcaption>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 172" role="img" aria-label="Concept diagram"><defs><marker id="ca" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5a6472"/></marker></defs><rect x="14" y="46" width="176" height="62" rx="10" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.8"/><text x="102.0" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="#1f3a5f">READ & RESEARCH</text><text x="102.0" y="90" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">load + research</text><text x="102.0" y="124" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">1,139 filings + live tools — every</text><text x="102.0" y="136" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">fact cited & trust-tiered</text><rect x="216" y="46" width="176" height="62" rx="10" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.8"/><text x="304.0" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="#ffffff">BLIND ESTIMATE</text><text x="304.0" y="90" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#b8c4d8">estimate</text><text x="304.0" y="124" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">LLM judgment, capped at 0.75×</text><text x="304.0" y="136" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">backtested error</text><rect x="418" y="46" width="176" height="62" rx="10" fill="#1f3a5f" stroke="#1f3a5f" stroke-width="1.8"/><text x="506.0" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="#ffffff">STREET CHECK</text><text x="506.0" y="90" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#b8c4d8">consensus + reconcile</text><text x="506.0" y="124" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">defend the gap vs consensus, or</text><text x="506.0" y="136" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">revise (config-gated)</text><rect x="620" y="46" width="176" height="62" rx="10" fill="#ffffff" stroke="#1f3a5f" stroke-width="1.8"/><text x="708.0" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="14.5" fill="#1f3a5f">VERIFY & SHIP</text><text x="708.0" y="90" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">finalize + write</text><text x="708.0" y="124" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">unit gates · never-blank ladder ·</text><text x="708.0" y="136" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5a6472">full audit trail</text><line x1="190" y1="77.0" x2="208" y2="77.0" stroke="#5a6472" stroke-width="1.6" marker-end="url(#ca)"/><line x1="392" y1="77.0" x2="410" y2="77.0" stroke="#5a6472" stroke-width="1.6" marker-end="url(#ca)"/><line x1="594" y1="77.0" x2="612" y2="77.0" stroke="#5a6472" stroke-width="1.6" marker-end="url(#ca)"/><line x1="405.0" y1="24" x2="405.0" y2="114" stroke="#8a2626" stroke-width="1.4" stroke-dasharray="5 4"/><text x="405.0" y="18" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#8a2626">consensus firewall — the street number cannot reach the estimator</text></svg>
+<figcaption>Dark boxes: the AI decides. Light boxes: code decides. This picture is drawn automatically
+from the program itself, so it always matches the real system.</figcaption>
 </figure>
 
 <h2>What makes this architecture strong</h2>
 <table class="strength">
-<tr><td>The agent does the hard work</td><td>reads a 1,139-document corpus, plans its own web research, weighs the evidence: a person runs one command and reviews the result.</td></tr>
-<tr><td>Every number is explained</td><td>each figure ships as a worksheet: which line is data, which is math, which is model judgment: with citations. Nothing is just asserted.</td></tr>
-<tr><td>Judgment on a leash</td><td>the model may move a number by at most 0.75&times; the error its statistics historically make. Trust is measured, not assumed.</td></tr>
-<tr><td>Cost-efficient &amp; rerunnable</td><td>caching at every layer; cents per company in development, a few dollars for a full premium run: so it can be rerun all day.</td></tr>
-<tr><td>Flexible across models</td><td>models are configuration, not code: it can ask several models at once (a cross-provider panel): where they disagree, the system automatically trusts them less.</td></tr>
-<tr><td>Rich, trusted data</td><td>frozen filings corpus + live news/market/web tools; every fact carries its source, date and a trust tier that decides conflicts.</td></tr>
-<tr><td>Fails safe</td><td>a blank cell scores worst-possible, so a fallback ladder guarantees a sane number even when stages fail: loudly flagged, never silent.</td></tr>
+<tr><td>The AI does the hard work</td><td>It reads 1,139 company documents, plans its own web research and weighs the evidence. A person runs one command and reviews the result.</td></tr>
+<tr><td>Every number is explained</td><td>Each figure comes with a worksheet showing which part is data, which is math, and which is the AI's opinion, with sources for everything.</td></tr>
+<tr><td>The AI is kept on a leash</td><td>Before trusting the AI, the system measures how wrong its own statistics usually are. The AI may only move a number within three quarters of that error.</td></tr>
+<tr><td>Cheap to run, so run it often</td><td>Heavy work is cached and reused. A practice run costs cents, the real run a few dollars, so we could test all day.</td></tr>
+<tr><td>Works with any model</td><td>Which AI models to use is a settings choice, not code. It can even ask several models at once, and when they disagree it automatically trusts them less.</td></tr>
+<tr><td>Rich data, clearly sourced</td><td>Official filings plus live news and market data. Every fact keeps its exact quote, its source, and a trust level that settles conflicts.</td></tr>
+<tr><td>It fails safely</td><td>An empty cell scores worst possible, so there is a ladder of backups. Something sensible always ships, and anything unusual is loudly flagged for review.</td></tr>
 </table>
 
-<h2>How every number is assembled: the worksheet</h2>
-<p style="font-size:.92rem">This five-row recipe is the system&rsquo;s core contribution. Every one of the 12 submitted
-figures is built exactly this way, and the run report shows the filled-in version of this worksheet for each:</p>
-<pre>[D]  anchor      what the company actually reported last time     &larr; quoted from the filing
-[M]  baseline    a statistical starting forecast                  &larr; the method that rehearsed best on this metric's own past
-[L]  judgment    the AI&rsquo;s adjustment: cited, self-shrunk, capped  &larr; at most 0.75&times; the baseline&rsquo;s measured error
-[M]  check       compared to Wall Street: defend the gap or blend &larr; the only place consensus is allowed in
-[M]  ship        sanity gates pass &rarr; the cell; a rung fails &rarr; the next rung takes over, flagged</pre>
-<p style="font-size:.88rem;color:var(--muted)">[D] data &middot; [M] deterministic math &middot; [L] model judgment. In one live run the model pushed a metric negative;
-the gates refused, a flagged fallback shipped, and that report led us to a better statistical method: the worksheet is also our debugger.</p>
+<h2>How every number is made: the worksheet</h2>
+<p style="font-size:.92rem">This five-step recipe is the heart of the system. All 12 submitted figures are built this way,
+and the run report shows the filled-in worksheet for each one:</p>
+<pre>[D]  anchor      start from what the company actually reported last time   (quoted from the filing)
+[M]  baseline    apply a simple statistical forecast                        (the method that proved best on this company's past)
+[L]  judgment    let the AI adjust it, within its measured limit            (every opinion needs a source, or it counts for nothing)
+[M]  check       compare with Wall Street: justify the gap, or move closer  (the only step where Wall Street's number is allowed in)
+[M]  ship        run the safety checks, then write the cell                 (if any step failed, the next backup takes over, flagged)</pre>
+<p style="font-size:.88rem;color:var(--muted)">[D] data &middot; [M] math &middot; [L] the AI's judgment. In one live run the AI pushed a
+forecast below zero; the safety checks refused it, a flagged backup shipped instead, and reading that worksheet led us to a better
+method. The worksheet is also how we debug.</p>
 
-<h2>Main choices, one line each</h2>
+<h2>The main choices, and why</h2>
 <table class="rules">
-<tr><td>Fixed pipeline, agentic inside</td><td>freedom exactly where judgment lives (research, estimate, reconcile); none where correctness lives (math, units, output).</td></tr>
-<tr><td>Blind, then reconcile</td><td>the estimator never sees Wall Street&rsquo;s number; a separate step makes it defend any gap with evidence, or revise.</td></tr>
-<tr><td>Backtest before trust</td><td>every statistical method is rehearsed on the company&rsquo;s own history first; the winner&rsquo;s error sets the AI&rsquo;s influence budget.</td></tr>
-<tr><td>Company-level estimation</td><td>one blind call sees all of a company&rsquo;s metrics together, so profit and EPS can&rsquo;t drift apart.</td></tr>
-<tr><td>Two-stage day</td><td>research and extraction are prepared and cached in advance; the final run is fast and wi-fi-proof.</td></tr>
+<tr><td>Freedom only where it helps</td><td>The AI is free where judgment matters (what to research, what to believe). It has no freedom where precision matters (arithmetic, units, file format).</td></tr>
+<tr><td>Estimate first, peek later</td><td>The AI forecasts without seeing Wall Street's number, so it cannot just copy it. Only afterwards is it confronted: justify the difference with evidence, or move closer.</td></tr>
+<tr><td>Rehearse before trusting</td><td>Every statistical method is tested on the company's own past first. The one with the smallest misses wins, and its miss size becomes the AI's adjustment limit.</td></tr>
+<tr><td>Whole company at once</td><td>The AI forecasts all of a company's numbers in one sitting, so related figures (like profit and earnings per share) stay consistent with each other.</td></tr>
+<tr><td>Prepare early, run late</td><td>Reading and research are done and saved during the day. The final run reuses them, so it is fast and does not depend on the venue wi-fi.</td></tr>
 </table>
 
 <h2>Where to look, per judging question</h2>
@@ -93,31 +95,30 @@ the gates refused, a flagged fallback shipped, and that report led us to a bette
 
 <h2>Honest notes</h2>
 <div class="cols">
-<div><h3>Tried, changed, got wrong</h3>
+<div><h3>Things we tried, changed, or got wrong</h3>
 <ul>
-<li>OpenBB in, then out: lean tools won.</li>
-<li>Guessed the wrong &ldquo;golden document&rdquo;; the pipeline found the real one itself.</li>
-<li>Published consensus leaked into the blind context as &ldquo;guidance&rdquo;: sealed, then reused as our best consensus source.</li>
-<li>A sparse series silently zeroed all model judgment; the fix surfaced four sibling bugs.</li>
-<li>Metrics estimated in isolation gave flat profit + collapsing EPS: hence company-level estimation.</li>
+<li>Started with a big data library, replaced it within the hour: a few small tools were easier to trust.</li>
+<li>Guessed the wrong "key document" for one company; the pipeline found the right one by itself.</li>
+<li>A published Wall Street figure sneaked into the AI's reading pile mislabeled as company guidance. We sealed the leak, then reused that figure properly.</li>
+<li>With too little history, the system quietly ignored the AI's opinion entirely. Fixing that uncovered four cousins of the same bug.</li>
+<li>Forecasting each number separately let profit and earnings per share contradict each other. Now the AI sees the whole company at once.</li>
 </ul></div>
-<div><h3>Still weak, knowingly</h3>
+<div><h3>Still weak, and we know it</h3>
 <ul>
-<li>Blindness can&rsquo;t erase pretrained consensus-shaped priors; disclosed, not anonymized.</li>
-<li>Run-to-run estimator variance; damped by the model panel, not eliminated.</li>
-<li>Vibe mappings declared, not calibrated; the cap is the defence.</li>
-<li>Some backtests rest on 1&ndash;3 samples; error scales are floored.</li>
-<li>The yfinance consensus mapping is the weakest seam.</li>
+<li>The AI may half-remember Wall Street's expectations from its training. We disclose this rather than pretend otherwise.</li>
+<li>Two identical runs can give somewhat different answers. Asking several models helps, but does not remove it.</li>
+<li>The "mood" adjustments use sensible fixed sizes, not measured ones. The hard limit is the safety net.</li>
+<li>Some companies report so rarely that our rehearsals rest on only a few examples.</li>
+<li>The free market-data feed we compare against is the part we trust least.</li>
 </ul></div>
 </div>
 
-<div class="repro"><strong>Reproduce:</strong> <code>uv sync</code> &middot; keys in <code>.env</code> &middot;
+<div class="repro"><strong>To reproduce:</strong> <code>uv sync</code> &middot; keys in <code>.env</code> &middot;
 prepare: <code>uv run python -m pipeline.run --prepare --all</code> &middot;
-final: <code>uv run python -m pipeline.run --forecast --all</code> &rarr; 4 workbooks + timestamped events log + audit report.
-Billed cost is logged per model call.</div>
+final run: <code>uv run python -m pipeline.run --forecast --all</code> &rarr; 4 workbooks, a timestamped log of every step, and the audit report.</div>
 
-<p style="color:var(--muted); font-size:.85rem; margin-top:1.2rem">This page describes the system at the final commit recorded in the entry;
-the run report it references is produced by that same code at run time. The granular repository history is the evidence trail.</p>
+<p style="color:var(--muted); font-size:.85rem; margin-top:1.2rem">This page describes the system as of the final commit recorded in the entry.
+The run report it mentions is produced by that same code at run time. The commit history, kept deliberately granular, is the evidence trail.</p>
 
 </main>
 </body>
