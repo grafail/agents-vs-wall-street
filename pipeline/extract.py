@@ -13,6 +13,8 @@ metric/excerpt content goes last, in the user message.
 import argparse
 import json
 import re
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime, timezone
 from pathlib import Path
 from statistics import median
@@ -21,7 +23,7 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 from pipeline import llm
-from pipeline.config import FACTS_DIR, OFFLINE_DATA
+from pipeline.config import FACTS_DIR, LOGS_DIR, OFFLINE_DATA, settings
 from pipeline.runlog import RunLog
 from pipeline.types import Fact, MetricSpec, SourceRef, Unit, metric_specs
 
@@ -509,45 +511,92 @@ def _chunks(items: list, n: int):
 
 # ---------------------------------------------------------------- entry point
 
+def _parse_batch(spec: MetricSpec, batch: list[Candidate],
+                 ) -> tuple[ExcerptParse | None, dict | None, float, str | None]:
+    """Worker: one timed LLM parse. Returns (parse, usage, seconds, error).
+    Never raises — batch failures are reported, not fatal."""
+    t0 = time.monotonic()
+    try:
+        parse, usage = _llm_parse(spec, batch)
+        return parse, usage, time.monotonic() - t0, None
+    except Exception as e:  # noqa: BLE001 - keep extracting other batches
+        return None, None, time.monotonic() - t0, f"{type(e).__name__}: {e}"
+
+
 def extract_company(ticker: str, log: RunLog | None = None,
                     max_docs: int | None = 150, batch_size: int = 6) -> Path:
     """Extract Facts for all of one company's contest metrics and write
-    artifacts/facts/<TICKER>.json. Returns the written path."""
+    artifacts/facts/<TICKER>.json. Returns the written path.
+
+    LLM parse batches run in parallel (settings().extract_workers threads);
+    facts are assembled in submission order so output stays deterministic.
+    Progress is streamed as RunLog events (a fresh LOGS_DIR/prepare-<ts> run
+    dir is created when no log is passed). Events stay lean: never full
+    quotes/excerpts, only counts, timings and usage."""
     ticker = ticker.upper().removeprefix("LSE:")
     specs = [s for s in metric_specs() if s.ticker == ticker]
     if not specs:
         raise ValueError(f"unknown ticker {ticker!r}; expected one of HD, ADI, HAS, DE")
+    if log is None:
+        stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H_%M_%S")
+        log = RunLog(LOGS_DIR / f"prepare-{stamp}")
+
+    t_start = time.monotonic()
+    workers = max(1, settings().extract_workers)
+    log.event("extract_start", ticker=ticker, metrics=len(specs), workers=workers)
 
     all_facts: list[ExtractedFact] = []
     all_skipped: list[dict] = []
     usages: list[dict] = []
+    total_usage = {"prompt_tokens": 0, "completion_tokens": 0, "cached_prompt_tokens": 0}
     for spec in specs:
         candidates = collect_candidates(spec, max_docs=max_docs)
-        if log:
-            log.event("extract_narrow", ticker=ticker, metric=spec.label,
-                      candidates=len(candidates))
+        batches = list(_chunks(candidates, batch_size))
+        log.event("narrowing_done", metric=spec.label, candidates=len(candidates),
+                  docs=len({c.doc_id for c in candidates}), batches=len(batches))
+        for i, batch in enumerate(batches):
+            log.event("llm_batch_start", metric=spec.label, batch_i=i,
+                      n_excerpts=len(batch))
+        # Parallel parse; events are emitted from this (main) thread only, as
+        # each future completes, so the events file never sees interleaved writes.
+        results: dict[int, tuple[ExcerptParse | None, dict | None, str | None]] = {}
+        with ThreadPoolExecutor(max_workers=workers) as ex:
+            futures = {ex.submit(_parse_batch, spec, b): i for i, b in enumerate(batches)}
+            for fut in as_completed(futures):
+                i = futures[fut]
+                parse, usage, seconds, err = fut.result()
+                if err is not None:
+                    log.event("llm_batch_error", metric=spec.label, batch_i=i,
+                              seconds=round(seconds, 2), error=err)
+                else:
+                    log.event("llm_batch_done", metric=spec.label, batch_i=i,
+                              seconds=round(seconds, 2),
+                              facts_parsed=len(parse.facts), usage=usage)
+                results[i] = (parse, usage, err)
+
         metric_facts: list[ExtractedFact] = []
-        for batch in _chunks(candidates, batch_size):
-            try:
-                parse, usage = _llm_parse(spec, batch)
-            except Exception as e:  # noqa: BLE001 - keep extracting other batches
-                all_skipped.append({"reason": f"llm_error: {type(e).__name__}: {e}",
-                                    "metric": spec.label})
-                if log:
-                    log.event("extract_llm_error", ticker=ticker, metric=spec.label,
-                              error=str(e))
+        metric_skipped = 0
+        for i, batch in enumerate(batches):  # submission order -> deterministic output
+            parse, usage, err = results[i]
+            if err is not None or parse is None:
+                all_skipped.append({"metric": spec.label, "batch": i,
+                                    "reason": f"llm_error: {err}"})
+                metric_skipped += 1
                 continue
-            usages.append(usage)
-            if log:
-                log.event("llm_call", stage="extract", metric=spec.label, **usage)
+            if usage:
+                usages.append(usage)
+                for k in total_usage:
+                    total_usage[k] += int(usage.get(k) or 0)
             facts, skipped = _facts_from_parse(spec, parse, batch)
             metric_facts += facts
             all_skipped += [{"metric": spec.label, **s} for s in skipped]
+            metric_skipped += len(skipped)
         apply_magnitude_gate(metric_facts)
         all_facts += metric_facts
-        if log:
-            log.event("extract_metric_done", ticker=ticker, metric=spec.label,
-                      facts=len(metric_facts))
+        log.event("metric_done", metric=spec.label,
+                  facts_accepted=len(metric_facts),
+                  flagged=sum(1 for f in metric_facts if f.flags),
+                  skipped=metric_skipped)
 
     # cross-metric dedupe guard (same key could surface via overlapping terms)
     seen: set[tuple] = set()
@@ -573,9 +622,10 @@ def extract_company(ticker: str, log: RunLog | None = None,
     path = FACTS_DIR / f"{ticker.upper()}.json"
     with open(path, "w") as f:
         json.dump(payload, f, indent=1, sort_keys=False)
-    if log:
-        log.event("extract_company_done", ticker=ticker, facts=len(final),
-                  skipped=len(all_skipped), path=str(path))
+    log.event("extract_done", ticker=ticker, total_facts=len(final),
+              total_skipped=len(all_skipped),
+              total_seconds=round(time.monotonic() - t_start, 1),
+              total_usage=total_usage, path=str(path))
     return path
 
 
@@ -595,8 +645,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--max-docs", type=int, default=150,
                     help="newest corpus filings to consider per company (default 150)")
     args = ap.parse_args(argv)
-    log = RunLog()
-    path = extract_company(args.company, log=log, max_docs=args.max_docs)
+    # log=None -> extract_company creates LOGS_DIR/prepare-<ts> and streams
+    # progress lines to stdout via RunLog's echo.
+    path = extract_company(args.company, max_docs=args.max_docs)
     print(path)
     return 0
 

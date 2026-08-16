@@ -13,6 +13,7 @@ from pipeline.extract import (
     canonical_period, collect_candidates, normalize_value, parse_number,
     value_in_quote, _facts_from_parse,
 )
+from pipeline.runlog import RunLog
 from pipeline.types import CONTEST_UNITS, metric_specs
 
 HD_Q2_8K = OFFLINE_DATA / "home-depot/filings/2025-08-19__hd-us-20250819-q2-8k__143666.md"
@@ -261,8 +262,22 @@ def test_extract_company_end_to_end(tmp_path, monkeypatch):
 
     monkeypatch.setattr(extract, "_llm_parse", fake_llm_parse)
 
-    path = extract.extract_company("HD", max_docs=6)
+    log = RunLog(tmp_path / "run", echo=False)
+    path = extract.extract_company("HD", log=log, max_docs=6)
     assert path == tmp_path / "facts" / "HD.json"
+
+    # live-progress events were emitted (lean: no quotes/excerpts in event data)
+    events = [json.loads(ln) for ln in (tmp_path / "run" / "events.jsonl").read_text().splitlines()]
+    kinds = [e["kind"] for e in events]
+    for required in ("extract_start", "narrowing_done", "llm_batch_start",
+                     "llm_batch_done", "metric_done", "extract_done"):
+        assert required in kinds, f"missing event {required}"
+    assert kinds[0] == "extract_start" and kinds[-1] == "extract_done"
+    done = next(e for e in events if e["kind"] == "extract_done")
+    assert done["total_facts"] >= 1 and "total_usage" in done and "total_seconds" in done
+    batch_done = next(e for e in events if e["kind"] == "llm_batch_done")
+    assert {"metric", "batch_i", "seconds", "facts_parsed", "usage"} <= batch_done.keys()
+    assert not any("excerpt" in e or "quote" in e for e in events)
     payload = json.loads(path.read_text())
     assert payload["ticker"] == "HD" and payload["target_period"] == "FY2026Q2"
     assert payload["facts"], "no facts extracted end-to-end"
@@ -280,9 +295,69 @@ def test_extract_company_end_to_end(tmp_path, monkeypatch):
     assert extract.load_facts("HD")[0].value == 45277.0
 
 
-def test_extract_company_unknown_ticker():
+@pytest.mark.skipif(not HD_Q2_8K.exists(), reason="corpus doc missing")
+def test_parallel_batches_keep_submission_order(tmp_path, monkeypatch):
+    """Batches complete out of order (first submitted sleeps longest) but the
+    committed facts must follow submission order — deterministic artifacts."""
+    import time as _time
+
+    monkeypatch.setattr(extract, "FACTS_DIR", tmp_path / "facts")
+    monkeypatch.setattr(
+        extract, "corpus_docs",
+        lambda corpus_dir, include=("filings",), max_docs=150: [HD_Q2_8K])
+
+    spec = spec_for("HD", "Net sales")
+    cands = extract.collect_candidates(spec, doc_paths=[HD_Q2_8K])
+    assert len(cands) >= 2, "need >=2 candidates to exercise parallelism"
+    order = {c.excerpt: i for i, c in enumerate(cands)}
+
+    def fake_llm_parse(s, candidates):
+        if s.label != "Net sales":
+            return ExcerptParse(facts=[]), {"model": "mock", "prompt_tokens": 1,
+                                            "completion_tokens": 1, "cached_prompt_tokens": 0}
+        i = order[candidates[0].excerpt]  # batch_size=1 -> one candidate per batch
+        _time.sleep(0.15 if i == 0 else 0.0)  # invert completion order
+        vw = f"4{i},000"
+        return ExcerptParse(facts=[ParsedFact(
+            excerpt_index=0, period=f"FY200{i}", fact_type="actual",
+            value_as_written=vw, raw_unit="USD_millions",
+            quote=f"Net sales $ {vw}")]), {"model": "mock", "prompt_tokens": 1,
+                                           "completion_tokens": 1, "cached_prompt_tokens": 0}
+
+    monkeypatch.setattr(extract, "_llm_parse", fake_llm_parse)
+    log = RunLog(tmp_path / "run", echo=False)
+    path = extract.extract_company("HD", log=log, batch_size=1)
+    payload = json.loads(path.read_text())
+    got = [f["raw_text"] for f in payload["facts"] if f["metric_label"] == "Net sales"]
+    assert got == [f"4{i},000" for i in range(len(cands))]
+
+
+@pytest.mark.skipif(not HD_Q2_8K.exists(), reason="corpus doc missing")
+def test_extract_company_creates_prepare_runlog(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(extract, "FACTS_DIR", tmp_path / "facts")
+    monkeypatch.setattr(extract, "LOGS_DIR", tmp_path / "logs")
+    monkeypatch.setattr(
+        extract, "corpus_docs",
+        lambda corpus_dir, include=("filings",), max_docs=150: [HD_Q2_8K])
+    monkeypatch.setattr(extract, "_llm_parse", lambda s, c: (
+        ExcerptParse(facts=[]), {"model": "mock", "prompt_tokens": 1,
+                                 "completion_tokens": 1, "cached_prompt_tokens": 0}))
+
+    extract.extract_company("HD")
+    run_dirs = list((tmp_path / "logs").iterdir())
+    assert len(run_dirs) == 1 and run_dirs[0].name.startswith("prepare-")
+    assert (run_dirs[0] / "events.jsonl").exists()
+    # default echo tees progress to stdout — the "silent while running" fix
+    out = capsys.readouterr().out
+    assert "extract_start" in out and "extract_done" in out
+
+
+def test_extract_company_unknown_ticker(tmp_path, monkeypatch):
+    # must raise BEFORE creating any prepare-<ts> run dir
+    monkeypatch.setattr(extract, "LOGS_DIR", tmp_path / "logs")
     with pytest.raises(ValueError):
         extract.extract_company("XYZ")
+    assert not (tmp_path / "logs").exists()
 
 
 def test_cli_help_parses(capsys):
