@@ -484,6 +484,16 @@ def _grounded_html(name: str, g) -> str:
     return f"<p><b>{_e(name)}:</b> {_e(g.label)} — {_e(g.explanation)}{cites}</p>"
 
 
+def _panel_inline(p: "PanelView | None") -> str:
+    """One-line panel summary on the metric card itself (not collapsed)."""
+    if p is None or len(p.members) < 2:
+        return ""
+    bits = [f"{_e(mm.member.split('/')[-1])} p50 {_num(mm.p50)}%" for mm in p.members]
+    spread = f" &middot; disagreement {_num(p.p50_spread)}%" if p.p50_spread is not None else ""
+    return (f'<p class="muted" style="font-size:.82rem;margin:.2rem 0 .4rem">'
+            f'Panel: {" &middot; ".join(bits)}{spread} (per-model detail in Blind estimate)</p>')
+
+
 def _panel_html(p: "PanelView | None") -> str:
     """Per-model panel table: one row per member, aggregated row context above."""
     if p is None or (not p.members and not p.failed):
@@ -649,6 +659,7 @@ def _metric_section(m: MetricReport) -> str:
 {_fallback_html(m.fallback_used)}
 {_worksheet_html(m.worksheet, m.nudges)}
 {_consensus_check_html(m)}
+{_panel_inline(m.panel)}
 {_ladder_html(m.candidates)}
 {_derivation_html(m.derivation)}
 {"".join(stages)}

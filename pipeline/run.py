@@ -487,12 +487,11 @@ def cmd_forecast(tickers: list[str], out_dir: Path | None = None,
     s = settings()
     log = log or RunLog()
     started = datetime.now(timezone.utc)
+    panel_members = [m.strip() for m in s.estimator_panel.split(",") if m.strip()]
     log.event("forecast_start", tickers=tickers,
               enable_reconcile=s.enable_reconcile, enable_research=s.enable_research,
               model_big=s.model_big, model_small=s.model_small,
-            panel_members=[m.strip() for m in s.estimator_panel.split(",") if m.strip()]
-            if s.estimator_panel and "," in s.estimator_panel else
-            ([s.estimator_panel.strip()] if s.estimator_panel.strip() else []), provider=s.llm_provider)
+              panel_members=panel_members, provider=s.llm_provider)
 
     metric_reports: list[report_mod.MetricReport] = []
     written: dict[str, str] = {}
@@ -530,6 +529,7 @@ def cmd_forecast(tickers: list[str], out_dir: Path | None = None,
             finished=datetime.now(timezone.utc),
             enable_reconcile=s.enable_reconcile, llm_provider=s.llm_provider,
             model_big=s.model_big, model_small=s.model_small,
+            panel_members=panel_members,
             git_commit=_git_commit(),
             totals=_totals_from_events(log.dir / "events.jsonl")),
         metrics=metric_reports)
