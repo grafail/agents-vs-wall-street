@@ -239,6 +239,62 @@ def guidance_x_beat(series: Series, spec: MetricSpec, guidance: list[Fact] | Non
                             "beat_rate": beat["beat_rate"], "beat_n": beat["n"]}}
 
 
+def trend_sheet(series: Series, spec: MetricSpec, guidance: list[Fact] | None = None) -> dict:
+    """Deterministic derived structure handed to the estimator (Booth-style):
+    the model reasons over pre-computed trends instead of re-deriving arithmetic.
+
+    Returns a plain dict:
+      series:            [(period, value)] ordered
+      yoy:               [(period, growth)] — % for flows/per-share, points for ratio_pct
+      yoy_units:         "pct" | "points"
+      acceleration:      [(period, delta-of-yoy)] same units
+      same_quarter:      [(period, value)] readings for the target fiscal quarter
+      guidance_vs_actual:[(period, guidance_mid, actual)] like-for-like by exact
+                         period string (never pairs FY guidance with a quarter)
+    """
+    if spec.kind == "ratio_pct":
+        yoy = [(p, c) for p, c in series.yoy_point_changes()]
+        yoy_units = "points"
+    else:
+        yoy = [(p, g * 100.0) for p, g in series.yoy_growth_series()]
+        yoy_units = "pct"
+    accel = [(yoy[i][0], yoy[i][1] - yoy[i - 1][1]) for i in range(1, len(yoy))]
+
+    gva: list[tuple[str, float, float]] = []
+    if guidance:
+        periods = sorted({f.period for f in guidance}, key=_safe_period_key)
+        for p in periods:
+            try:
+                mid, _ = _guidance_mid_value(guidance, p)
+            except ValueError:
+                continue
+            actual = series.value(p)
+            if mid is not None and actual is not None:
+                gva.append((p, mid, actual))
+
+    try:
+        same_q = series.same_quarter_history(spec.period)
+    except ValueError:
+        same_q = []
+    return {
+        "series": list(series.points),
+        "yoy": yoy,
+        "yoy_units": yoy_units,
+        "acceleration": accel,
+        "same_quarter": same_q,
+        "guidance_vs_actual": gva,
+    }
+
+
+def _safe_period_key(period: str) -> tuple[int, int]:
+    """period_key that sorts unparseable periods (e.g. FY2025H1) last instead
+    of raising — trend/beat helpers must tolerate half-year facts."""
+    try:
+        return period_key(period)
+    except ValueError:
+        return (9999, 9)
+
+
 METHODS: dict[str, Callable] = {
     "seasonal_yoy": seasonal_yoy,
     "growth_drift": growth_drift,

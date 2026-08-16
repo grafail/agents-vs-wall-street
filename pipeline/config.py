@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     model_big: str = ""     # estimator + reconciler (pinned per run)
     model_small: str = ""   # extraction + vibe labeling
     enable_reconcile: bool = True
+    enable_research: bool = True    # live research agent (news/peers digest) in the graph
 
     @property
     def api_key(self) -> str:
