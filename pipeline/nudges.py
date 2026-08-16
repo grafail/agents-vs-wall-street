@@ -77,7 +77,19 @@ def apply_nudges(baseline_value: float, estimate: Estimate, backtest_mae: float 
 
     Returns an audit dict; "pre_reconcile" is the nudged value.
     """
+    # Sigma fallback: with a short series (e.g. 2 annual points) yoy_sigma is
+    # None, which used to zero ALL judgment even when cited. The backtest MAE
+    # is itself an empirical error scale — reuse it (converted to nudge units)
+    # so bounded judgment survives sparse history. The K_CAP x MAE bound below
+    # still limits total influence either way.
+    sigma_source = "yoy_history"
     sig = sigma if sigma is not None else 0.0
+    if (sigma is None or sig == 0.0) and backtest_mae:
+        if spec.kind == "ratio_pct":
+            sig = backtest_mae                                   # already points
+        elif baseline_value:
+            sig = abs(backtest_mae / baseline_value) * 100.0     # MAE as % of baseline
+        sigma_source = "mae_fallback"
 
     # 1. quantile component: p50 shrunk toward 0 by spread (see module docstring)
     spread = estimate.growth_p90 - estimate.growth_p10
@@ -108,7 +120,8 @@ def apply_nudges(baseline_value: float, estimate: Estimate, backtest_mae: float 
     return {
         "baseline_value": baseline_value,
         "delta_units": "points" if spec.kind == "ratio_pct" else "pct_of_baseline",
-        "sigma": sigma,
+        "sigma": sigma if sigma_source == "yoy_history" else sig,
+        "sigma_source": sigma_source,
         "quantiles": {"p10": estimate.growth_p10, "p50": estimate.growth_p50,
                       "p90": estimate.growth_p90, "spread": spread,
                       "shrink": shrink, "component": quantile_component},
