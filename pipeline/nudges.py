@@ -61,7 +61,8 @@ def _categorical_component(grounded: Grounded, mult_table: dict[str, float], sig
 
 def apply_nudges(baseline_value: float, estimate: Estimate, backtest_mae: float | None,
                  sigma: float | None, spec: MetricSpec,
-                 calibration: dict[str, float] | None = None) -> dict:
+                 calibration: dict[str, float] | None = None,
+                 backtest_n: int | None = None) -> dict:
     """Turn an Estimate into a capped adjustment on `baseline_value`.
 
     Args:
@@ -91,10 +92,17 @@ def apply_nudges(baseline_value: float, estimate: Estimate, backtest_mae: float 
             sig = abs(backtest_mae / baseline_value) * 100.0     # MAE as % of baseline
         sigma_source = "mae_fallback"
 
-    # 1. quantile component: p50 shrunk toward 0 by spread (see module docstring)
+    # 1. quantile component: p50 shrunk toward 0 by spread (see module docstring).
+    # A zero/negative spread is overconfidence, not certainty — penalize (0.5),
+    # never reward with full weight.
     spread = estimate.growth_p90 - estimate.growth_p10
     scale = max(sig, 1e-9)
-    shrink = 1.0 / (1.0 + spread / scale) if spread > 0 else 1.0
+    if spread > 0:
+        shrink = 1.0 / (1.0 + spread / scale)
+        shrink_note = "spread_vs_sigma"
+    else:
+        shrink = 0.5
+        shrink_note = "zero_spread_overconfidence_penalty"
     quantile_component = estimate.growth_p50 * shrink
 
     # 2. categorical components (zeroed when uncited; calibrated when possible)
@@ -109,13 +117,23 @@ def apply_nudges(baseline_value: float, estimate: Estimate, backtest_mae: float 
     else:
         raw_adjustment = baseline_value * total_delta / 100.0
 
-    # 3. cap at K_CAP x backtest MAE (no MAE => no nudge)
+    # 3. cap at K_CAP x backtest MAE (no MAE => no nudge). A tiny-n MAE is
+    # statistical noise — floor the effective error scale when n < 3 so a
+    # lucky single walk-forward point can't randomly mute (or over-free)
+    # the judgment layer.
     if backtest_mae is None:
         cap, adjustment, cap_reason = 0.0, 0.0, "no_backtest_mae_nudge_disabled"
     else:
-        cap = K_CAP * backtest_mae
+        eff_mae = backtest_mae
+        if backtest_n is not None and backtest_n < 3:
+            floor = 0.5 if spec.kind == "ratio_pct" else abs(baseline_value) * 0.02
+            if eff_mae < floor:
+                eff_mae = floor
+        cap = K_CAP * eff_mae
         adjustment = max(-cap, min(cap, raw_adjustment))
         cap_reason = "capped_at_k_x_mae" if adjustment != raw_adjustment else "within_cap"
+        if eff_mae != backtest_mae:
+            cap_reason += f"; mae_floored_smalln(n={backtest_n})"
 
     return {
         "baseline_value": baseline_value,
@@ -124,7 +142,8 @@ def apply_nudges(baseline_value: float, estimate: Estimate, backtest_mae: float 
         "sigma_source": sigma_source,
         "quantiles": {"p10": estimate.growth_p10, "p50": estimate.growth_p50,
                       "p90": estimate.growth_p90, "spread": spread,
-                      "shrink": shrink, "component": quantile_component},
+                      "shrink": shrink, "shrink_note": shrink_note,
+                      "component": quantile_component},
         "momentum": momentum,
         "surprise_skew": skew,
         "total_delta": total_delta,

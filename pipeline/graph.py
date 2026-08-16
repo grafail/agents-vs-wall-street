@@ -36,6 +36,19 @@ YF_TICKER = {"HD": "HD", "ADI": "ADI", "DE": "DE", "HAS": "HAS.L"}
 RESEARCH_RECURSION_LIMIT = 20  # ~8 tool iterations for the react scout
 
 
+def _structured_retry(size: str, messages: list, schema, log=None, **ctx):
+    """complete_structured with ONE retry (2s backoff) — a transient API blip
+    during the final-run window must not silently drop a metric to baseline."""
+    import time as _time
+    try:
+        return llm.complete_structured(size, messages, schema)
+    except Exception as e:  # noqa: BLE001
+        if log:
+            log.event("llm_retry", error=f"{type(e).__name__}: {e}", **ctx)
+        _time.sleep(2)
+        return llm.complete_structured(size, messages, schema)
+
+
 class CompanyState(TypedDict, total=False):
     ticker: str
     log: Any                    # RunLog (opaque to langgraph)
@@ -187,9 +200,18 @@ def node_research(state: CompanyState) -> dict:
             log.event("research_skipped", ticker=ticker, reason="ENABLE_RESEARCH=false")
         return {"digest": []}
     try:
-        digest = _research_digest(ticker, log)
+        # Digest-level cache: the scout's tools were already cached, but its LLM
+        # reasoning re-ran on every forecast. One digest per (ticker, model) per
+        # cache lifetime; prepare --refresh bypasses via state["refresh"].
+        from pipeline.cache import read_through
+        digest, was_hit = read_through(
+            "research_digest",
+            {"ticker": ticker, "model": settings().model_small},
+            lambda: _research_digest(ticker, log),
+            refresh=bool(state.get("refresh")),
+        )
         if log:
-            log.event("research_done", ticker=ticker, bullets=len(digest))
+            log.event("research_done", ticker=ticker, bullets=len(digest), cache_hit=was_hit)
         return {"digest": digest}
     except Exception as e:  # noqa: BLE001 — research is optional enrichment
         if log:
@@ -268,18 +290,20 @@ def _estimate_one(spec: MetricSpec, facts: list, digest: list,
             context = build_estimator_context(spec, sfacts, gfacts, trend, cands_bt,
                                               interim + list(digest))
             try:
-                est, usage = llm.complete_structured(
+                est, usage = _structured_retry(
                     "big",
                     [{"role": "system", "content": ESTIMATOR_SYSTEM},
                      {"role": "user", "content": context}],
-                    Estimate)
+                    Estimate, log=log, stage="estimate", metric=spec.label)
                 if log:
                     log.event("llm_call", stage="estimate", ticker=ticker,
                               metric=spec.label, **usage)
                 blob["estimate"] = est
                 chosen = cands_bt[0]
                 mae = (chosen["backtest"] or {}).get("mae")
-                blob["nudges"] = apply_nudges(chosen["value"], est, mae, sigma, spec)
+                blob["nudges"] = apply_nudges(
+                    chosen["value"], est, mae, sigma, spec,
+                    backtest_n=(chosen["backtest"] or {}).get("n"))
                 blob["baseline_chosen"] = chosen["method"]
             except Exception as e:  # noqa: BLE001 — cascade will cover this metric
                 if log:
@@ -403,11 +427,11 @@ def node_reconcile(state: CompanyState) -> dict:
             citations, nudge_summary, baseline_summary,
             consensus, (blob.get("consensus") or {}).get("source", "?"))
         try:
-            rec, usage = llm.complete_structured(
+            rec, usage = _structured_retry(
                 "big",
                 [{"role": "system", "content": RECONCILER_SYSTEM},
                  {"role": "user", "content": context}],
-                Reconciliation)
+                Reconciliation, log=log, stage="reconcile", metric=spec.label)
             if log:
                 log.event("llm_call", stage="reconcile", ticker=ticker,
                           metric=spec.label, **usage)
@@ -498,7 +522,14 @@ def node_write(state: CompanyState) -> dict:
     ticker, log = state["ticker"], state.get("log")
     specs = _specs(ticker)
     metrics = state.get("metrics", {})
-    values = {s.label: metrics.get(s.label, {}).get("final") for s in specs}
+    # Kind-aware rounding: money 1dp, per-share 2dp, percent 1dp. Well inside
+    # the scoring floors (0.5% of value / 0.5pp) — cosmetic only.
+    def _round(v, kind):
+        if v is None:
+            return v
+        return round(v, {"flow_absolute": 1, "per_share": 2, "ratio_pct": 1}[kind])
+
+    values = {s.label: _round(metrics.get(s.label, {}).get("final"), s.kind) for s in specs}
     out_dir = state.get("out_dir")  # tests inject; default submission dir
     kwargs = {"out_dir": out_dir} if out_dir else {}
     path = write_workbook(specs, values, **kwargs)
