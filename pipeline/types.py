@@ -152,6 +152,22 @@ class Estimate(BaseModel):
     rationale: str
 
 
+class MetricEstimate(Estimate):
+    """Estimate tagged with its contest metric label — one entry of a
+    company-level estimation response. Estimate itself stays unchanged for
+    downstream compatibility (nudges/report consume plain Estimate)."""
+    metric_label: str
+
+
+class CompanyEstimates(BaseModel):
+    """Blind estimator output for ALL of one company's metrics in a single
+    call, so cross-metric coherence (e.g. operating profit vs EPS) is reasoned
+    about explicitly. coherence_rationale comes FIRST so the model reasons
+    across metrics before committing to per-metric numbers."""
+    coherence_rationale: str
+    estimates: list[MetricEstimate]
+
+
 class Reconciliation(BaseModel):
     """Reconciler output: weight on our estimate vs consensus, with rationale."""
     verdict: Literal["hold", "partial", "defer_to_consensus"]

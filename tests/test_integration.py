@@ -10,7 +10,15 @@ from pipeline import run as run_mod
 from pipeline.config import Settings
 from pipeline.extract import ExtractedFact
 from pipeline.runlog import RunLog
-from pipeline.types import Estimate, Grounded, Reconciliation, SourceRef, metric_specs
+from pipeline.types import (
+    CompanyEstimates,
+    Estimate,
+    Grounded,
+    MetricEstimate,
+    Reconciliation,
+    SourceRef,
+    metric_specs,
+)
 
 HD_SPECS = [s for s in metric_specs() if s.ticker == "HD"]
 SRC = SourceRef(doc_id="home-depot/filings/x.md", trust_tier=1, kind="filing")
@@ -61,6 +69,14 @@ def make_estimate(p50=1.0) -> Estimate:
         confidence="medium", rationale="synthetic rationale")
 
 
+def make_company_estimates(labels, p50=1.0) -> CompanyEstimates:
+    """Panel response covering `labels` (company-level blind estimator shape)."""
+    return CompanyEstimates(
+        coherence_rationale="sales, EPS and comps move together",
+        estimates=[MetricEstimate(**make_estimate(p50).model_dump(), metric_label=lab)
+                   for lab in labels])
+
+
 @pytest.fixture
 def wired(monkeypatch, tmp_path):
     """Wire the graph for offline runs: synthetic facts, mocked LLM, mocked
@@ -75,9 +91,9 @@ def wired(monkeypatch, tmp_path):
     def fake_structured(size, messages, schema, **kw):
         usage = {"model": "mock", "prompt_tokens": 100, "completion_tokens": 20,
                  "cached_prompt_tokens": 50}
-        if schema is Estimate:
+        if schema is CompanyEstimates:
             calls["estimate"] += 1
-            return make_estimate(), usage
+            return make_company_estimates([s.label for s in HD_SPECS]), usage
         if schema is Reconciliation:
             calls["reconcile"] += 1
             return Reconciliation(verdict="partial", weight_ours=0.6,
@@ -113,9 +129,18 @@ def test_full_graph_run(wired, tmp_path):
         assert isinstance(blob["final"], float)
         assert blob["gates"]
 
-    # estimator ran for each metric; reconciler only where consensus mapped
-    assert wired["calls"]["estimate"] == 3
+    # ONE company-level estimator call; reconciler only where consensus mapped
+    assert wired["calls"]["estimate"] == 1
     assert wired["calls"]["reconcile"] == 2  # net sales + EPS (ratio_pct has no consensus)
+
+    # panel audit trail recorded on every estimated metric's blob
+    for spec in HD_SPECS:
+        panel = state["metrics"][spec.label]["panel"]
+        assert len(panel["members_ok"]) == 1 and panel["members_failed"] == []
+        member = panel["members_ok"][0]
+        assert panel["per_member"][member]["Net sales"]["p50"] == 1.0
+        assert panel["per_member"][member]["Net sales"]["momentum"] == "warming"
+        assert panel["p50_spread"]["net sales"] == 0.0
 
     # ratio_pct metric had no consensus by design
     comp = state["metrics"]["Comparable sales, total company"]
@@ -217,6 +242,93 @@ def test_totals_from_events(wired, tmp_path):
     assert totals.llm_calls >= 3
     assert totals.prompt_tokens > 0
     assert totals.cached_prompt_tokens > 0
+
+
+def test_panel_missing_metric_cascades_and_labels_match_case_insensitively(
+        wired, tmp_path, monkeypatch):
+    """A metric absent from the company response falls to the cascade; label
+    mapping tolerates case differences."""
+    def fake_structured(size, messages, schema, **kw):
+        usage = {"model": "mock", "prompt_tokens": 100, "completion_tokens": 20,
+                 "cached_prompt_tokens": 50}
+        if schema is CompanyEstimates:
+            # lowercase EPS label (tolerant match) + comps metric missing entirely
+            return make_company_estimates(["Net sales", "adjusted diluted eps"]), usage
+        if schema is Reconciliation:
+            return Reconciliation(verdict="hold", weight_ours=0.9, rationale="ok"), usage
+        raise AssertionError(f"unexpected schema {schema}")
+
+    monkeypatch.setattr(graph_mod.llm, "complete_structured", fake_structured)
+    state = graph_mod.run_company("HD", log=wired["log"], out_dir=tmp_path / "sub5")
+
+    # case-insensitive label mapped fine
+    eps = state["metrics"]["Adjusted diluted EPS"]
+    assert eps["estimate"] is not None and eps["nudges"] is not None
+
+    # missing metric -> estimate None + cascade to baseline, still numeric
+    comp = state["metrics"]["Comparable sales, total company"]
+    assert comp["estimate"] is None
+    assert "missing from company estimate" in comp["estimate_error"]
+    assert isinstance(comp["final"], float)
+    assert comp["final_source"].startswith("baseline:")
+    assert comp["fallback"] is True
+
+    # panel audit trail present even for the missing metric
+    assert comp["panel"]["members_ok"]
+
+
+HAS_SPECS = {s.label: s for s in metric_specs() if s.ticker == "HAS"}
+
+
+def _has_finalize_state(eps_pre_reconcile: float):
+    """Minimal HAS metrics blobs for node_finalize: EPS + operating profit on
+    the same (pre_exceptional) basis, plus Net fees so the loop stays happy."""
+    return {
+        "ticker": "HAS", "log": None,
+        "metrics": {
+            "Pre-exceptional basic EPS": {
+                "nudges": {"pre_reconcile": eps_pre_reconcile},
+                "anchor": {"value": 2.0, "period": "FY2025"},
+            },
+            "Pre-exceptional operating profit": {
+                "nudges": {"pre_reconcile": 100.0},   # flat vs anchor
+                "anchor": {"value": 100.0, "period": "FY2025"},
+            },
+            "Net fees": {"anchor": {"value": 500.0, "period": "FY2025"}},
+        },
+    }
+
+
+def test_sibling_coherence_gate_fires_on_incoherent_pair():
+    # flat profit (100 -> 100) but collapsing EPS (2.0 -> 1.0): implied EPS is
+    # 2.0, gap 50% > 35% -> warn chip on the EPS metric
+    out = graph_mod.node_finalize(_has_finalize_state(eps_pre_reconcile=1.0))
+    eps = out["metrics"]["Pre-exceptional basic EPS"]
+    chk = next(g for g in eps["gates"] if g["check"] == "sibling_coherence")
+    assert chk["level"] == "warn" and chk["passed"] is True   # warn, never fail
+    assert "implied 2" in chk["detail"]
+    # visible in the report's validation chips
+    mr = run_mod._metric_report(HAS_SPECS["Pre-exceptional basic EPS"], eps)
+    vc = next(v for v in mr.validation if v.check == "sibling_coherence")
+    assert "implied" in vc.detail
+    # profit metric itself carries no coherence chip (it lives on the EPS side)
+    profit = out["metrics"]["Pre-exceptional operating profit"]
+    assert not any(g["check"] == "sibling_coherence" for g in profit["gates"])
+
+
+def test_sibling_coherence_gate_quiet_on_coherent_pair():
+    out = graph_mod.node_finalize(_has_finalize_state(eps_pre_reconcile=2.05))
+    eps = out["metrics"]["Pre-exceptional basic EPS"]
+    chk = next(g for g in eps["gates"] if g["check"] == "sibling_coherence")
+    assert chk["level"] == "ok"
+
+
+def test_sibling_coherence_skipped_when_no_same_basis_pair(wired, tmp_path):
+    # HD: Net sales is as_reported, EPS is adjusted -> no qualifying sibling
+    state = graph_mod.run_company("HD", log=wired["log"], out_dir=tmp_path / "sub6")
+    for spec in HD_SPECS:
+        gates = state["metrics"][spec.label]["gates"]
+        assert not any(g["check"] == "sibling_coherence" for g in gates)
 
 
 def test_mermaid_diagram_generates():

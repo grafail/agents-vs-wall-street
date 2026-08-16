@@ -12,7 +12,7 @@ from typing import Any, TypedDict
 
 from langgraph.graph import END, START, StateGraph
 
-from pipeline import llm, tools
+from pipeline import ensemble, llm, tools
 from pipeline.backtest import beat_factor, best_method
 from pipeline.baselines import Series, interim_map, run_all, trend_sheet, yoy_sigma
 from pipeline.baselines import prior_year_period
@@ -23,12 +23,13 @@ from pipeline.prompts import (
     ESTIMATOR_SYSTEM,
     RECONCILER_SYSTEM,
     RESEARCH_SYSTEM,
-    build_estimator_context,
+    build_company_context,
+    build_metric_block,
     build_reconciler_context,
 )
 from pipeline.runlog import RunLog
 from pipeline.types import Estimate, MetricSpec, Reconciliation, metric_specs
-from pipeline.validate import resolve_final_value, run_all_gates
+from pipeline.validate import resolve_final_value, run_all_gates, sibling_coherence
 from pipeline.writer import verify_workbook, write_workbook
 
 YF_TICKER = {"HD": "HD", "ADI": "ADI", "DE": "DE", "HAS": "HAS.L"}
@@ -220,14 +221,23 @@ def node_research(state: CompanyState) -> dict:
 
 
 def node_estimate(state: CompanyState) -> dict:
+    """Company-level estimation: per-metric deterministic prep exactly as
+    before, then ONE blind panel call for the whole company (the model sees all
+    sibling metrics and keeps them coherent — profit vs EPS in one story).
+    Per-metric nudging/finalize is unchanged; a metric missing from the panel
+    response falls to the failsafe cascade."""
     ticker, log = state["ticker"], state.get("log")
     facts = state.get("facts", [])
     digest = state.get("digest", [])
     metrics = dict(state.get("metrics", {}))
 
+    # 1. deterministic per-metric prep (baselines/backtests/trend/anchor/sigma)
+    prepped: list[tuple[MetricSpec, str]] = []   # specs with baselines + context block
     for spec in _specs(ticker):
         try:
-            _estimate_one(spec, facts, digest, metrics, ticker, log)
+            block = _prep_one(spec, facts, metrics)
+            if block is not None:
+                prepped.append((spec, block))
         except Exception as e:  # noqa: BLE001 — one metric must never kill the company
             if log:
                 log.event("metric_failed", ticker=ticker, metric=spec.label,
@@ -236,89 +246,120 @@ def node_estimate(state: CompanyState) -> dict:
             blob.setdefault("spec", spec)
             blob["error"] = f"{type(e).__name__}: {e}"
             metrics[spec.label] = blob
+    if not prepped:
+        return {"metrics": metrics}
+
+    # 2. ONE blind panel call per company (single-entry panel when
+    # ESTIMATOR_PANEL is empty — exact previous single-model behavior)
+    est_specs = [s for s, _ in prepped]
+
+    def messages_builder() -> list[dict]:
+        return [{"role": "system", "content": ESTIMATOR_SYSTEM},
+                {"role": "user", "content": build_company_context(
+                    est_specs, [b for _, b in prepped], list(digest))}]
+
+    try:
+        est_map, panel_summary = ensemble.panel_estimate(est_specs, messages_builder, log)
+    except Exception as e:  # noqa: BLE001 — cascade will cover every metric
+        if log:
+            log.event("estimate_failed", ticker=ticker, metric="*company*",
+                      error=f"{type(e).__name__}: {e}")
+        est_map, panel_summary = None, {"members_ok": [], "members_failed": [
+            {"member": "panel", "error": f"{type(e).__name__}: {e}"}]}
+
+    # 3. map returned estimates back by metric_label (exact, else case-insensitive)
+    by_fold = {k.strip().casefold(): v for k, v in (est_map or {}).items()}
+    for spec in est_specs:
+        blob = metrics[spec.label]
+        blob["panel"] = panel_summary
+        est = (est_map or {}).get(spec.label) or by_fold.get(spec.label.strip().casefold())
+        if est is None:
+            reason = ("panel produced no estimates" if not est_map else
+                      f"metric missing from company estimate response: {spec.label!r}")
+            if log:
+                log.event("estimate_failed", ticker=ticker, metric=spec.label,
+                          error=reason)
+            blob["estimate"] = None
+            blob["estimate_error"] = reason
+            metrics[spec.label] = blob
+            continue
+        try:
+            blob["estimate"] = est
+            chosen = blob["baselines"][0]
+            mae = (chosen["backtest"] or {}).get("mae")
+            blob["nudges"] = apply_nudges(
+                chosen["value"], est, mae, blob.get("sigma"), spec,
+                backtest_n=(chosen["backtest"] or {}).get("n"))
+        except Exception as e:  # noqa: BLE001 — cascade will cover this metric
+            if log:
+                log.event("estimate_failed", ticker=ticker, metric=spec.label,
+                          error=f"{type(e).__name__}: {e}")
+            blob["estimate"] = None
+            blob["estimate_error"] = f"{type(e).__name__}: {e}"
+        metrics[spec.label] = blob
     return {"metrics": metrics}
 
 
-def _estimate_one(spec: MetricSpec, facts: list, digest: list,
-                  metrics: dict, ticker: str, log) -> None:
-        blob: dict[str, Any] = metrics.get(spec.label, {})
-        sfacts = _series_facts(facts, spec.label)
-        gfacts = _guidance_facts(facts, spec.label)
-        series = Series(sfacts)
-        beat = beat_factor(gfacts, sfacts)
-        all_metric_facts = [f for f in facts if f.metric_label == spec.label]
-        interims = interim_map(all_metric_facts)
-        candidates = run_all(series, spec, gfacts, beat, interims=interims)
-        ranked = best_method(series, spec, gfacts, beat, interims=interims)
-        bt_by_method = {r["method"]: r for r in ranked}
-        cands_bt = sorted(
-            [{"method": c["method"], "value": c["value"], "inputs_used": c["inputs_used"],
-              "backtest": bt_by_method.get(c["method"])} for c in candidates],
-            key=lambda c: (c["backtest"] is None, (c["backtest"] or {}).get("mae", 0.0)),
-        )
-        trend = trend_sheet(series, spec, gfacts)
-        sigma = yoy_sigma(series, spec)
+def _prep_one(spec: MetricSpec, facts: list, metrics: dict) -> str | None:
+    """Deterministic per-metric prep (NO LLM): baselines + backtests, trend
+    sheet, anchor, sigma, interim actuals — stored on the metric's audit blob.
+    Returns the metric's estimator context block, or None when no baseline
+    candidates exist (the metric skips estimation; cascade covers it)."""
+    blob: dict[str, Any] = metrics.get(spec.label, {})
+    sfacts = _series_facts(facts, spec.label)
+    gfacts = _guidance_facts(facts, spec.label)
+    series = Series(sfacts)
+    beat = beat_factor(gfacts, sfacts)
+    all_metric_facts = [f for f in facts if f.metric_label == spec.label]
+    interims = interim_map(all_metric_facts)
+    candidates = run_all(series, spec, gfacts, beat, interims=interims)
+    ranked = best_method(series, spec, gfacts, beat, interims=interims)
+    bt_by_method = {r["method"]: r for r in ranked}
+    cands_bt = sorted(
+        [{"method": c["method"], "value": c["value"], "inputs_used": c["inputs_used"],
+          "backtest": bt_by_method.get(c["method"])} for c in candidates],
+        key=lambda c: (c["backtest"] is None, (c["backtest"] or {}).get("mae", 0.0)),
+    )
+    trend = trend_sheet(series, spec, gfacts)
+    sigma = yoy_sigma(series, spec)
 
-        # anchor: same period last year, with its quote for the report
-        anchor_period = prior_year_period(spec.period)
-        anchor_value = series.value(anchor_period)
-        anchor_fact = next((f for f in sfacts if f.period == anchor_period), None)
+    # anchor: same period last year, with its quote for the report
+    anchor_period = prior_year_period(spec.period)
+    anchor_value = series.value(anchor_period)
+    anchor_fact = next((f for f in sfacts if f.period == anchor_period), None)
 
-        blob.update({
-            "spec": spec,
-            "series_values": [v for _, v in series.points],
-            "guidance_facts": gfacts,
-            "beat": beat,
-            "baselines": cands_bt,
-            "trend": trend,
-            "sigma": sigma,
-            "anchor": {"value": anchor_value, "period": anchor_period,
-                       "quote": anchor_fact.quote if anchor_fact else None,
-                       "source_doc": anchor_fact.source.doc_id if anchor_fact else None},
-            "fact_flags": sorted({fl for f in sfacts + gfacts for fl in f.flags}),
-        })
+    blob.update({
+        "spec": spec,
+        "series_values": [v for _, v in series.points],
+        "guidance_facts": gfacts,
+        "beat": beat,
+        "baselines": cands_bt,
+        "trend": trend,
+        "sigma": sigma,
+        "anchor": {"value": anchor_value, "period": anchor_period,
+                   "quote": anchor_fact.quote if anchor_fact else None,
+                   "source_doc": anchor_fact.source.doc_id if anchor_fact else None},
+        "fact_flags": sorted({fl for f in sfacts + gfacts for fl in f.flags}),
+    })
+    metrics[spec.label] = blob
 
-        if cands_bt:
-            # Interim (half-year) actuals can't enter Series math but are prime
-            # evidence for annual metrics (e.g. Hays H1-FY2026 net fees) — feed
-            # them to the estimator as cited evidence lines.
-            interim = [
-                f"INTERIM ACTUAL {f.period}: {f.metric_label} = {f.value} "
-                f"[{f.source.doc_id}] \"{f.quote[:160]}\""
-                for f in facts
-                if f.metric_label == spec.label and f.fact_type == "actual"
-                and f not in sfacts and "H" in f.period
-            ]
-            context = build_estimator_context(spec, sfacts, gfacts, trend, cands_bt,
-                                              interim + list(digest))
-            try:
-                est, usage = _structured_retry(
-                    "big",
-                    [{"role": "system", "content": ESTIMATOR_SYSTEM},
-                     {"role": "user", "content": context}],
-                    Estimate, log=log, stage="estimate", metric=spec.label)
-                if log:
-                    log.event("llm_call", stage="estimate", ticker=ticker,
-                              metric=spec.label, **usage)
-                blob["estimate"] = est
-                chosen = cands_bt[0]
-                mae = (chosen["backtest"] or {}).get("mae")
-                blob["nudges"] = apply_nudges(
-                    chosen["value"], est, mae, sigma, spec,
-                    backtest_n=(chosen["backtest"] or {}).get("n"))
-                blob["baseline_chosen"] = chosen["method"]
-            except Exception as e:  # noqa: BLE001 — cascade will cover this metric
-                if log:
-                    log.event("estimate_failed", ticker=ticker, metric=spec.label,
-                              error=f"{type(e).__name__}: {e}")
-                blob["estimate"] = None
-                blob["estimate_error"] = f"{type(e).__name__}: {e}"
-                if cands_bt:
-                    blob["baseline_chosen"] = cands_bt[0]["method"]
-        else:
-            blob["estimate"] = None
-            blob["estimate_error"] = "no baseline candidates (insufficient history)"
-        metrics[spec.label] = blob
+    if not cands_bt:
+        blob["estimate"] = None
+        blob["estimate_error"] = "no baseline candidates (insufficient history)"
+        return None
+    blob["baseline_chosen"] = cands_bt[0]["method"]
+
+    # Interim (half-year) actuals can't enter Series math but are prime
+    # evidence for annual metrics (e.g. Hays H1-FY2026 net fees) — feed
+    # them to the estimator as cited evidence lines.
+    interim = [
+        f"INTERIM ACTUAL {f.period}: {f.metric_label} = {f.value} "
+        f"[{f.source.doc_id}] \"{f.quote[:160]}\""
+        for f in facts
+        if f.metric_label == spec.label and f.fact_type == "actual"
+        and f not in sfacts and "H" in f.period
+    ]
+    return build_metric_block(spec, sfacts, gfacts, trend, cands_bt, interim)
 
 
 def _consensus_for(spec: MetricSpec, est_data: dict) -> tuple[float | None, str]:
@@ -534,6 +575,35 @@ def node_finalize(state: CompanyState) -> dict:
             log.event("finalize", ticker=ticker, metric=spec.label, final=final,
                       source=source_used, fallback=blob["fallback"])
         metrics[spec.label] = blob
+
+    # Implied-EPS coherence backstop (deterministic, warn-only): for companies
+    # with both a per-share metric and a profit/income-like flow metric on the
+    # SAME basis and period, check the final EPS against the EPS implied by the
+    # final profit (validate.sibling_coherence). Appended to the EPS metric's
+    # gate list so it surfaces in the report's validation chips.
+    _PROFIT_WORDS = ("profit", "income", "earnings", "ebit")
+    for eps_spec in [s for s in _specs(ticker) if s.kind == "per_share"]:
+        mate = next(
+            (s for s in _specs(ticker)
+             if s.kind == "flow_absolute" and s.basis == eps_spec.basis
+             and s.period == eps_spec.period
+             and any(w in s.label.lower() for w in _PROFIT_WORDS)),
+            None)
+        if mate is None:
+            continue
+        eps_blob = metrics.get(eps_spec.label, {})
+        mate_blob = metrics.get(mate.label, {})
+        if eps_blob.get("final") is None or mate_blob.get("final") is None:
+            continue  # runs only after BOTH finals exist
+        check = sibling_coherence(
+            eps_blob.get("final"), mate_blob.get("final"),
+            (eps_blob.get("anchor") or {}).get("value"),
+            (mate_blob.get("anchor") or {}).get("value"))
+        eps_blob.setdefault("gates", []).append(check)
+        metrics[eps_spec.label] = eps_blob
+        if log:
+            log.event("sibling_coherence", ticker=ticker, metric=eps_spec.label,
+                      sibling=mate.label, level=check["level"], detail=check["detail"])
     return {"metrics": metrics}
 
 

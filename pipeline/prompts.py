@@ -15,19 +15,32 @@ from pipeline.types import Fact, MetricSpec
 
 ESTIMATOR_SYSTEM = """You are the blind estimator inside a financial-forecasting pipeline.
 
-You never output an absolute forecast. Deterministic code has already computed a
-BASELINE value for the target metric from exact reported anchors; your job is to
-judge how the actual outcome will deviate from that baseline, using only the
-evidence provided. Code converts your judgment into a bounded adjustment.
+You estimate ALL of one company's target metrics in a single response, so that
+your calls are mutually coherent. You never output an absolute forecast.
+Deterministic code has already computed a BASELINE value for each metric from
+exact reported anchors; your job is to judge how each actual outcome will
+deviate from ITS OWN chosen baseline, using only the evidence provided. Code
+converts your judgment into bounded adjustments.
 
-Output fields (schema-enforced):
+Output shape (schema-enforced):
+- coherence_rationale: FIRST, reason ACROSS the metrics. The metrics describe
+  one business in one period: revenue, margins, operating profit, and EPS must
+  tell a single consistent story. In particular, profit-like metrics and EPS on
+  the same accounting basis must move together — do not forecast a flat profit
+  alongside a collapsing EPS (or vice versa) unless a cited share-count,
+  tax-rate, or below-the-line driver justifies the divergence. State the story
+  here before committing to per-metric deltas.
+- estimates: exactly one entry per metric listed in the context, with
+  metric_label copied EXACTLY as written there. Each entry has:
 - growth_p10 / growth_p50 / growth_p90: your 10th/50th/90th percentile for the
-  DEVIATION OF THE ACTUAL FROM THE BASELINE, in the delta units stated in the
-  context (percent of baseline for flows and per-share metrics; additive
+  DEVIATION OF THE ACTUAL FROM THAT METRIC'S BASELINE, in the delta units stated
+  in the context (percent of baseline for flows and per-share metrics; additive
   percentage points for percentage metrics). p50 = your central call; the
   p10-p90 spread expresses your uncertainty honestly — a wide spread means the
   pipeline will shrink your adjustment toward zero. Small numbers are expected:
-  a well-guided quarter rarely deviates more than a couple of percent.
+  a well-guided quarter rarely deviates more than a couple of percent. Note the
+  baselines may differ between sibling metrics — coherence is about the implied
+  OUTCOMES, not identical deltas.
 - momentum / guidance_style / surprise_skew: categorical judgments. For each,
   WRITE THE EXPLANATION FIRST, derive the label FROM the explanation, and cite
   the doc_ids or URLs of the evidence. A label without citations is treated as
@@ -147,20 +160,18 @@ def _trend_lines(trend: dict | None) -> list[str]:
     return out
 
 
-def build_estimator_context(
+def build_metric_block(
     spec: MetricSpec,
     series_facts: list[Fact],
     guidance: list[Fact],
     trend: dict | None,
     baselines_bt: list[dict],
-    extra_evidence: list[str],
+    interim: list[str],
 ) -> str:
-    """Blind estimator user message. Stable-to-volatile order:
-    metric spec → historical trend → recent quotes → guidance → baselines+backtests
-    → live evidence digest (most volatile, last). NO consensus anywhere."""
+    """One metric's section of the company-level estimator context: spec summary
+    → trend sheet → recent actual quotes → guidance → baselines+backtests →
+    interim actuals. NO consensus anywhere (blind rule)."""
     lines: list[str] = [
-        "TARGET",
-        f"company: {spec.company} ({spec.ticker})",
         f"metric: {spec.label}  [{spec.unit_str}]  basis={spec.basis} scope={spec.scope}",
         f"target period: {spec.period} ({spec.period_type})",
         f"your delta units: {_delta_units(spec)}",
@@ -193,10 +204,63 @@ def build_estimator_context(
                      f"{baselines_bt[0]['method']} = {_fmt_num(baselines_bt[0]['value'])} {spec.unit_str}")
     else:
         lines.append("- none available")
-    lines.append("")
-    lines.append("FRESH EVIDENCE DIGEST (post-corpus-freeze research; leads verified where possible)")
+    if interim:
+        lines.append("")
+        lines.append("INTERIM ACTUALS (partial-period reported figures, tier-1 corpus)")
+        lines += [f"- {e}" for e in interim]
+    return "\n".join(lines)
+
+
+def build_estimator_context(
+    spec: MetricSpec,
+    series_facts: list[Fact],
+    guidance: list[Fact],
+    trend: dict | None,
+    baselines_bt: list[dict],
+    extra_evidence: list[str],
+) -> str:
+    """Single-metric blind estimator message (legacy shape, kept for
+    compatibility). Stable-to-volatile order: metric section first, volatile
+    evidence digest last. NO consensus anywhere."""
+    lines = [
+        "TARGET",
+        f"company: {spec.company} ({spec.ticker})",
+        build_metric_block(spec, series_facts, guidance, trend, baselines_bt, []),
+        "",
+        "FRESH EVIDENCE DIGEST (post-corpus-freeze research; leads verified where possible)",
+    ]
     if extra_evidence:
         lines += [f"- {e}" for e in extra_evidence]
+    else:
+        lines.append("- (no fresh evidence collected)")
+    return "\n".join(lines)
+
+
+def build_company_context(
+    specs: list[MetricSpec],
+    per_metric_blocks: list[str],
+    digest: list[str],
+) -> str:
+    """Company-level blind estimator user message: ALL of one company's metric
+    sections (built by build_metric_block, one per spec, stable content), then
+    the shared fresh-research digest LAST (most volatile — cache-friendly
+    stable-to-volatile ordering). NO consensus anywhere (blind rule)."""
+    assert len(specs) == len(per_metric_blocks)
+    lines: list[str] = [
+        "TARGET COMPANY",
+        f"company: {specs[0].company} ({specs[0].ticker})",
+        f"target period: {specs[0].period}",
+        "",
+        "Estimate ALL of the following metrics in one coherent response. Copy each",
+        "metric_label EXACTLY as listed:",
+    ]
+    lines += [f"- {s.label}" for s in specs]
+    for s, block in zip(specs, per_metric_blocks):
+        lines += ["", f"================ METRIC: {s.label} ================", block]
+    lines += ["", "FRESH EVIDENCE DIGEST — shared across metrics "
+                  "(post-corpus-freeze research; leads verified where possible)"]
+    if digest:
+        lines += [f"- {e}" for e in digest]
     else:
         lines.append("- (no fresh evidence collected)")
     return "\n".join(lines)

@@ -34,6 +34,10 @@ class Settings(BaseSettings):
     price_out_per_m: float = 0.0          # USD per 1M output tokens
     openrouter_provider: str = ""         # pin ONE backend provider (cache continuity!); "" = no pin
                                           # e.g. "deepseek" for deepseek models, "openai" for gpt models
+    estimator_panel: str = ""             # cross-provider estimator panel: comma-separated
+                                          # "provider:model" entries (provider = openrouter|openai),
+                                          # e.g. "openrouter:deepseek/deepseek-chat,openai:gpt-5".
+                                          # "" = single call with llm_provider + MODEL_BIG (current behavior)
 
     @property
     def api_key(self) -> str:

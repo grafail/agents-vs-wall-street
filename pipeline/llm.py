@@ -63,6 +63,37 @@ def complete_structured(
     return resp.choices[0].message.parsed, usage
 
 
+def complete_structured_at(
+    provider: str,
+    model: str,
+    messages: list[dict],
+    schema: Type[BaseModel],
+    **kwargs: Any,
+) -> tuple[BaseModel, dict]:
+    """Structured call pinned to an EXPLICIT provider + model (estimator panel).
+
+    Panel calls are big-role by construction: no reasoning-effort dialing (that
+    extra only applies to the openrouter small role); openrouter entries get the
+    usage-include extra so billed cost lands in the usage dict. Raises if the
+    provider's API key is missing — callers treat that as a member failure."""
+    s = settings()
+    if provider == "openrouter":
+        if not s.openrouter_api_key:
+            raise RuntimeError("OPENROUTER_API_KEY missing — panel member skipped")
+        c = OpenAI(api_key=s.openrouter_api_key, base_url="https://openrouter.ai/api/v1")
+        kwargs.setdefault("extra_body", {}).update({"usage": {"include": True}})
+    elif provider == "openai":
+        if not s.openai_api_key:
+            raise RuntimeError("OPENAI_API_KEY missing — panel member skipped")
+        c = OpenAI(api_key=s.openai_api_key)
+    else:
+        raise ValueError(f"unknown panel provider: {provider!r} (openrouter|openai)")
+    resp = c.beta.chat.completions.parse(
+        model=model, messages=messages, response_format=schema, **kwargs
+    )
+    return resp.choices[0].message.parsed, _usage_dict(resp)
+
+
 def complete_text(size: str, messages: list[dict], **kwargs: Any) -> tuple[str, dict]:
     c = client()
     extra = _extra_body(size)

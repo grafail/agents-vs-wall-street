@@ -197,6 +197,39 @@ def guidance_sanity(value: float, guidance_low: float | None,
                    f"{value} is {rel:.0%} outside guidance [{lo}, {hi}] — tolerated (<25%)")
 
 
+def sibling_coherence(eps_final: float | None, profit_final: float | None,
+                      eps_anchor: float | None, profit_anchor: float | None,
+                      ) -> dict[str, Any]:
+    """Implied-EPS coherence backstop for sibling metrics on the same basis.
+
+    implied_eps = profit_final * (eps_anchor / profit_anchor) — i.e. last
+    year's EPS scaled by forecast profit growth (constant share count / tax
+    assumption). WARNS (never fails) when the forecast EPS deviates from the
+    implied EPS by more than 35% relative — catching e.g. a flat operating
+    profit forecast paired with a collapsing EPS. Deliberately loose: real
+    share-count/tax/below-the-line moves live inside the 35% band."""
+    vals = (eps_final, profit_final, eps_anchor, profit_anchor)
+    if any(not _finite(v) for v in vals):
+        return _result("sibling_coherence", "ok",
+                       "not computable (missing final or anchor)")
+    if profit_anchor == 0:
+        return _result("sibling_coherence", "ok",
+                       "not computable (zero profit anchor)")
+    implied = profit_final * (eps_anchor / profit_anchor)
+    if implied == 0:
+        return _result("sibling_coherence", "ok",
+                       "not computable (implied EPS is zero)")
+    rel = abs(eps_final - implied) / abs(implied)
+    if rel > 0.35:
+        return _result("sibling_coherence", "warn",
+                       f"EPS {eps_final:g} vs implied {implied:.3g} "
+                       f"(= profit {profit_final:g} × EPS/profit anchor ratio "
+                       f"{eps_anchor:g}/{profit_anchor:g}) — gap {rel:.0%} > 35%; "
+                       f"EPS and sibling profit forecast may be incoherent")
+    return _result("sibling_coherence", "ok",
+                   f"EPS {eps_final:g} within {rel:.0%} of implied {implied:.3g}")
+
+
 def run_all_gates(value: float, spec: MetricSpec,
                   history: list[float] | None = None,
                   guidance: tuple[float | None, float | None] | None = None,
