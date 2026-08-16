@@ -29,6 +29,15 @@ def model_id(size: str) -> str:
     raise ValueError(f"unknown model size: {size}")
 
 
+def _extra_body(size: str) -> dict:
+    """On OpenRouter, dial reasoning to low for the small role — extraction/labeling
+    doesn't need deep thinking and reasoning models are slow/expensive there."""
+    s = settings()
+    if s.llm_provider == "openrouter" and size == "small" and s.small_reasoning_effort:
+        return {"reasoning": {"effort": s.small_reasoning_effort}}
+    return {}
+
+
 def complete_structured(
     size: str,
     messages: list[dict],
@@ -37,6 +46,9 @@ def complete_structured(
 ) -> tuple[BaseModel, dict]:
     """Structured-output call. Returns (parsed pydantic object, usage dict incl cached tokens)."""
     c = client()
+    extra = _extra_body(size)
+    if extra:
+        kwargs.setdefault("extra_body", {}).update(extra)
     resp = c.beta.chat.completions.parse(
         model=model_id(size), messages=messages, response_format=schema, **kwargs
     )

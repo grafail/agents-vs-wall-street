@@ -28,6 +28,8 @@ class Settings(BaseSettings):
     model_small: str = ""   # extraction + vibe labeling
     enable_reconcile: bool = True
     enable_research: bool = True    # live research agent (news/peers digest) in the graph
+    small_reasoning_effort: str = "low"   # OpenRouter reasoning effort for the small role ("" disables)
+    extract_workers: int = 4              # parallel LLM parse batches during extraction
 
     @property
     def api_key(self) -> str:

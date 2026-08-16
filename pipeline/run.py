@@ -92,6 +92,135 @@ def _nudge_audit_to_report(audit: dict | None) -> report_mod.NudgeAudit | None:
         pre_reconcile_value=audit.get("pre_reconcile"))
 
 
+def _fmt(v: float | None) -> str:
+    return report_mod._num(v)
+
+
+def _baseline_substituted(method: str, iu: dict, value: float | None) -> str:
+    """Method-specific substituted formula from the baseline's inputs_used."""
+    if method in ("seasonal_yoy", "growth_drift") and "growth_applied" in iu:
+        g = iu["growth_applied"] * 100.0
+        return f"B = {_fmt(iu.get('anchor'))} × (1 {g:+.2f}%) = {_fmt(value)}"
+    if method == "seasonal_yoy" and "level_readings" in iu:
+        lv = ", ".join(iu.get("level_readings", []))
+        return f"B = mean({lv}) + trend {iu.get('trend_points', 0):+.2f} = {_fmt(value)}"
+    if method == "guidance_mid":
+        return f"B = guidance mid = {_fmt(value)}"
+    if method == "guidance_x_beat":
+        if "avg_beat_pct" in iu:
+            return f"B = G_mid × (1 {iu['avg_beat_pct']:+.2f}%) = {_fmt(value)}"
+        return f"B = G_mid {iu.get('avg_beat_points', 0):+.2f} pts = {_fmt(value)}"
+    return f"B = {_fmt(value)}"
+
+
+_BASELINE_FORMULA = {
+    "seasonal_yoy": "B = anchor × (1 + mean(recent YoY))",
+    "growth_drift": "B = anchor × (1 + drift-adjusted YoY)",
+    "guidance_mid": "B = (guidance low + high) / 2",
+    "guidance_x_beat": "B = guidance mid × (1 + historical beat)",
+}
+
+
+def _derivation_steps(spec: MetricSpec, blob: dict) -> list[report_mod.DerivationStep] | None:
+    """Deterministic derivation-equation assembly from the audits the graph
+    already produced. Provenance: data = extracted/fetched, math = deterministic
+    computation, llm = model judgment (always entering through a computed cap)."""
+    D = report_mod.DerivationStep
+    steps: list[report_mod.DerivationStep] = []
+    u = "pts" if spec.kind == "ratio_pct" else "%"
+
+    anchor = blob.get("anchor") or {}
+    if anchor.get("value") is not None:
+        refs = []
+        if anchor.get("source_doc"):
+            refs.append(f"{anchor['source_doc']} (tier 1)")
+        steps.append(D(name="anchor", formula=f"A = actual[{anchor.get('period')}]",
+                       substituted=f"A = {_fmt(anchor['value'])} {spec.unit_str}",
+                       result=anchor["value"], provenance="data", refs=refs,
+                       note="same period last fiscal year, exact reported figure"))
+
+    chosen = next((c for c in blob.get("baselines", [])
+                   if c["method"] == blob.get("baseline_chosen")), None)
+    if chosen is not None:
+        bt = chosen.get("backtest") or {}
+        refs = []
+        if bt:
+            refs.append(f"chosen by walk-forward backtest: MAE {_fmt(bt.get('mae'))} "
+                        f"over n={bt.get('n')} periods")
+        steps.append(D(name="baseline", provenance="math",
+                       formula=_BASELINE_FORMULA.get(chosen["method"], f"B = {chosen['method']}"),
+                       substituted=_baseline_substituted(
+                           chosen["method"], chosen.get("inputs_used") or {}, chosen.get("value")),
+                       result=chosen.get("value"), refs=refs))
+
+    nudges = blob.get("nudges")
+    est = blob.get("estimate")
+    if nudges is not None:
+        q = nudges.get("quantiles", {})
+        steps.append(D(name="judgment: quantile", provenance="llm",
+                       formula="Δq = p50 × shrink",
+                       substituted=f"Δq = {q.get('p50', 0):+.2f}{u}(LLM) × {q.get('shrink', 1):.3f} "
+                                   f"= {q.get('component', 0):+.3f}{u}",
+                       result=q.get("component"),
+                       note=f"shrink = 1/(1+(p90−p10)/σ), σ={_fmt(nudges.get('sigma'))} — "
+                            "wide model uncertainty shrinks its own influence"))
+        for comp_name, key in (("judgment: momentum", "momentum"),
+                               ("judgment: surprise skew", "surprise_skew")):
+            c = nudges.get(key) or {}
+            cites = []
+            if est is not None:
+                g = getattr(est, key, None)
+                if g is not None:
+                    cites = list(g.citations)
+            steps.append(D(name=comp_name, provenance="llm",
+                           formula=f"Δ = map({key} label) × σ",
+                           substituted=f"Δ({c.get('label', '—')}(LLM)) = {c.get('value', 0):+.3f}{u}",
+                           result=c.get("value"), refs=cites,
+                           note={"empty_citations_zeroed": "no citations → zeroed",
+                                 "calibration_table": "empirically calibrated mapping",
+                                 "fixed_fallback": "fixed σ-multiple mapping"}.get(c.get("source"))))
+        adj_formula = ("adj = clamp(Δq+Δm+Δs, ±0.75×MAE)" if spec.kind == "ratio_pct"
+                       else "adj = clamp(B × (Δq+Δm+Δs)/100, ±0.75×MAE)")
+        steps.append(D(name="cap & apply", provenance="math", formula=adj_formula,
+                       substituted=f"adj = clamp({_fmt(nudges.get('raw_adjustment'))}, "
+                                   f"±{_fmt(nudges.get('cap'))}) = {_fmt(nudges.get('adjustment'))}",
+                       result=nudges.get("adjustment"), note=nudges.get("cap_reason")))
+        steps.append(D(name="pre-reconcile", provenance="math", formula="V = B + adj",
+                       substituted=f"V = {_fmt(nudges.get('baseline_value'))} "
+                                   f"{(nudges.get('adjustment') or 0):+,.2f} "
+                                   f"= {_fmt(nudges.get('pre_reconcile'))}",
+                       result=nudges.get("pre_reconcile")))
+
+    final_source = blob.get("final_source")
+    blend = blob.get("blend")
+    rec = blob.get("reconciliation")
+    cons = blob.get("consensus") or {}
+    if final_source == "reconciled" and blend is not None:
+        w = blend.get("weight_ours", 1.0)
+        refs = [f"consensus: {cons.get('source')}"] if cons.get("source") else []
+        steps.append(D(name="reconcile blend", provenance="math",
+                       formula="F = w·V + (1−w)·C",
+                       substituted=f"F = {w:.2f}(LLM)·{_fmt(blend.get('ours'))} + "
+                                   f"{1 - w:.2f}·{_fmt(blend.get('consensus'))} "
+                                   f"= {_fmt(blend.get('final'))}",
+                       result=blend.get("final"), refs=refs,
+                       note=f"reconciler verdict: {rec.verdict} (LLM)" if rec else None))
+    elif final_source == "estimator_nudged":
+        steps.append(D(name="final", provenance="math", formula="F = V",
+                       substituted=f"F = {_fmt(blob.get('final'))}",
+                       result=blob.get("final"),
+                       note="no consensus blend (pure-blind mode or no consensus)"))
+    elif final_source is not None:
+        prov = "math" if str(final_source).startswith("baseline") else "data"
+        steps.append(D(name="fallback", provenance=prov,
+                       formula=f"F = {final_source}",
+                       substituted=f"F = {_fmt(blob.get('final'))}",
+                       result=blob.get("final"),
+                       refs=blob.get("cascade_reasons", [])[:4],
+                       note="failsafe cascade selected this rung"))
+    return steps or None
+
+
 def _metric_report(spec: MetricSpec, blob: dict) -> report_mod.MetricReport:
     anchor = blob.get("anchor") or {}
     baselines = [
@@ -148,6 +277,7 @@ def _metric_report(spec: MetricSpec, blob: dict) -> report_mod.MetricReport:
         reconciliation=rec,
         validation=validation,
         fallback_used=fallback,
+        derivation=_derivation_steps(spec, blob),
         final_value=blob.get("final"),
     )
 

@@ -15,15 +15,27 @@ def _now() -> str:
 
 
 class RunLog:
-    def __init__(self, run_dir: Path | None = None):
+    def __init__(self, run_dir: Path | None = None, echo: bool = True):
         stamp = datetime.now(timezone.utc).strftime("run-%Y-%m-%dT%H_%M_%S")
         self.dir = run_dir or (LOGS_DIR / stamp)
         self.dir.mkdir(parents=True, exist_ok=True)
         self._events = self.dir / "events.jsonl"
+        self.echo = echo
 
     def event(self, kind: str, **data) -> None:
         with open(self._events, "a") as f:
             f.write(json.dumps({"ts": _now(), "kind": kind, **data}, default=str) + "\n")
+        if self.echo:
+            brief = " ".join(
+                f"{k}={self._fmt(v)}" for k, v in data.items()
+                if k not in ("quote", "text", "excerpt", "messages") and v is not None
+            )
+            print(f"[{_now()[11:19]}] {kind:<24} {brief[:200]}", flush=True)
+
+    @staticmethod
+    def _fmt(v) -> str:
+        s = str(v)
+        return s if len(s) <= 60 else s[:57] + "..."
 
     def save_report(self, report: dict) -> Path:
         path = self.dir / "report.json"

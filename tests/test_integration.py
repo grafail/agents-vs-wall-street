@@ -127,6 +127,17 @@ def test_full_graph_run(wired, tmp_path):
     html = report_mod.render_html(rr)
     assert "Net sales" in html and "<script" not in html
 
+    # derivation equations: present, provenance-tagged, reconciled path ends in a blend
+    net = next(r for r in reports if r.label == "Net sales")
+    assert net.derivation is not None
+    names = [s.name for s in net.derivation]
+    assert names[0] == "anchor" and names[1] == "baseline"
+    assert net.derivation[0].provenance == "data"
+    assert any(s.provenance == "llm" for s in net.derivation)
+    assert net.derivation[-1].name == "reconcile blend"
+    assert "(LLM)" in net.derivation[-1].substituted
+    assert "Derivation" in html and "prov-llm" in html
+
 
 def test_estimator_failure_falls_back(wired, tmp_path, monkeypatch):
     def broken(size, messages, schema, **kw):
@@ -143,6 +154,11 @@ def test_estimator_failure_falls_back(wired, tmp_path, monkeypatch):
         mr = run_mod._metric_report(spec, blob)
         assert mr.fallback_used is not None
         assert mr.fallback_used.source_used.startswith("baseline:")
+        # derivation in the fallback case ends with a fallback step naming the rung
+        assert mr.derivation is not None
+        assert mr.derivation[-1].name == "fallback"
+        assert "baseline" in mr.derivation[-1].formula
+        assert mr.derivation[-1].provenance == "math"
 
 
 def test_reconcile_disabled_skips_consensus(wired, tmp_path, monkeypatch):

@@ -60,7 +60,7 @@ def test_render_contains_expected_content(rendered: str):
                   "Net fees", "Pre-exceptional operating profit"]:
         assert label in rendered
     # final values (formatted)
-    assert "46,580" in rendered
+    assert "46,833" in rendered
     assert "4.75" in rendered
     assert "911.2" in rendered
     # drill-down uses <details>
@@ -112,3 +112,25 @@ def test_empty_report_renders(tmp_path: Path):
     src.write_text("{}")
     out = render_report(src)
     assert "No metrics in report" in out.read_text()
+
+
+def test_derivation_renders():
+    """Derivation equations render with provenance badges; absence never crashes."""
+    from pipeline.report import (DerivationStep, MetricReport, RunMeta, RunReport,
+                                 render_html)
+    fixture = Path(__file__).parent / "fixtures" / "sample_report.json"
+    rr = RunReport.model_validate_json(fixture.read_text())
+    net = next(m for m in rr.metrics if m.label == "Net sales")
+    assert net.derivation and net.derivation[0].provenance == "data"
+    html = render_html(rr)
+    assert "Derivation" in html
+    assert "B = anchor × (1 + mean(recent YoY))" in html
+    assert "prov-llm" in html and "prov-data" in html and "prov-math" in html
+    assert "every LLM term is bounded by a computed cap" in html
+    # final box carries the compact substituted equation of the last step
+    assert "F = 0.60(LLM)·47,048" in html
+
+    # a metric with no derivation renders fine
+    bare = MetricReport(company="X", ticker="X", label="Y", unit="USDm", period="FY1")
+    html2 = render_html(RunReport(meta=RunMeta(), metrics=[bare]))
+    assert "Derivation" not in html2

@@ -110,6 +110,25 @@ class FallbackUsed(_Model):
     reasons: list[str] = Field(default_factory=list)
 
 
+class DerivationStep(_Model):
+    """One line of the per-metric derivation equation (the explainability layer).
+
+    provenance: where the step's value comes from —
+      "data" = extracted/fetched (anchor, guidance, consensus; trust tier in refs)
+      "math" = deterministic computation (baselines, shrink, caps, blends)
+      "llm"  = model judgment (quantiles, vibe labels, reconcile verdict)
+    A step mixing LLM inputs into deterministic arithmetic is tagged "math" and
+    marks the LLM-sourced terms inline in `substituted` (suffix "(LLM)").
+    """
+    name: str                               # anchor | baseline | quantile | ...
+    formula: str                            # symbolic, e.g. "B = A × (1 + g)"
+    substituted: str                        # numbers in, e.g. "B = 45,277 × (1 + 2.9%)"
+    result: float | None = None
+    provenance: str = "math"                # data | math | llm
+    refs: list[str] = Field(default_factory=list)
+    note: str | None = None
+
+
 class MetricReport(_Model):
     """One of the 12 contest records, full audit chain in pipeline order."""
     company: str
@@ -127,6 +146,7 @@ class MetricReport(_Model):
     reconciliation: Reconciliation | None = None  # reused from pipeline.types
     validation: list[ValidationCheck] = Field(default_factory=list)
     fallback_used: FallbackUsed | None = None
+    derivation: list[DerivationStep] | None = None
     final_value: float | None = None
 
 
@@ -319,6 +339,37 @@ def _fallback_html(f: FallbackUsed | None) -> str:
     )
 
 
+_PROV_LABEL = {"data": "data", "math": "math", "llm": "llm"}
+
+
+def _derivation_html(steps: list[DerivationStep] | None) -> str:
+    if not steps:
+        return ""
+    lines = []
+    for s in steps:
+        prov = s.provenance if s.provenance in _PROV_LABEL else "math"
+        refs_bits = list(s.refs)
+        if s.note:
+            refs_bits.append(s.note)
+        refs = (f'<div class="d-refs">↳ {_e("; ".join(refs_bits))}</div>'
+                if refs_bits else "")
+        lines.append(
+            f'<div class="d-step"><div class="d-head">'
+            f'<span class="prov prov-{prov}">{_e(_PROV_LABEL[prov])}</span>'
+            f'<span class="d-name">{_e(s.name)}</span>'
+            f'<code class="d-formula">{_e(s.formula)}</code></div>'
+            f'<code class="d-sub">{_e(s.substituted)}</code>{refs}</div>'
+        )
+    return (
+        '<div class="deriv"><h4>Derivation</h4>'
+        '<p class="d-legend"><span class="prov prov-data">data</span> extracted/fetched value · '
+        '<span class="prov prov-math">math</span> deterministic computation · '
+        '<span class="prov prov-llm">llm</span> model judgment — '
+        'every LLM term is bounded by a computed cap</p>'
+        f'{"".join(lines)}</div>'
+    )
+
+
 def _metric_id(m: MetricReport) -> str:
     slug = "".join(ch if ch.isalnum() else "-" for ch in f"{m.ticker}-{m.label}".lower())
     return "m-" + "-".join(p for p in slug.split("-") if p)
@@ -340,6 +391,10 @@ def _metric_details(m: MetricReport) -> str:
         _stage("6 · Consensus & reconciliation", _reconcile_html(m.consensus, m.reconciliation)),
         _stage("7 · Validation gates", _validation_html(m.validation)),
     ]
+    final_eq = ""
+    if m.derivation:
+        last = m.derivation[-1]
+        final_eq = f'<div class="final-eq"><code>{_e(last.substituted)}</code></div>'
     return f"""
 <details id="{_metric_id(m)}">
 <summary><span class="sum-co">{_e(m.company)}</span> <span class="sum-label">{_e(m.label)}</span>
@@ -348,7 +403,8 @@ def _metric_details(m: MetricReport) -> str:
 <div class="detail-body">
 {_fallback_html(m.fallback_used)}
 {"".join(stages)}
-<div class="final-box">FINAL VALUE<div class="final-num">{final}</div></div>
+{_derivation_html(m.derivation)}
+<div class="final-box">FINAL VALUE<div class="final-num">{final}</div>{final_eq}</div>
 </div>
 </details>"""
 
@@ -473,6 +529,26 @@ tr.chosen td { background:var(--pass-bg); font-weight:600; }
 .final-box { margin-top:1rem; padding:.8rem 1rem; border:2px solid var(--ink); border-radius:10px;
              font-size:.75rem; letter-spacing:.08em; font-weight:700; }
 .final-num { font-size:1.8rem; letter-spacing:0; margin-top:.1rem; }
+.final-eq { margin-top:.4rem; letter-spacing:0; font-weight:400; }
+.final-eq code { background:transparent; padding:0; font-size:.95rem; }
+.deriv { margin:1rem 0; padding:.75rem .9rem; background:var(--bg);
+         border:1px solid var(--line); border-left:4px solid var(--ink); border-radius:8px; }
+.d-legend { margin:.2rem 0 .7rem; font-size:.82rem; color:var(--muted); }
+.d-step { margin:.55rem 0; }
+.d-head { display:flex; gap:.55rem; align-items:baseline; flex-wrap:wrap; }
+.d-name { font-size:.75rem; text-transform:uppercase; letter-spacing:.06em;
+          color:var(--muted); min-width:7.5em; }
+.d-formula { background:transparent; padding:0; color:var(--muted); }
+.d-sub { display:block; margin:.1rem 0 0 calc(7.5em + 2.4rem + .55rem);
+         background:transparent; padding:0; font-size:.95em; font-weight:600; }
+.d-refs { margin-left:calc(7.5em + 2.4rem + .55rem); font-size:.8em; color:var(--muted); }
+.prov { display:inline-block; min-width:2.4rem; text-align:center; padding:.05em .45em;
+        border-radius:5px; font-size:.68rem; font-weight:700; text-transform:uppercase;
+        letter-spacing:.05em; }
+.prov-data { background:var(--neutral-bg); color:var(--neutral-ink); }
+.prov-math { background:#dbe7fb; color:#1d4f9c; }
+.prov-llm  { background:#ecdff7; color:#6b2fa3; }
+@media (max-width:640px){ .d-sub,.d-refs{ margin-left:0; } }
 footer { margin-top:2rem; color:var(--muted); font-size:.8rem; }
 @media print { body { background:#fff; } details { break-inside:avoid; } .card:hover { border-color:var(--line); } }
 """
