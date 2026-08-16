@@ -334,6 +334,45 @@ def value_in_quote(value_as_written: str, quote: str) -> bool:
     return v.replace(",", "").replace(" ", "") in q or value_as_written.strip() in quote
 
 
+_SCALE_CANDIDATES = (100.0, 0.01, 1000.0, 0.001)  # pence<->pounds, millions<->billions
+
+
+def auto_correct_units(facts: list[ExtractedFact]) -> None:
+    """Auto-fix UNAMBIGUOUS scale slips instead of merely flagging them.
+
+    A fact qualifies when: >=3 positive siblings of the same metric exist, the
+    value is far outside their median band (<0.2x or >5x), and exactly ONE
+    canonical scale factor (x100/÷100 pence-pounds, x1000/÷1000 m-bn) lands it
+    comfortably inside (0.5x-2x median). Corrected in place with an
+    `auto_corrected_scale_xN` flag; ambiguous cases stay flagged, never guessed.
+    """
+    by_label: dict[str, list[ExtractedFact]] = {}
+    for f in facts:
+        by_label.setdefault(f.metric_label, []).append(f)
+    for group in by_label.values():
+        if any(f.raw_unit in ("pct_points", "pct_decimal", "bps") for f in group):
+            continue  # percent metrics have no scale families
+        vals = [abs(f.value) for f in group if f.value > 0]
+        if len(vals) < 3:
+            continue
+        med = median(vals)
+        if med == 0:
+            continue
+        for f in group:
+            if f.value <= 0:
+                continue
+            ratio = f.value / med
+            if 0.2 <= ratio <= 5.0:
+                continue  # not far enough out to justify correction
+            fits = [k for k in _SCALE_CANDIDATES if 0.5 <= (f.value * k) / med <= 2.0]
+            if len(fits) == 1:
+                k = fits[0]
+                f.flags.append(f"auto_corrected_scale_x{k:g} (was {f.value})")
+                f.value = f.value * k
+            elif "magnitude_outlier" not in f.flags:
+                f.flags.append("magnitude_outlier")
+
+
 def apply_magnitude_gate(facts: list[ExtractedFact]) -> None:
     """Flag (never drop) facts whose magnitude is implausible vs siblings of the
     same metric: outside 0.5x-2x the median |value| once >=3 facts exist.
@@ -597,7 +636,12 @@ def extract_company(ticker: str, log: RunLog | None = None,
             metric_facts += facts
             all_skipped += [{"metric": spec.label, **s} for s in skipped]
             metric_skipped += len(skipped)
+        auto_correct_units(metric_facts)
         apply_magnitude_gate(metric_facts)
+        n_corrected = sum(1 for f in metric_facts
+                          if any(fl.startswith("auto_corrected_scale") for fl in f.flags))
+        if n_corrected:
+            log.event("units_auto_corrected", metric=spec.label, n=n_corrected)
         all_facts += metric_facts
         log.event("metric_done", metric=spec.label,
                   facts_accepted=len(metric_facts),
