@@ -485,13 +485,26 @@ def _grounded_html(name: str, g) -> str:
 
 
 def _panel_inline(p: "PanelView | None") -> str:
-    """One-line panel summary on the metric card itself (not collapsed)."""
+    """Compact panel strip on the metric card itself (not collapsed)."""
     if p is None or len(p.members) < 2:
         return ""
-    bits = [f"{_e(mm.member.split('/')[-1])} p50 {_num(mm.p50)}%" for mm in p.members]
-    spread = f" &middot; disagreement {_num(p.p50_spread)}%" if p.p50_spread is not None else ""
-    return (f'<p class="muted" style="font-size:.82rem;margin:.2rem 0 .4rem">'
-            f'Panel: {" &middot; ".join(bits)}{spread} (per-model detail in Blind estimate)</p>')
+    cells = "".join(
+        f'<span style="display:inline-block;border:1px solid var(--hair);border-radius:5px;'
+        f'padding:.12rem .5rem;margin:.15rem .3rem .15rem 0;background:#fff">'
+        f'<span style="color:var(--muted)">{_e(mm.member.split(":")[-1].split("/")[-1])}</span> '
+        f'<strong>{_num(mm.p50)}%</strong></span>'
+        for mm in p.members)
+    spread = ""
+    if p.p50_spread is not None:
+        hot = p.p50_spread is not None and p.p50_spread >= 5
+        spread = (f'<span style="display:inline-block;padding:.12rem .5rem;margin:.15rem 0;'
+                  f'{"color:#8a2626;font-weight:600" if hot else "color:var(--muted)"}">'
+                  f'disagreement {_num(p.p50_spread)}%</span>')
+    return (f'<div style="font-size:.84rem;margin:.35rem 0 .45rem">'
+            f'<span style="font-weight:600;color:var(--accent);margin-right:.4rem">Model panel</span>'
+            f'{cells}{spread}'
+            f'<span style="color:var(--muted);font-size:.78rem"> — each model\'s central answer; '
+            f'big disagreement automatically shrinks their influence. Full answers in Blind estimate.</span></div>')
 
 
 def _panel_html(p: "PanelView | None") -> str:
