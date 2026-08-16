@@ -1,0 +1,360 @@
+{
+  "meta": {
+    "run_id": "run-2026-08-16T13_05_42",
+    "started": "2026-08-16T13:05:42+00:00",
+    "finished": "2026-08-16T13:11:18+00:00",
+    "enable_reconcile": true,
+    "llm_provider": "openrouter",
+    "model_big": "anthropic/claude-sonnet-4.5",
+    "model_small": "openai/gpt-5-mini",
+    "git_commit": "a1b2c3d4e5f67890",
+    "totals": {
+      "llm_calls": 31,
+      "prompt_tokens": 412550,
+      "completion_tokens": 18240,
+      "cached_prompt_tokens": 361200,
+      "tool_cache_hits": 44,
+      "tool_cache_live": 6,
+      "est_cost_usd": 1.87
+    }
+  },
+  "metrics": [
+    {
+      "company": "Home Depot",
+      "ticker": "HD",
+      "label": "Net sales",
+      "unit": "USDm",
+      "period": "FY2026Q2",
+      "anchor": {
+        "value": 45283.0,
+        "period": "FY2025Q2",
+        "quote": "Sales for the second quarter of fiscal 2025 were $45.3 billion, an increase of 4.9 percent from the second quarter of fiscal 2024.",
+        "source_doc": "home-depot/2025-08-19-q2-fy2025-earnings-release.md"
+      },
+      "baseline_candidates": [
+        {"method": "yoy_last_quarter", "value": 46503.0, "backtest_mae": 1.6, "backtest_bias": 0.3, "backtest_n": 8},
+        {"method": "yoy_trailing4_mean", "value": 46280.0, "backtest_mae": 1.2, "backtest_bias": -0.1, "backtest_n": 8},
+        {"method": "guidance_implied", "value": 46110.0, "backtest_mae": 1.4, "backtest_bias": -0.4, "backtest_n": 6}
+      ],
+      "baseline_chosen": "yoy_trailing4_mean",
+      "guidance": {
+        "low": 45700.0,
+        "mid": 46100.0,
+        "high": 46500.0,
+        "beat_factor": 1.004,
+        "quote": "For fiscal 2026 we expect total sales growth of approximately 2.8 percent.",
+        "source_doc": "home-depot/2026-05-20-q1-fy2026-earnings-call-transcript.md"
+      },
+      "estimate": {
+        "method": "yoy_trailing4_mean",
+        "growth_p10": 1.1,
+        "growth_p50": 2.4,
+        "growth_p90": 3.6,
+        "momentum": {
+          "explanation": "Comp transactions turned positive in Q1 FY2026 and management called out strengthening Pro backlog; big-ticket remains soft but sequentially improving.",
+          "label": "warming",
+          "citations": ["home-depot/2026-05-20-q1-fy2026-earnings-call-transcript.md: 'Pro backlog strengthened through the quarter'"]
+        },
+        "guidance_style": {
+          "explanation": "HD has beaten its own full-year sales guide in 6 of the last 8 quarters by a small margin; guidance reads conservative but not aggressively sandbagged.",
+          "label": "accurate",
+          "citations": ["artifacts/facts/home-depot/guidance-history.json"]
+        },
+        "surprise_skew": {
+          "explanation": "Hurricane-season demand and SRS acquisition run-rate give more upside scenarios than downside; rate-cut chatter supports big-ticket recovery.",
+          "label": "upside",
+          "citations": ["home-depot/2026-05-20-q1-fy2026-earnings-call-transcript.md: 'SRS continues to outperform our deal model'"]
+        },
+        "confidence": "high",
+        "rationale": "Trailing-4 YoY baseline has the best backtest MAE; guidance corroborates ~2.8% growth; nudges add modest upside for warming momentum."
+      },
+      "nudges": {
+        "components": [
+          {"name": "momentum", "label": "warming", "raw": 0.5, "applied": 0.4, "capped": false, "note": "shrunk by quantile spread"},
+          {"name": "guidance_style", "label": "accurate", "raw": 0.0, "applied": 0.0, "capped": false, "note": null},
+          {"name": "surprise_skew", "label": "upside", "raw": 0.4, "applied": 0.3, "capped": false, "note": null}
+        ],
+        "cap": 0.9,
+        "caps_applied": [],
+        "pre_reconcile_value": 46605.0
+      },
+      "consensus": {
+        "value": 46480.0,
+        "source": "openbb equity.estimates.consensus (yfinance)",
+        "fetched_at": "2026-08-16T09:12:00+00:00"
+      },
+      "reconciliation": {
+        "verdict": "hold",
+        "weight_ours": 0.8,
+        "rationale": "Our number sits 0.3% above consensus, inside one backtest-MAE; evidence (Pro backlog, SRS run-rate) supports holding."
+      },
+      "validation": [
+        {"check": "unit_sanity_usdm", "passed": true, "detail": "value in [30000, 60000] plausible band"},
+        {"check": "within_guidance_band_widened", "passed": true, "detail": null},
+        {"check": "yoy_growth_bounds", "passed": true, "detail": "+2.9% YoY within ±10% gate"}
+      ],
+      "fallback_used": null,
+      "final_value": 46580.0
+    },
+    {
+      "company": "Home Depot",
+      "ticker": "HD",
+      "label": "Adjusted diluted EPS",
+      "unit": "USD / share",
+      "period": "FY2026Q2",
+      "anchor": {
+        "value": 4.68,
+        "period": "FY2025Q2",
+        "quote": "Adjusted diluted earnings per share were $4.68 for the second quarter of fiscal 2025.",
+        "source_doc": "home-depot/2025-08-19-q2-fy2025-earnings-release.md"
+      },
+      "baseline_candidates": [
+        {"method": "yoy_last_quarter", "value": 4.75, "backtest_mae": 2.1, "backtest_bias": 0.6, "backtest_n": 8},
+        {"method": "yoy_trailing4_mean", "value": 4.79, "backtest_mae": 1.8, "backtest_bias": 0.2, "backtest_n": 8}
+      ],
+      "baseline_chosen": "yoy_trailing4_mean",
+      "guidance": {
+        "low": null,
+        "mid": null,
+        "high": null,
+        "beat_factor": 1.006,
+        "quote": "We expect adjusted diluted EPS to decline approximately 2 percent for the year.",
+        "source_doc": "home-depot/2026-05-20-q1-fy2026-earnings-call-transcript.md"
+      },
+      "estimate": {
+        "method": "yoy_trailing4_mean",
+        "growth_p10": 0.2,
+        "growth_p50": 1.9,
+        "growth_p90": 3.4,
+        "momentum": {
+          "explanation": "Margin pressure from SRS mix is annualizing; buybacks resumed in Q1 FY2026 supporting the per-share line.",
+          "label": "neutral",
+          "citations": ["home-depot/2026-05-20-q1-fy2026-earnings-call-transcript.md: 'we resumed share repurchases in the quarter'"]
+        },
+        "guidance_style": {
+          "explanation": "Full-year EPS guide has been met or slightly beaten each of the last two years.",
+          "label": "accurate",
+          "citations": ["artifacts/facts/home-depot/guidance-history.json"]
+        },
+        "surprise_skew": {
+          "explanation": "No strong asymmetry: tariff costs vs buyback cadence roughly offset.",
+          "label": "balanced",
+          "citations": []
+        },
+        "confidence": "medium",
+        "rationale": "EPS follows the sales line with slight margin drag; nudges are near zero, keeping us close to the baseline."
+      },
+      "nudges": {
+        "components": [
+          {"name": "momentum", "label": "neutral", "raw": 0.0, "applied": 0.0, "capped": false, "note": null},
+          {"name": "surprise_skew", "label": "balanced", "raw": 0.0, "applied": 0.0, "capped": false, "note": "empty citations => zero nudge"}
+        ],
+        "cap": 1.35,
+        "caps_applied": [],
+        "pre_reconcile_value": 4.77
+      },
+      "consensus": {
+        "value": 4.73,
+        "source": "openbb equity.estimates.consensus (yfinance)",
+        "fetched_at": "2026-08-16T09:12:04+00:00"
+      },
+      "reconciliation": {
+        "verdict": "partial",
+        "weight_ours": 0.6,
+        "rationale": "0.8% gap to consensus with only medium confidence; blended 60/40 toward our estimate."
+      },
+      "validation": [
+        {"check": "unit_sanity_per_share", "passed": true, "detail": null},
+        {"check": "eps_vs_sales_coherence", "passed": true, "detail": "EPS growth within 3pts of sales growth"}
+      ],
+      "fallback_used": null,
+      "final_value": 4.75
+    },
+    {
+      "company": "Home Depot",
+      "ticker": "HD",
+      "label": "Comparable sales, total company",
+      "unit": "%",
+      "period": "FY2026Q2",
+      "anchor": {
+        "value": 1.0,
+        "period": "FY2025Q2",
+        "quote": "Comparable sales increased 1.0 percent in the second quarter, and comparable sales in the U.S. increased 1.4 percent.",
+        "source_doc": "home-depot/2025-08-19-q2-fy2025-earnings-release.md"
+      },
+      "baseline_candidates": [
+        {"method": "comp_carryover", "value": 1.2, "backtest_mae": 0.8, "backtest_bias": -0.2, "backtest_n": 8},
+        {"method": "sales_minus_footage", "value": 1.5, "backtest_mae": 1.1, "backtest_bias": 0.4, "backtest_n": 6}
+      ],
+      "baseline_chosen": "comp_carryover",
+      "guidance": {
+        "low": 0.5,
+        "mid": 1.0,
+        "high": 1.5,
+        "beat_factor": 1.0,
+        "quote": "We continue to expect comp sales growth of approximately 1 percent for fiscal 2026.",
+        "source_doc": "home-depot/2026-05-20-q1-fy2026-earnings-call-transcript.md"
+      },
+      "estimate": {
+        "method": "comp_carryover",
+        "growth_p10": 0.4,
+        "growth_p50": 1.4,
+        "growth_p90": 2.2,
+        "momentum": {
+          "explanation": "Transactions positive two quarters running; ticket still flat on lumber deflation.",
+          "label": "warming",
+          "citations": ["home-depot/2026-05-20-q1-fy2026-earnings-call-transcript.md: 'positive comp transactions for the second consecutive quarter'"]
+        },
+        "guidance_style": {
+          "explanation": "Comp guidance historically lands within 50bps of the print.",
+          "label": "accurate",
+          "citations": ["artifacts/facts/home-depot/guidance-history.json"]
+        },
+        "surprise_skew": {
+          "explanation": "Storm-repair demand is an unpriced upside; no symmetric downside catalyst identified.",
+          "label": "upside",
+          "citations": ["home-depot/2025-08-19-q2-fy2025-earnings-release.md"]
+        },
+        "confidence": "medium",
+        "rationale": "Carryover baseline plus small warming/upside nudges lands slightly above the guide midpoint."
+      },
+      "nudges": {
+        "components": [
+          {"name": "momentum", "label": "warming", "raw": 0.5, "applied": 0.3, "capped": true, "note": "clipped at 0.75x backtest MAE"},
+          {"name": "surprise_skew", "label": "upside", "raw": 0.4, "applied": 0.3, "capped": false, "note": null}
+        ],
+        "cap": 0.6,
+        "caps_applied": ["momentum clipped at 0.75x MAE (0.6)"],
+        "pre_reconcile_value": 1.8
+      },
+      "consensus": {
+        "value": 1.2,
+        "source": "visible-alpha snapshot via ddgs",
+        "fetched_at": "2026-08-16T09:13:11+00:00"
+      },
+      "reconciliation": {
+        "verdict": "partial",
+        "weight_ours": 0.5,
+        "rationale": "0.6pt gap on a low-variance metric is large; halfway blend after estimator defended only the storm-demand leg."
+      },
+      "validation": [
+        {"check": "pct_points_band", "passed": true, "detail": "comp in [-5, 8] band"},
+        {"check": "comp_vs_sales_coherence", "passed": false, "detail": "comp 1.5pt implies sales growth 2.3% vs forecast 2.9% — gap 0.6pt exceeds 0.5pt gate"}
+      ],
+      "fallback_used": null,
+      "final_value": 1.5
+    },
+    {
+      "company": "Hays",
+      "ticker": "HAS",
+      "label": "Net fees",
+      "unit": "GBPm",
+      "period": "FY2026",
+      "anchor": {
+        "value": 972.6,
+        "period": "FY2025",
+        "quote": "Group net fees of £972.6 million decreased 9% on a like-for-like basis.",
+        "source_doc": "hays/2025-08-21-fy2025-preliminary-results.md"
+      },
+      "baseline_candidates": [
+        {"method": "yoy_full_year", "value": 914.2, "backtest_mae": 3.4, "backtest_bias": -1.1, "backtest_n": 5},
+        {"method": "quarterly_runrate_x4", "value": 926.0, "backtest_mae": 2.8, "backtest_bias": -0.4, "backtest_n": 5}
+      ],
+      "baseline_chosen": "quarterly_runrate_x4",
+      "guidance": null,
+      "estimate": {
+        "method": "quarterly_runrate_x4",
+        "growth_p10": -8.0,
+        "growth_p50": -4.5,
+        "growth_p90": -1.0,
+        "momentum": {
+          "explanation": "Q4 FY2025 exit rate improved sequentially in Germany but UK perm remains weak; net fee decline is decelerating, not reversing.",
+          "label": "cooling",
+          "citations": ["hays/2025-08-21-fy2025-preliminary-results.md: 'sequential stabilisation in Germany temp'"]
+        },
+        "guidance_style": {
+          "explanation": "Hays gives no numeric guidance; trading statements have been candid about weakness.",
+          "label": "accurate",
+          "citations": ["hays/2026-01-14-q2-fy2026-trading-update.md"]
+        },
+        "surprise_skew": {
+          "explanation": "Perm recovery timing is the swing factor; recent staffing peer updates skew slightly negative.",
+          "label": "downside",
+          "citations": ["hays/2026-01-14-q2-fy2026-trading-update.md: 'perm markets remain subdued'"]
+        },
+        "confidence": "low",
+        "rationale": "Run-rate baseline off H1 trading update; cooling momentum and downside skew push below the naive run-rate."
+      },
+      "nudges": {
+        "components": [
+          {"name": "momentum", "label": "cooling", "raw": -1.2, "applied": -1.2, "capped": false, "note": null},
+          {"name": "surprise_skew", "label": "downside", "raw": -0.8, "applied": -0.6, "capped": false, "note": "shrunk by wide quantile spread"}
+        ],
+        "cap": 2.1,
+        "caps_applied": [],
+        "pre_reconcile_value": 909.5
+      },
+      "consensus": {
+        "value": 915.0,
+        "source": "company-compiled consensus, hays IR page",
+        "fetched_at": "2026-08-16T09:14:02+00:00"
+      },
+      "reconciliation": {
+        "verdict": "partial",
+        "weight_ours": 0.7,
+        "rationale": "Below company-compiled consensus by 0.6%; peer trading updates support the softer number, partial blend retained."
+      },
+      "validation": [
+        {"check": "unit_sanity_gbpm", "passed": true, "detail": "value in [700, 1300] plausible band"},
+        {"check": "yoy_growth_bounds", "passed": true, "detail": "-6.5% within gate"}
+      ],
+      "fallback_used": null,
+      "final_value": 911.2
+    },
+    {
+      "company": "Hays",
+      "ticker": "HAS",
+      "label": "Pre-exceptional operating profit",
+      "unit": "GBPm",
+      "period": "FY2026",
+      "anchor": {
+        "value": 45.6,
+        "period": "FY2025",
+        "quote": "Pre-exceptional operating profit of £45.6 million, down 56% year-on-year.",
+        "source_doc": "hays/2025-08-21-fy2025-preliminary-results.md"
+      },
+      "baseline_candidates": [
+        {"method": "drop_through_on_net_fees", "value": 38.0, "backtest_mae": 18.5, "backtest_bias": -4.0, "backtest_n": 5}
+      ],
+      "baseline_chosen": "drop_through_on_net_fees",
+      "guidance": {
+        "low": 30.0,
+        "mid": 35.0,
+        "high": 40.0,
+        "beat_factor": null,
+        "quote": "We expect FY2026 pre-exceptional operating profit broadly in the £30-40 million range given current market conditions.",
+        "source_doc": "hays/2026-01-14-q2-fy2026-trading-update.md"
+      },
+      "estimate": null,
+      "nudges": null,
+      "consensus": {
+        "value": 34.0,
+        "source": "company-compiled consensus, hays IR page",
+        "fetched_at": "2026-08-16T09:14:05+00:00"
+      },
+      "reconciliation": null,
+      "validation": [
+        {"check": "unit_sanity_gbpm", "passed": true, "detail": "value in [0, 120] plausible band"},
+        {"check": "profit_vs_fees_coherence", "passed": true, "detail": "implied conversion margin 3.8% plausible for trough year"}
+      ],
+      "fallback_used": {
+        "source_used": "guidance_mid",
+        "reasons": [
+          "estimator returned malformed JSON twice (schema violation on Grounded.citations)",
+          "high operating leverage makes drop-through baseline unreliable (backtest MAE 18.5%)"
+        ]
+      },
+      "final_value": 35.0
+    }
+  ]
+}
