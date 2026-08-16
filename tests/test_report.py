@@ -153,6 +153,79 @@ def test_derivation_renders():
     assert "No worksheet recorded" in html2
 
 
+# ---------------------------------------------------------------- upgrades
+
+
+def test_summary_delta_vs_street(rendered: str):
+    """Top summary table gets a vs-street column: % diff, points for % metrics."""
+    assert "vs street" in rendered
+    assert "+0.8%" in rendered      # HD Net sales 46,832.7 vs consensus 46,480
+    assert "+0.4pp" in rendered     # comp sales is a '%' metric -> points difference
+    # fallback metric has no consensus -> em-dash cell (covered by dash rendering)
+
+
+def test_pre_upload_rollup(rendered: str):
+    """Aggregated operator checklist near the top, one anchor-linked line each."""
+    assert "Pre-upload checklist" in rendered
+    assert "fallback — final number came from guidance_mid" in rendered
+    assert "gate failed: comp_vs_sales_coherence" in rendered
+    assert "auto-corrected unit during extraction: auto_corrected_scale_bn_to_m" in rendered
+    assert "estimator confidence low" in rendered
+    # items anchor-link to their metric cards
+    assert 'href="#m-has-pre-exceptional-operating-profit"' in rendered
+    assert 'href="#m-hd-comparable-sales-total-company"' in rendered
+    assert "Nothing needs review" not in rendered
+
+
+def test_rollup_empty_state():
+    m = MetricReport(company="X", ticker="X", label="Clean", unit="USDm", period="Q1",
+                     final_value=1.0,
+                     validation=[{"check": "magnitude", "passed": True}])
+    html = render_html(RunReport(metrics=[m]))
+    assert "Nothing needs review" in html
+
+
+def test_rollup_failsafe_mention():
+    m = MetricReport(
+        company="X", ticker="X", label="Y", unit="USDm", period="Q1", final_value=1.0,
+        fallback_used={"source_used": "consensus (FAILSAFE)",
+                       "reasons": ["FAILSAFE: every candidate failed gates; using last "
+                                   "numeric candidate — NEEDS MANUAL REVIEW before upload"]})
+    html = render_html(RunReport(metrics=[m]))
+    assert "FAILSAFE — every cascade rung failed gates" in html
+
+
+def test_candidate_ladder_renders(rendered: str, report: RunReport):
+    net = next(m for m in report.metrics if m.label == "Net sales")
+    assert net.candidates is not None
+    assert [r.status for r in net.candidates] == ["chosen"] + ["viable"] * 4
+    # always-visible ladder line, cascade order, per-rung status
+    assert "Cascade" in rendered
+    assert "reconciled 46,833 CHOSEN" in rendered
+    assert "guidance_mid 46,100" in rendered           # viable rung keeps its value
+    assert "guidance_mid —" in rendered                # absent rung (HD EPS / net fees)
+    assert "rung-skipped" in rendered                  # op-profit baseline was gate-failed
+    assert "guidance_mid 35 CHOSEN" in rendered        # fallback metric's chosen rung
+    # skip reason surfaces as a tooltip
+    assert "gate-failed (guidance_sanity" in rendered
+
+
+def test_cap_meter_renders(rendered: str):
+    """Judgment worksheet line carries the cap-utilization meter + CSS bar."""
+    assert "used 544.9 of ±544.9 (100%)" in rendered
+    assert 'style="width:100%"' in rendered
+    assert "ws-bar-fill" in rendered
+
+
+def test_bibliography_renders(rendered: str):
+    """Per-company deduped source list in a collapsed details at section end."""
+    assert "Sources cited — Home Depot" in rendered
+    assert "Sources cited — Hays" in rendered
+    assert "tier 1" in rendered                        # from derivation ref "(tier 1)"
+    assert "2025-08-19" in rendered                    # date parsed from doc name
+    assert "hays/2025-08-21-fy2025-preliminary-results.md" in rendered
+
+
 def test_page_is_self_explanatory():
     """Layered readability: lay-reader primer + tooltips coexist with expert detail."""
     fixture = Path(__file__).parent / "fixtures" / "sample_report.json"

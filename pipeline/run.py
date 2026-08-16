@@ -108,8 +108,43 @@ def _nudge_audit_to_report(audit: dict | None) -> report_mod.NudgeAudit | None:
     capped = audit.get("cap_reason") == "capped_at_k_x_mae"
     caps = [audit["cap_reason"]] if audit.get("cap_reason") not in (None, "within_cap") else []
     return report_mod.NudgeAudit(
-        components=comps, cap=audit.get("cap"), caps_applied=caps,
-        pre_reconcile_value=audit.get("pre_reconcile"))
+        components=comps, cap=audit.get("cap"), adjustment=audit.get("adjustment"),
+        caps_applied=caps, pre_reconcile_value=audit.get("pre_reconcile"))
+
+
+def _candidate_rungs(blob: dict) -> list[report_mod.CandidateRung] | None:
+    """Failsafe-ladder audit from the finalize node's blob: the full ordered
+    rung list (graph records it as blob['candidates'], absent rungs included)
+    plus the cascade's skip trail (cascade_reasons) for per-rung status."""
+    ladder = blob.get("candidates")
+    if not ladder:
+        return None
+    source = str(blob.get("final_source") or "")
+    chosen_name = source.removesuffix(" (FAILSAFE)")
+    # cascade_reasons entries look like "name: skipped (None)" / "name: gate-failed (...)"
+    trail: dict[str, str] = {}
+    for r in blob.get("cascade_reasons", []):
+        name, sep, rest = str(r).partition(": ")
+        if sep and name not in trail:
+            trail[name] = rest
+    rungs: list[report_mod.CandidateRung] = []
+    for c in ladder:
+        name, value = c.get("name", "?"), c.get("value")
+        if name == chosen_name:
+            status = "chosen"
+            reason = ("FAILSAFE — every rung failed gates; last numeric rung used"
+                      if "FAILSAFE" in source else None)
+        elif value is None:
+            status, reason = "absent", None
+        else:
+            r = trail.get(name, "")
+            if r.startswith(("skipped", "gate-failed")):
+                status, reason = "skipped", r
+            else:
+                status, reason = "viable", None
+        rungs.append(report_mod.CandidateRung(
+            name=name, value=value, status=status, reason=reason))
+    return rungs
 
 
 def _fmt(v: float | None) -> str:
@@ -378,6 +413,7 @@ def _metric_report(spec: MetricSpec, blob: dict) -> report_mod.MetricReport:
         reconciliation=rec,
         validation=validation,
         fallback_used=fallback,
+        candidates=_candidate_rungs(blob),
         derivation=_derivation_steps(spec, blob),
         worksheet=_worksheet_lines(spec, blob),
         final_value=blob.get("final"),

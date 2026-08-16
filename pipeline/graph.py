@@ -481,6 +481,23 @@ def node_finalize(state: CompanyState) -> dict:
         if anchor_value is not None:
             candidates.append(("anchor_last_year", anchor_value))
 
+        # Additive audit field for the report's candidate ladder: EVERY canonical
+        # rung in cascade order, absent ones included (value None). The cascade
+        # itself still consumes `candidates` above — behavior unchanged.
+        est_rung = (("reconciled", blend["final"]) if blend is not None else
+                    ("estimator_nudged",
+                     nudges["pre_reconcile"] if nudges is not None else None))
+        blob["candidates"] = [
+            {"name": n, "value": v} for n, v in (
+                est_rung,
+                (f"baseline:{chosen['method']}" if chosen else "baseline",
+                 chosen["value"] if chosen else None),
+                ("guidance_mid", g_mid),
+                ("consensus", consensus),
+                ("anchor_last_year", anchor_value),
+            )
+        ]
+
         history = blob.get("series_values") or None
         guidance_bounds = (g_lo if g_lo is not None else g_mid,
                            g_hi if g_hi is not None else g_mid)

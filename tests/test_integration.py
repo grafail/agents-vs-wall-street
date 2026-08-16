@@ -150,6 +150,19 @@ def test_full_graph_run(wired, tmp_path):
     # ratio_pct metric has the not-available consensus line
     assert "not available" in html
 
+    # candidate ladder: finalize records the FULL rung list (absent rungs too)
+    blob = state["metrics"]["Net sales"]
+    assert blob["candidates"][0]["name"] == "reconciled"
+    assert {c["name"] for c in blob["candidates"]} >= {"guidance_mid", "consensus",
+                                                       "anchor_last_year"}
+    assert net.candidates is not None
+    assert net.candidates[0].status == "chosen"
+    assert all(c.status in ("chosen", "viable", "skipped", "absent") for c in net.candidates)
+    assert "Cascade" in html and "CHOSEN" in html
+    # pre-upload rollup + cap meter render from live pipeline output
+    assert "Pre-upload checklist" in html
+    assert "ws-bar" in html
+
 
 def test_estimator_failure_falls_back(wired, tmp_path, monkeypatch):
     def broken(size, messages, schema, **kw):
@@ -174,6 +187,12 @@ def test_estimator_failure_falls_back(wired, tmp_path, monkeypatch):
         # ledger renders for the fallback case too
         assert mr.worksheet is not None and mr.worksheet[-1].is_final
         assert any(w.label.startswith("fallback →") for w in mr.worksheet)
+        # ladder: estimator rung is absent (it errored), a baseline rung is chosen
+        assert mr.candidates is not None
+        assert mr.candidates[0].name == "estimator_nudged"
+        assert mr.candidates[0].status == "absent"
+        chosen_rung = next(c for c in mr.candidates if c.status == "chosen")
+        assert chosen_rung.name.startswith("baseline:")
         html = report_mod.render_html(report_mod.RunReport(
             meta=report_mod.RunMeta(), metrics=[mr]))
         assert "fallback →" in html and "← FINAL" in html

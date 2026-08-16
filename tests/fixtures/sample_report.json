@@ -119,9 +119,12 @@
       "note": null
      }
     ],
-    "cap": 0.9,
-    "caps_applied": [],
-    "pre_reconcile_value": 46605.0
+    "cap": 544.9,
+    "adjustment": 544.9,
+    "caps_applied": [
+     "capped_at_k_x_mae"
+    ],
+    "pre_reconcile_value": 47047.9
    },
    "consensus": {
     "value": 46480.0,
@@ -151,6 +154,38 @@
     }
    ],
    "fallback_used": null,
+   "candidates": [
+    {
+     "name": "reconciled",
+     "value": 46832.7,
+     "status": "chosen",
+     "reason": null
+    },
+    {
+     "name": "baseline:yoy_trailing4_mean",
+     "value": 46280.0,
+     "status": "viable",
+     "reason": null
+    },
+    {
+     "name": "guidance_mid",
+     "value": 46100.0,
+     "status": "viable",
+     "reason": null
+    },
+    {
+     "name": "consensus",
+     "value": 46480.0,
+     "status": "viable",
+     "reason": null
+    },
+    {
+     "name": "anchor_last_year",
+     "value": 45283.0,
+     "status": "viable",
+     "reason": null
+    }
+   ],
    "final_value": 46832.7,
    "derivation": [
     {
@@ -351,9 +386,46 @@
      "check": "eps_vs_sales_coherence",
      "passed": true,
      "detail": "EPS growth within 3pts of sales growth"
+    },
+    {
+     "check": "extraction_flags",
+     "passed": true,
+     "detail": "facts carried flags: auto_corrected_scale_bn_to_m, derived_from_growth"
     }
    ],
    "fallback_used": null,
+   "candidates": [
+    {
+     "name": "reconciled",
+     "value": 4.75,
+     "status": "chosen",
+     "reason": null
+    },
+    {
+     "name": "baseline:yoy_trailing4_mean",
+     "value": 4.79,
+     "status": "viable",
+     "reason": null
+    },
+    {
+     "name": "guidance_mid",
+     "value": null,
+     "status": "absent",
+     "reason": null
+    },
+    {
+     "name": "consensus",
+     "value": 4.73,
+     "status": "viable",
+     "reason": null
+    },
+    {
+     "name": "anchor_last_year",
+     "value": 4.68,
+     "status": "viable",
+     "reason": null
+    }
+   ],
    "final_value": 4.75
   },
   {
@@ -448,8 +520,9 @@
     "pre_reconcile_value": 1.8
    },
    "consensus": {
-    "value": null,
-    "source": "no comparable consensus series"
+    "value": 1.1,
+    "source": "sell-side comp-sales consensus, compiled",
+    "fetched_at": "2026-08-16T09:12:09+00:00"
    },
    "reconciliation": {
     "verdict": "partial",
@@ -469,6 +542,38 @@
     }
    ],
    "fallback_used": null,
+   "candidates": [
+    {
+     "name": "reconciled",
+     "value": 1.5,
+     "status": "chosen",
+     "reason": null
+    },
+    {
+     "name": "baseline:comp_carryover",
+     "value": 1.2,
+     "status": "viable",
+     "reason": null
+    },
+    {
+     "name": "guidance_mid",
+     "value": 1.0,
+     "status": "viable",
+     "reason": null
+    },
+    {
+     "name": "consensus",
+     "value": 1.1,
+     "status": "viable",
+     "reason": null
+    },
+    {
+     "name": "anchor_last_year",
+     "value": 1.0,
+     "status": "viable",
+     "reason": null
+    }
+   ],
    "final_value": 1.5
   },
   {
@@ -550,6 +655,7 @@
      }
     ],
     "cap": 2.1,
+    "adjustment": -1.8,
     "caps_applied": [],
     "pre_reconcile_value": 909.5
    },
@@ -576,6 +682,38 @@
     }
    ],
    "fallback_used": null,
+   "candidates": [
+    {
+     "name": "reconciled",
+     "value": 911.2,
+     "status": "chosen",
+     "reason": null
+    },
+    {
+     "name": "baseline:quarterly_runrate_x4",
+     "value": 926.0,
+     "status": "viable",
+     "reason": null
+    },
+    {
+     "name": "guidance_mid",
+     "value": null,
+     "status": "absent",
+     "reason": null
+    },
+    {
+     "name": "consensus",
+     "value": 915.0,
+     "status": "viable",
+     "reason": null
+    },
+    {
+     "name": "anchor_last_year",
+     "value": 972.6,
+     "status": "viable",
+     "reason": null
+    }
+   ],
    "final_value": 911.2
   },
   {
@@ -611,9 +749,8 @@
    "estimate": null,
    "nudges": null,
    "consensus": {
-    "value": 34.0,
-    "source": "company-compiled consensus, hays IR page",
-    "fetched_at": "2026-08-16T09:14:05+00:00"
+    "value": null,
+    "source": "no compiled consensus for this line item"
    },
    "reconciliation": null,
    "validation": [
@@ -635,6 +772,38 @@
      "high operating leverage makes drop-through baseline unreliable (backtest MAE 18.5%)"
     ]
    },
+   "candidates": [
+    {
+     "name": "estimator_nudged",
+     "value": null,
+     "status": "absent",
+     "reason": "estimator returned malformed JSON twice"
+    },
+    {
+     "name": "baseline:drop_through_on_net_fees",
+     "value": 38.0,
+     "status": "skipped",
+     "reason": "gate-failed (guidance_sanity: 38.0 at edge of widened band; magnitude: backtest MAE 18.5% deemed unreliable)"
+    },
+    {
+     "name": "guidance_mid",
+     "value": 35.0,
+     "status": "chosen",
+     "reason": null
+    },
+    {
+     "name": "consensus",
+     "value": null,
+     "status": "absent",
+     "reason": null
+    },
+    {
+     "name": "anchor_last_year",
+     "value": 45.6,
+     "status": "viable",
+     "reason": null
+    }
+   ],
    "final_value": 35.0,
    "worksheet": [
     {

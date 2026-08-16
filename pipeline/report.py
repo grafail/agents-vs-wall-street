@@ -17,9 +17,11 @@ This is the per-run evidence viewer, NOT the judged architecture write-up.
 from __future__ import annotations
 
 import html
+import re
 import sys
 from datetime import datetime
 from pathlib import Path
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -91,6 +93,7 @@ class NudgeComponent(_Model):
 class NudgeAudit(_Model):
     components: list[NudgeComponent] = Field(default_factory=list)
     cap: float | None = None                # the k×backtest-MAE cap value
+    adjustment: float | None = None         # total applied adjustment (post-cap, canonical units)
     caps_applied: list[str] = Field(default_factory=list)
     pre_reconcile_value: float | None = None  # absolute value going INTO reconcile
 
@@ -111,6 +114,20 @@ class FallbackUsed(_Model):
     """Failsafe cascade record: which source finally produced the number."""
     source_used: str                        # estimator | baseline | guidance_mid | consensus
     reasons: list[str] = Field(default_factory=list)
+
+
+class CandidateRung(_Model):
+    """One rung of the failsafe cascade ladder, in cascade order.
+
+    status: chosen  = this rung produced the final number
+            viable  = had a number, never needed (a higher rung was accepted)
+            skipped = had a number but was rejected (gate failure / non-finite)
+            absent  = the rung produced no number at all
+    """
+    name: str                               # estimator_nudged | reconciled | baseline:<m> | ...
+    value: float | None = None
+    status: Literal["chosen", "viable", "skipped", "absent"] = "absent"
+    reason: str | None = None               # skip trail from the cascade, if any
 
 
 class DerivationStep(_Model):
@@ -149,6 +166,7 @@ class MetricReport(_Model):
     reconciliation: Reconciliation | None = None  # reused from pipeline.types
     validation: list[ValidationCheck] = Field(default_factory=list)
     fallback_used: FallbackUsed | None = None
+    candidates: list[CandidateRung] | None = None  # failsafe ladder, cascade order
     derivation: list[DerivationStep] | None = None
     worksheet: list["WorksheetLine"] | None = None
     final_value: float | None = None
@@ -265,9 +283,27 @@ def _company_id(ticker: str) -> str:
 
 # ---------------------------------------------------------------- worksheet (hero)
 
-def _worksheet_html(lines: list[WorksheetLine] | None) -> str:
+def _cap_meter_html(n: NudgeAudit | None) -> str:
+    """Cap-utilization meter for the judgment line: how much of the allowed
+    ±cap (0.75× backtest-MAE) the model's adjustment actually consumed."""
+    if n is None or n.cap is None or n.cap <= 0 or n.adjustment is None:
+        return ""
+    used = abs(n.adjustment)
+    pct = max(0.0, min(100.0, used / n.cap * 100.0))
+    return (
+        f'<div class="ws-meter" title="the model&#39;s total adjustment vs the maximum it '
+        f'was allowed (±0.75× the chosen method&#39;s backtest MAE)">'
+        f'<span class="ws-meter-t">used {_num(used)} of ±{_num(n.cap)} ({pct:.0f}%)</span>'
+        f'<div class="ws-bar"><div class="ws-bar-fill" style="width:{pct:.0f}%"></div></div>'
+        f'</div>'
+    )
+
+
+def _worksheet_html(lines: list[WorksheetLine] | None,
+                    nudges: NudgeAudit | None = None) -> str:
     if not lines:
         return '<p class="muted">No worksheet recorded for this metric.</p>'
+    meter = _cap_meter_html(nudges)
     rows = []
     for ln in lines:
         final = ' <span class="ws-flag">← FINAL</span>' if ln.is_final else ""
@@ -277,6 +313,9 @@ def _worksheet_html(lines: list[WorksheetLine] | None) -> str:
             f'<span class="ws-label">{_e(ln.label)}</span>'
             f'<span class="ws-amt">{_num(ln.amount)}{final}</span></div>'
         )
+        if meter and ln.provenance == "llm":
+            rows.append(meter)   # attach to the judgment line only
+            meter = ""
     return (
         '<div class="ws"><div class="ws-legend">D data · M math · L model judgment</div>'
         f'{"".join(rows)}</div>'
@@ -305,6 +344,40 @@ def _consensus_check_html(m: MetricReport) -> str:
     return (f'<p class="cons">{kspan} '
             f'ours <b>{_num(m.final_value)}</b> · street <b>{_num(c.value)}</b> · '
             f'<b class="accent">{_e(rel)}</b>{src}</p>')
+
+
+def _delta_vs_street(m: MetricReport) -> str:
+    """Summary-table delta: percent vs consensus, points for '%' metrics, — else."""
+    c = m.consensus
+    if c is None or c.value is None or m.final_value is None:
+        return "—"
+    if m.unit == "%":
+        return f"{m.final_value - c.value:+.1f}pp"
+    if not c.value:
+        return "—"
+    return f"{(m.final_value - c.value) / abs(c.value) * 100:+.1f}%"
+
+
+def _ladder_html(rungs: list[CandidateRung] | None) -> str:
+    """Always-visible failsafe ladder: every cascade rung, in order, with status."""
+    if not rungs:
+        return ""
+    bits = []
+    for r in rungs:
+        name, val = _e(r.name), _num(r.value)
+        tip = f' title="{_e(r.reason)}"' if r.reason else ""
+        if r.status == "chosen":
+            bits.append(f'<span class="rung rung-chosen"{tip}>{name} {val} CHOSEN</span>')
+        elif r.status == "viable":
+            bits.append(f'<span class="rung"{tip}>{name} {val} <span class="muted">viable</span></span>')
+        elif r.status == "skipped":
+            bits.append(f'<span class="rung rung-skipped"{tip}>{name} {val} skipped</span>')
+        else:  # absent
+            bits.append(f'<span class="rung muted"{tip}>{name} —</span>')
+    kspan = ('<span class="cons-k" title="the never-blank failsafe cascade: rungs are tried '
+             'in this order and the first one that passes every hard gate becomes the final '
+             'number; later rungs stay on standby">Cascade</span>')
+    return f'<p class="ladder">{kspan} {" · ".join(bits)}</p>'
 
 
 # ---------------------------------------------------------------- formulas details
@@ -533,8 +606,9 @@ def _metric_section(m: MetricReport) -> str:
   <div class="m-final">{final}</div>
 </div>
 {_fallback_html(m.fallback_used)}
-{_worksheet_html(m.worksheet)}
+{_worksheet_html(m.worksheet, m.nudges)}
 {_consensus_check_html(m)}
+{_ladder_html(m.candidates)}
 {_derivation_html(m.derivation)}
 {"".join(stages)}
 </section>"""
@@ -552,6 +626,69 @@ def _group_by_company(metrics: list[MetricReport]) -> list[tuple[str, str, list[
     return [(co, groups[co][0].ticker, groups[co]) for co in order]
 
 
+_DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
+_TIER_RE = re.compile(r"\(tier (\d)\)")
+
+
+def _bibliography_html(company: str, ms: list[MetricReport]) -> str:
+    """Every cited document/URL across the company's metrics, deduped, with
+    trust tier (when a derivation ref recorded one) and any date in the name."""
+    sources: dict[str, dict] = {}   # key -> {"tier": str|None, "used": [labels]}
+
+    def _add(raw: str | None, label: str) -> None:
+        if not raw:
+            return
+        tier_m = _TIER_RE.search(raw)
+        key = _TIER_RE.sub("", raw).strip()
+        # citations often carry an inline quote: "doc.md: 'quoted line'"
+        if ": '" in key:
+            key = key.split(": '", 1)[0].strip()
+        if not key:
+            return
+        entry = sources.setdefault(key, {"tier": None, "used": []})
+        if tier_m:
+            entry["tier"] = tier_m.group(1)
+        if label not in entry["used"]:
+            entry["used"].append(label)
+
+    for m in ms:
+        if m.anchor is not None:
+            _add(m.anchor.source_doc, m.label)
+        if m.guidance is not None:
+            _add(m.guidance.source_doc, m.label)
+        if m.estimate is not None:
+            for g in (m.estimate.momentum, m.estimate.guidance_style, m.estimate.surprise_skew):
+                if g is not None:
+                    for c in g.citations:
+                        _add(c, m.label)
+        if m.consensus is not None:
+            _add(m.consensus.source, m.label)
+        for s in m.derivation or []:
+            for r in s.refs:
+                if _TIER_RE.search(r):    # only refs that name a tiered document
+                    _add(r, m.label)
+    if not sources:
+        return ""
+    rows = []
+    for key in sorted(sources):
+        e = sources[key]
+        date_m = _DATE_RE.search(key)
+        rows.append(
+            f'<tr><td><code>{_e(key)}</code></td>'
+            f'<td>{("tier " + e["tier"]) if e["tier"] else "—"}</td>'
+            f'<td>{date_m.group(1) if date_m else "—"}</td>'
+            f'<td>{_e("; ".join(e["used"]))}</td></tr>')
+    return (
+        f'<details class="stage biblio"><summary>Sources cited — {_e(company)} '
+        f'({len(sources)})</summary><div class="stage-body">'
+        '<p class="stage-help">Every document, feed or URL cited anywhere in this '
+        'company&#39;s forecasts, deduplicated. Tier 1 = the company&#39;s own filings '
+        'and releases.</p>'
+        '<div class="scroll"><table><thead><tr><th>source</th><th>trust</th><th>date</th>'
+        f'<th>cited by</th></tr></thead><tbody>{"".join(rows)}</tbody></table></div>'
+        '</div></details>')
+
+
 def _company_sections(metrics: list[MetricReport]) -> str:
     out = []
     for company, ticker, ms in _group_by_company(metrics):
@@ -560,6 +697,7 @@ def _company_sections(metrics: list[MetricReport]) -> str:
             f'<h2 class="co-name">{_e(company)} <span class="co-tick">{_e(ticker)}'
             f' · {_e(ms[0].period)}</span></h2>'
             + "".join(_metric_section(m) for m in ms)
+            + _bibliography_html(company, ms)
             + "</section>")
     return "".join(out)
 
@@ -628,6 +766,52 @@ explained instead.</p>
 </div></details>"""
 
 
+def _review_items(m: MetricReport) -> list[str]:
+    """Everything on this metric an operator should eyeball before uploading.
+    Plain strings; the rollup box turns them into anchor-linked lines."""
+    items: list[str] = []
+    if m.fallback_used is not None:
+        items.append(f"fallback — final number came from {m.fallback_used.source_used}")
+    failsafe = (m.fallback_used is not None
+                and ("FAILSAFE" in m.fallback_used.source_used
+                     or any("FAILSAFE" in r for r in m.fallback_used.reasons)))
+    if failsafe:
+        items.append("FAILSAFE — every cascade rung failed gates; number needs manual review")
+    for v in m.validation:
+        if not v.passed:
+            detail = f" — {v.detail}" if v.detail else ""
+            items.append(f"gate failed: {v.check}{detail}")
+        elif v.check == "extraction_flags" and v.detail:
+            for flag in re.split(r"[,\s]+", v.detail):
+                if flag.startswith("auto_corrected_scale"):
+                    items.append(f"auto-corrected unit during extraction: {flag}")
+    if m.estimate is not None and m.estimate.confidence == "low":
+        items.append("estimator confidence low — judgment layer carries little conviction")
+    return items
+
+
+def _rollup_html(metrics: list[MetricReport]) -> str:
+    """The operator's pre-upload checklist: one aggregated box of everything
+    that needs a human look before the numbers go to OpenStocks."""
+    lines = []
+    for m in metrics:
+        for item in _review_items(m):
+            lines.append(
+                f'<li><a href="#{_metric_id(m)}">{_e(m.ticker)} · {_e(m.label)}</a>'
+                f' — {_e(item)}</li>')
+    if not lines:
+        body = ('<p class="rollup-ok">Nothing needs review — every metric passed its '
+                'gates on the preferred path.</p>')
+    else:
+        body = f'<ul>{"".join(lines)}</ul>'
+    return (
+        '<section class="rollup" id="pre-upload">'
+        '<p class="rollup-t">Pre-upload checklist</p>'
+        '<p class="rollup-sub">Review each line before manually uploading the workbooks — '
+        'fallbacks, failed gates, unit auto-corrections and low-conviction estimates.</p>'
+        f'{body}</section>')
+
+
 def _summary_html(metrics: list[MetricReport]) -> str:
     if not metrics:
         return '<p class="muted">No metrics in report.</p>'
@@ -638,13 +822,18 @@ def _summary_html(metrics: list[MetricReport]) -> str:
         rows.append(
             f'<tr><td>{_e(m.company)}</td><td><a href="#{_metric_id(m)}">{_e(m.label)}</a></td>'
             f'<td class="num">{val}</td>'
+            f'<td class="num">{_e(_delta_vs_street(m))}</td>'
             f'<td title="{_e(_STATUS_HELP.get(word, ""))}">{_e(word)}</td></tr>'
         )
     legend = " · ".join(f"<b>{_e(k)}</b> {_e(v)}" for k, v in _STATUS_HELP.items()
                         if k != "no value")
     return (
         '<table class="sum"><thead><tr><th>company</th><th>metric</th>'
-        f'<th class="num">final</th><th>status</th></tr></thead><tbody>{"".join(rows)}</tbody></table>'
+        '<th class="num">final</th>'
+        '<th class="num"><abbr title="our final vs the average of Wall Street analysts&#39; '
+        'estimates — percent difference, or points (pp) for percentage metrics">vs street'
+        '</abbr></th><th>status</th></tr></thead>'
+        f'<tbody>{"".join(rows)}</tbody></table>'
         f'<p class="sum-legend">{legend}</p>'
     )
 
@@ -766,9 +955,28 @@ td.num, th.num { text-align:right; font-family:ui-monospace,Menlo,monospace; fon
 .ws-final .ws-label, .ws-final .ws-amt { font-weight:700; }
 .ws-flag { color:var(--accent); font-size:.75em; font-weight:700; margin-left:.45rem;
            font-family:-apple-system,"Segoe UI",system-ui,sans-serif; letter-spacing:.03em; }
-.cons { margin:.2rem 0 1rem; font-size:.9rem; }
+.cons { margin:.2rem 0 .5rem; font-size:.9rem; }
 .cons-k { font-size:.7rem; text-transform:uppercase; letter-spacing:.09em; color:var(--muted);
           font-weight:700; margin-right:.5rem; }
+.ws-meter { display:flex; align-items:center; gap:.6rem; padding:.05rem 0 .35rem;
+            margin-left:3.1rem; }
+.ws-meter-t { font-size:.72rem; color:var(--muted); white-space:nowrap;
+              font-family:ui-monospace,Menlo,monospace; }
+.ws-bar { flex:0 0 7rem; height:3px; background:var(--hair); }
+.ws-bar-fill { height:3px; background:var(--accent); }
+.ladder { margin:.1rem 0 1rem; font-size:.84rem; color:var(--ink); line-height:1.9; }
+.ladder .rung { white-space:nowrap; font-family:ui-monospace,Menlo,monospace; font-size:.94em; }
+.rung-chosen { color:var(--accent); font-weight:700; }
+.rung-skipped { color:var(--muted); text-decoration:line-through; text-decoration-thickness:1px; }
+.rollup { margin:1.1rem 0 .2rem; border:1px solid var(--accent); border-radius:4px;
+          background:#fff; padding:.65rem 1rem .8rem; }
+.rollup-t { font-family:Georgia,"Times New Roman",serif; font-weight:700; font-size:1rem;
+            margin:0; }
+.rollup-sub { color:var(--muted); font-size:.8rem; margin:.1rem 0 .4rem; }
+.rollup ul { margin:.25rem 0 0; padding-left:1.15rem; font-size:.88rem; }
+.rollup li { margin:.24rem 0; }
+.rollup-ok { color:#256b45; font-size:.9rem; margin:.25rem 0 0; }
+.biblio { margin-top:1.4rem; border-top:1px solid var(--line); }
 /* ---- stages ---- */
 details.stage { border-top:1px solid var(--hair); }
 details.stage summary { cursor:pointer; padding:.42rem 0; color:var(--muted); font-size:.86rem;
@@ -895,10 +1103,11 @@ def render_html(report: RunReport, source_name: str = "report.json",
 <main>
 {_header_html(report.meta, subtitle)}
 {_howto_html()}
+{_rollup_html(report.metrics)}
 <h2 class="sec">Final forecasts</h2>
 {_summary_html(report.metrics)}
 {_company_sections(report.metrics)}
-<footer>Rendered from {_e(source_name)} · self-contained (inline CSS/JS, no external assets) · Agents vs Wall Street</footer>
+<footer>Rendered from {_e(source_name)} · Agents vs Wall Street</footer>
 </main>
 </div>
 <script>{_JS}</script>
