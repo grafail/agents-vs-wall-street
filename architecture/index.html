@@ -115,11 +115,11 @@ method. The worksheet is also how we debug.</p>
 
 <h2>Tech stack</h2>
 <table class="rules">
-<tr><td>Data: history</td><td>The supplied frozen corpus: 1,139 SEC filings, UK regulatory announcements, earnings-call transcripts and investor slides across the four companies.</td></tr>
-<tr><td>Data: live</td><td>Web and news search (DuckDuckGo), Yahoo Finance market data, company investor-relations pages, official statistics releases. Wall Street expectations: company-published figures first, Yahoo Finance as backup.</td></tr>
-<tr><td>AI models</td><td>Set in configuration, mixable per job: a cheap model reads and researches, a panel of one or more models forecasts (this run: Qwen + MiniMax via OpenRouter), a strong model does the Wall Street check.</td></tr>
-<tr><td>Pipeline</td><td>Python 3.13, LangGraph for the flow, pydantic for every data shape, one command end to end. 176 automated tests.</td></tr>
-<tr><td>Own tooling</td><td>Cached search/fetch/market tools, the extraction funnel with its quote-match check, the backtester, the audit-report renderer, and the diagram generator that draws this page's picture from the code.</td></tr>
+<tr><td>Data: history</td><td>Frozen corpus of 1,139 documents (SEC filings, RNS announcements, earnings-call transcripts, investor decks). Deterministic narrowing (per-metric synonym search + strong-number line gate) &rarr; batched small-model parses &rarr; typed <code>Fact</code> records with verbatim quote, canonical units, source doc and trust tier, committed as JSON artifacts.</td></tr>
+<tr><td>Data: live</td><td><code>ddgs</code> (web + news verticals), <code>yfinance</code> (fundamentals, estimates), <code>requests</code>+<code>trafilatura</code> for page extraction. All behind a read-through disk cache keyed on hash(tool, args) with fetch timestamps; hit/live logged per call. Consensus: corpus-published compiled figures first, yfinance mapping (magnitude-gated) as fallback.</td></tr>
+<tr><td>AI models</td><td>OpenAI-compatible via OpenRouter or OpenAI, all env-configured: <code>MODEL_SMALL</code> (extraction, labeling, research scout at low reasoning effort), <code>ESTIMATOR_PANEL</code> (N provider:model members called in parallel, structured outputs, deterministic aggregation: median quantiles, majority-vote labels, disagreement widens the uncertainty band), <code>MODEL_BIG</code> (reconciler). This run: Qwen3.8 + MiniMax M3 panel, DeepSeek v4 reconciler.</td></tr>
+<tr><td>Pipeline</td><td>Python 3.13 (uv-locked), LangGraph <code>StateGraph</code> (7 nodes, companies run concurrently), pydantic models end to end incl. structured LLM outputs, pydantic-settings config. 176 pytest tests, LLM/network mocked, real corpus files as fixtures.</td></tr>
+<tr><td>Own tooling</td><td>Walk-forward backtester (per-metric method selection; MAE sets the judgment cap), nudge engine (shrinkage + &sigma;-mapped labels + 0.75&times;MAE clamp), validation gates (history-adaptive magnitude bands, sign-flip, pence/percent traps), never-blank cascade, openpyxl writer with verbatim template asserts, events.jsonl run log, JSON&rarr;HTML audit-report renderer, and the SVG diagram generator that asserts its phase map against the compiled graph.</td></tr>
 </table>
 
 <div class="repro"><strong>To reproduce:</strong> <code>uv sync</code> &middot; keys in <code>.env</code> &middot;
