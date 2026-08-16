@@ -124,9 +124,17 @@ def node_load(state: CompanyState) -> dict:
         extract_company(ticker, log=log)
         facts = load_facts(ticker)
     facts = _reclassify_consensus(facts)
+    # Unit auto-correction ALSO at load time: artifacts extracted before a scale
+    # factor was known (e.g. DE's x1e6 micro-mislabels) get repaired without
+    # re-extraction. Corrections carry audit flags like any extraction-time fix.
+    from pipeline.extract import auto_correct_units
+    auto_correct_units(facts)
+    n_fixed = sum(1 for f in facts
+                  if any(fl.startswith("auto_corrected_scale") for fl in f.flags))
     if log:
         n_cons = sum(1 for f in facts if f.fact_type.startswith("consensus"))
-        log.event("load_facts", ticker=ticker, n=len(facts), consensus_facts=n_cons)
+        log.event("load_facts", ticker=ticker, n=len(facts), consensus_facts=n_cons,
+                  units_auto_corrected=n_fixed)
     return {"facts": facts, "metrics": {}, "errors": state.get("errors", [])}
 
 
@@ -521,6 +529,13 @@ def node_finalize(state: CompanyState) -> dict:
             candidates.append(("consensus", consensus))
         if anchor_value is not None:
             candidates.append(("anchor_last_year", anchor_value))
+        # Ultimate rung: the most recent reported actual of ANY period (the
+        # series is period-ordered, so [-1] is newest). Covers metrics whose
+        # history lacks the same-quarter anchor entirely (HD comparable sales
+        # has no Q2 readings) — the never-blank rule must never hit the raise.
+        sv = blob.get("series_values") or []
+        if sv:
+            candidates.append(("last_reported_actual", sv[-1]))
 
         # Additive audit field for the report's candidate ladder: EVERY canonical
         # rung in cascade order, absent ones included (value None). The cascade
@@ -536,6 +551,7 @@ def node_finalize(state: CompanyState) -> dict:
                 ("guidance_mid", g_mid),
                 ("consensus", consensus),
                 ("anchor_last_year", anchor_value),
+                ("last_reported_actual", (blob.get("series_values") or [None])[-1]),
             )
         ]
 

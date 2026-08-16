@@ -422,6 +422,8 @@ def _metric_report(spec: MetricSpec, blob: dict) -> report_mod.MetricReport:
 
 def _totals_from_events(events_path: Path) -> report_mod.RunTotals:
     llm_calls = prompt = completion = cached = hits = live = 0
+    billed = 0.0
+    est_prompt = est_completion = 0
     if events_path.exists():
         for line in events_path.read_text().splitlines():
             try:
@@ -433,19 +435,24 @@ def _totals_from_events(events_path: Path) -> report_mod.RunTotals:
                 prompt += ev.get("prompt_tokens") or 0
                 completion += ev.get("completion_tokens") or 0
                 cached += ev.get("cached_prompt_tokens") or 0
+                if ev.get("cost_usd") is not None:
+                    billed += float(ev["cost_usd"])
+                else:  # no provider-billed figure (e.g. OpenAI direct) — estimate later
+                    est_prompt += ev.get("prompt_tokens") or 0
+                    est_completion += ev.get("completion_tokens") or 0
             elif ev.get("kind") == "tool_call":
                 if ev.get("cache_hit"):
                     hits += 1
                 else:
                     live += 1
     s = settings()
-    cost = None
-    if s.price_in_per_m > 0 or s.price_out_per_m > 0:
-        # cached prompt tokens billed at ~10% of input price (provider-typical)
-        cost = round(
-            ((prompt - cached) * s.price_in_per_m
-             + cached * s.price_in_per_m * 0.1
-             + completion * s.price_out_per_m) / 1e6, 4)
+    # Prefer provider-billed cost (OpenRouter reports it per call); env prices
+    # only estimate the remainder (e.g. OpenAI-direct calls report no cost).
+    cost = billed if billed else None
+    if (est_prompt or est_completion) and (s.price_in_per_m > 0 or s.price_out_per_m > 0):
+        cost = (cost or 0.0) + (est_prompt * s.price_in_per_m
+                                + est_completion * s.price_out_per_m) / 1e6
+    cost = round(cost, 4) if cost is not None else None
     return report_mod.RunTotals(
         llm_calls=llm_calls, prompt_tokens=prompt, completion_tokens=completion,
         cached_prompt_tokens=cached, tool_cache_hits=hits, tool_cache_live=live,

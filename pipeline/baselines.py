@@ -173,6 +173,11 @@ def seasonal_yoy(series: Series, spec: MetricSpec, guidance: list[Fact] | None =
         hist = series.same_quarter_history(target)
         hist = [(p, v) for p, v in hist if period_key(p) < period_key(target)]
         if not hist:
+            # no same-quarter readings (e.g. HD comp sales missing Q2 history):
+            # fall back to the most recent readings of ANY period — comp-style
+            # ratios are serially correlated enough for a level carry-forward.
+            hist = [(p, v) for p, v in series.points if period_key(p) < period_key(target)][-2:]
+        if not hist:
             return None
         if len(hist) == 1:
             (p0, v0) = hist[-1]

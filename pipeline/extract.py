@@ -334,7 +334,7 @@ def value_in_quote(value_as_written: str, quote: str) -> bool:
     return v.replace(",", "").replace(" ", "") in q or value_as_written.strip() in quote
 
 
-_SCALE_CANDIDATES = (100.0, 0.01, 1000.0, 0.001)  # pence<->pounds, millions<->billions
+_SCALE_CANDIDATES = (100.0, 0.01, 1000.0, 0.001, 1e6, 1e-6)  # pence/pounds, m/bn, micro-mislabels
 
 
 def auto_correct_units(facts: list[ExtractedFact]) -> None:
